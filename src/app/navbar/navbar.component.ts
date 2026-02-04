@@ -27,32 +27,33 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    // Subscribe to authentication state for reactive updates
+    this.userService.isAuthenticated$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(isAuthenticated => {
+      const storedUser = localStorage.getItem('loggedInUser');
+      const storedAdmin = localStorage.getItem('loggedInAdminname');
+      const token = localStorage.getItem('token');
+
+      if (isAuthenticated && storedUser && token) {
+        this.user = { username: storedUser };
+        this.fetchSelectedPlaceCount();
+        this.startCounting();
+      } else if (storedAdmin) {
+        this.admin = { adminname: storedAdmin };
+      } else {
+        this.user = null;
+        this.admin = null;
+        this.selectedPlaceCount = 0;
+      }
+    });
+
+    // Check for dual login on init
     const storedUser = localStorage.getItem('loggedInUser');
     const storedAdmin = localStorage.getItem('loggedInAdminname');
-    const token = localStorage.getItem('token');
-
     if (storedUser && storedAdmin) {
-      // If both user and admin are logged in, log out both
       this.userSignOut();
       this.adminSignOut();
-    } else if (storedUser) {
-      // Validate that token exists with user
-      if (!token) {
-        // Invalid state - user exists but no token, clear it
-        console.warn('Found user without token, clearing invalid state');
-        localStorage.removeItem('loggedInUser');
-        this.user = null;
-        this.selectedPlaceCount = 0;
-        return;
-      }
-
-      // If user is logged in with valid token, set user and fetch selected place count
-      this.user = { username: storedUser };
-      this.fetchSelectedPlaceCount();
-      this.startCounting();
-    } else if (storedAdmin) {
-      // If admin is logged in, set admin
-      this.admin = { adminname: storedAdmin };
     }
   }
 

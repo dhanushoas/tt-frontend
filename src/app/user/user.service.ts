@@ -35,18 +35,23 @@ export class UserService {
     return this.http.post(`${this.baseUrl}/auth/google-signin`, { idToken });
   }
 
-  private loggedInUserSubject = new BehaviorSubject<string | null>(null);
+  private loggedInUserSubject = new BehaviorSubject<string | null>(localStorage.getItem('loggedInUser'));
   loggedInUser$ = this.loggedInUserSubject.asObservable();
 
-  // Add the signedInUsername$ property
-  signedInUsername$ = this.loggedInUserSubject.asObservable();
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(!!localStorage.getItem('token'));
+  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  setLoggedInUser(username: string | null) {
-    this.loggedInUserSubject.next(username);
-    if (username !== null) {
+  setLoggedInUser(username: string | null, token?: string) {
+    if (username && token) {
       localStorage.setItem('loggedInUser', username);
+      localStorage.setItem('token', token);
+      this.loggedInUserSubject.next(username);
+      this.isAuthenticatedSubject.next(true);
     } else {
       localStorage.removeItem('loggedInUser');
+      localStorage.removeItem('token');
+      this.loggedInUserSubject.next(null);
+      this.isAuthenticatedSubject.next(false);
     }
   }
 
@@ -54,8 +59,12 @@ export class UserService {
     return localStorage.getItem('loggedInUser');
   }
 
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
   signOut(): void {
-    window.location.reload();
     this.setLoggedInUser(null);
+    window.location.reload();
   }
 }

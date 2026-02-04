@@ -55,19 +55,12 @@ export class SigninComponent implements OnInit {
       console.log('Login response:', response);
 
       if (response && response.authenticated) {
-        // Store token and username in localStorage
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('loggedInUser', response.username);
-
-        console.log('Token stored:', localStorage.getItem('token'));
-        console.log('User stored:', localStorage.getItem('loggedInUser'));
-
-        // Update UserService
-        this.userService.setLoggedInUser(response.username);
+        // Update UserService (handles localStorage and subjects)
+        this.userService.setLoggedInUser(response.username, response.token);
 
         this.toastService.show(`Welcome back, ${response.username}!`, 'success');
 
-        // Navigate to home page with a small delay to ensure localStorage is updated
+        // Navigate to home page
         setTimeout(() => {
           console.log('Navigating to /home');
           this.router.navigate(['/home']).then(
@@ -89,20 +82,30 @@ export class SigninComponent implements OnInit {
   async googleLogin(): Promise<void> {
     this.isLoading = true;
     try {
-      const result = await this.authService.signInWithGoogle();
-      if (result) {
-        this.toastService.show(`Welcome back!`, 'success');
-        this.router.navigate(['/home']);
+      // 1. Sign in with Firebase
+      const fbResult = await this.authService.signInWithGoogle();
+      if (fbResult) {
+        // 2. Get the ID token from Firebase user
+        const idToken = await fbResult.getIdToken();
+
+        // 3. Connect with MongoDB backend
+        const mongoResult: any = await this.userService.googleLogin(idToken).toPromise();
+
+        if (mongoResult && mongoResult.authenticated) {
+          // 4. Store token and update state
+          this.userService.setLoggedInUser(mongoResult.username, mongoResult.token);
+
+          this.toastService.show(`Welcome back, ${mongoResult.username}!`, 'success');
+
+          // 5. Navigate
+          setTimeout(() => {
+            this.router.navigate(['/home']);
+          }, 100);
+        }
       }
     } catch (error: any) {
       console.error('Google Login Error:', error);
-      if (error.code === 'auth/popup-closed-by-user') {
-        this.toastService.show('Sign-in cancelled', 'info');
-      } else if (error.code === 'auth/unauthorized-domain') {
-        this.toastService.show('This domain is not authorized. Please contact support.', 'danger');
-      } else {
-        this.toastService.show('Google sign-in failed. Please try again.', 'danger');
-      }
+      this.toastService.show('Google login failed. Please try again.', 'danger');
     } finally {
       this.isLoading = false;
     }
