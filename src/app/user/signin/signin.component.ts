@@ -116,7 +116,7 @@ export class SigninComponent implements OnInit {
             const diag = backendError.error?.diagnostic;
             let msg = 'Server Auth Service Unavailable.';
             if (diag) {
-              msg += ` (EnvVar: ${diag.hasEnvVar}, LocalFile: ${diag.hasLocalFile})`;
+              msg += ` (EnvVar: ${diag.hasEnvVar}, Error: ${diag.initError})`;
             }
             this.toastService.show(msg, 'danger');
           } else {
