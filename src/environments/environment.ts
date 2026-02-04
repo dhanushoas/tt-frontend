@@ -3,12 +3,12 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000',
   firebase: {
-    apiKey: "AIzaSyAhdHImJQy_0b6xSv4YAVyt1oxUtfp3Sy8",
-    authDomain: "tamilnadu-tourism-dc0bf.firebaseapp.com",
-    projectId: "tamilnadu-tourism-dc0bf",
-    storageBucket: "tamilnadu-tourism-dc0bf.firebasestorage.app",
-    messagingSenderId: "374458333312",
-    appId: "1:374458333312:web:ba95255d98b8830a4e4e65",
-    measurementId: "G-7VCBN1NHZH"
+    apiKey: "AIzaSyBmIn4hYyMPmmkdYGf8CFMXSh84HonslHA",
+    authDomain: "tn-tourism-7e0f1.firebaseapp.com",
+    projectId: "tn-tourism-7e0f1",
+    storageBucket: "tn-tourism-7e0f1.firebasestorage.app",
+    messagingSenderId: "716031787006",
+    appId: "1:716031787006:web:be6c427d57bc0a13900aaf",
+    measurementId: "G-7412XY7GYT"
   }
 };
