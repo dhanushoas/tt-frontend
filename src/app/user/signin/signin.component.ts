@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { UserService } from '../user.service';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { ToastService } from '../../toast.service';
 
@@ -12,116 +10,106 @@ import { ToastService } from '../../toast.service';
   styleUrls: ['./signin.component.css']
 })
 export class SigninComponent implements OnInit {
-  showLoginForm: boolean = false;
   loginForm!: FormGroup;
-  loggedInUsername: string = '';
   showPassword: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
-    private userService: UserService,
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute,
     private authService: AuthService,
     private toastService: ToastService
   ) {
-    this.initializeLoginForm();
+    this.initializeForm();
   }
 
   ngOnInit(): void {
-    console.log('SigninComponent initialized.');
+    console.log('Signin Component Initialized');
+  }
 
-    // Check for token from Google Login (if using redirect flow, though we are using popup now)
-    this.route.queryParams.subscribe(params => {
-      const token = params['token'];
-      const username = params['username'];
-      if (token && username) {
-        localStorage.setItem('token', token);
-        this.userService.setLoggedInUser(username);
-        this.toastService.show(`Login Successful. Welcome, ${username}!`, 'success');
+  private initializeForm(): void {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]]
+    });
+  }
+
+  async login(): Promise<void> {
+    if (this.loginForm.invalid) {
+      this.toastService.show('Please enter your email and password', 'warning');
+      return;
+    }
+
+    this.isLoading = true;
+    const { email, password } = this.loginForm.value;
+
+    try {
+      const user = await this.authService.signInWithEmail(email, password);
+
+      if (user) {
+        this.toastService.show(`Welcome back!`, 'success');
         this.router.navigate(['/home']);
       }
-    });
-
-    // Subscribe to Router events to detect when navigation has completed
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      // Reload the page logic if needed
-    });
-  }
-
-  private initializeLoginForm() {
-    this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-    });
-  }
-
-  login() {
-    if (this.loginForm.valid) {
-      const loginData = this.loginForm.value;
-      this.userService.loginUser(loginData).subscribe(
-        (response: any) => {
-          console.log(response);
-
-          if (response.authenticated) {
-            console.log('Signin user:', loginData.username);
-            this.toastService.show(`Login Successful. Welcome, ${loginData.username}!`, 'success');
-            this.userService.setLoggedInUser(loginData.username);
-            this.router.navigate(['/home']);
-          } else {
-            this.toastService.show('Invalid username or password', 'danger');
-          }
-        },
-        (error: any) => {
-          console.error(error);
-          this.toastService.show('Error during login. Please try again.', 'danger');
-        }
-      );
+    } catch (error: any) {
+      console.error('Login Error:', error);
+      this.handleLoginError(error);
+    } finally {
+      this.isLoading = false;
     }
   }
 
-  signup() {
-    this.router.navigate(['/signup']).then(() => {
-      this.userService.signOut();
-    });
-  }
-
-  async googleLogin() {
+  async googleLogin(): Promise<void> {
+    this.isLoading = true;
     try {
-      const idToken = await this.authService.signInWithGoogle();
-      this.userService.googleLogin(idToken).subscribe(
-        (response: any) => {
-          if (response.authenticated) {
-            localStorage.setItem('token', response.token);
-            this.userService.setLoggedInUser(response.username);
-            this.toastService.show(`Login Successful. Welcome, ${response.username}!`, 'success');
-            this.router.navigate(['/home']);
-          } else {
-            this.toastService.show('Authentication failed. Please try again.', 'danger');
-          }
-        },
-        (error: any) => {
-          console.error('Backend Verification Failed', error);
-          this.toastService.show('Login failed. Please try again.', 'danger');
-        }
-      );
+      const result = await this.authService.signInWithGoogle();
+      if (result) {
+        this.toastService.show(`Welcome back!`, 'success');
+        this.router.navigate(['/home']);
+      }
     } catch (error: any) {
-      console.error('Google Sign-In Error', error);
+      console.error('Google Login Error:', error);
       if (error.code === 'auth/popup-closed-by-user') {
         this.toastService.show('Sign-in cancelled', 'info');
       } else if (error.code === 'auth/unauthorized-domain') {
-        this.toastService.show('This domain is not authorized for Google Sign-In. Please contact support.', 'danger');
+        this.toastService.show('This domain is not authorized. Please contact support.', 'danger');
       } else {
-        this.toastService.show('Google Sign-In failed. Please try again.', 'danger');
+        this.toastService.show('Google sign-in failed. Please try again.', 'danger');
       }
+    } finally {
+      this.isLoading = false;
     }
   }
 
+  private handleLoginError(error: any): void {
+    switch (error.code) {
+      case 'auth/user-not-found':
+        this.toastService.show('No account found with this email. Please sign up first.', 'warning');
+        break;
+      case 'auth/wrong-password':
+        this.toastService.show('Incorrect password. Please try again.', 'danger');
+        break;
+      case 'auth/invalid-email':
+        this.toastService.show('Invalid email address', 'danger');
+        break;
+      case 'auth/user-disabled':
+        this.toastService.show('This account has been disabled. Please contact support.', 'danger');
+        break;
+      case 'auth/too-many-requests':
+        this.toastService.show('Too many failed attempts. Please try again later.', 'warning');
+        break;
+      case 'auth/invalid-credential':
+        this.toastService.show('Invalid email or password', 'danger');
+        break;
+      default:
+        this.toastService.show('Sign-in failed. Please try again.', 'danger');
+    }
+  }
 
-
-  togglePasswordVisibility() {
+  togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
+  }
+
+  goToSignup(): void {
+    this.router.navigate(['/signup']);
   }
 }

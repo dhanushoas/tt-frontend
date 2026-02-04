@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
-import { UserService } from '../user.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { ToastService } from '../../toast.service';
@@ -11,181 +10,117 @@ import { ToastService } from '../../toast.service';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-  showLoginForm: boolean = true;
   registerForm!: FormGroup;
   showPassword: boolean = false;
+  isLoading: boolean = false;
+  showVerificationMessage: boolean = false;
 
   constructor(
-    private userService: UserService,
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
     private toastService: ToastService
   ) {
-    this.initializeRegisterForm();
+    this.initializeForm();
   }
 
   ngOnInit(): void {
-    console.log('Signup Initialized');
+    console.log('Signup Component Initialized');
   }
 
-  // Custom validator function
-  noSpaceValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: boolean } | null => {
-      if (control.value && /\s/.test(control.value)) {
-        return { noSpace: true }; // Validation failed
-      }
-      return null; // Validation passed
-    };
-  }
-
-  private initializeRegisterForm() {
+  private initializeForm(): void {
     this.registerForm = this.fb.group({
-      firstName: [
-        '',
-        [
-          Validators.required,
-          Validators.maxLength(20),
-          Validators.pattern(/^[A-Z][a-zA-Z]*( [A-Z][a-zA-Z]*)*$/),
-          Validators.pattern(/^[^\s].*$/)
-        ]
-      ],
-      lastName: [
-        '',
-        [
-          Validators.required,
-          Validators.maxLength(10),
-          Validators.pattern(/^[A-Z][a-zA-Z]*$/),
-          Validators.pattern(/^[^\s].*$/)
-        ]
-      ],
-      gmailId: [
+      email: [
         '',
         [
           Validators.required,
           Validators.email,
-          Validators.pattern(/@gmail\.com$/),
-          Validators.pattern(/^[^\s].*$/)
+          Validators.pattern(/@gmail\.com$/)
         ]
       ],
-      dob: [null, [Validators.required, this.dateOfBirthValidator]],
       password: [
         '',
         [
           Validators.required,
           Validators.minLength(8),
-          Validators.pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+])(?=\S+$)/),
-          this.noSpaceValidator()
+          Validators.pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])(?=\S+$)/)
         ]
-      ],
+      ]
     });
   }
 
-  private dateOfBirthValidator(control: any) {
-    const dob = new Date(control.value);
-    const currentYear = new Date().getFullYear();
-    const minDate = new Date(currentYear - 100, 0, 1); // Minimum age: 100 years
-    const maxDate = new Date(currentYear - 18, 11, 31); // Maximum age: 18 years
-
-    if (dob < minDate || dob > maxDate) {
-      return { invalidDateOfBirth: true };
+  async register(): Promise<void> {
+    if (this.registerForm.invalid) {
+      this.toastService.show('Please fill in all fields correctly', 'warning');
+      return;
     }
 
-    return null;
-  }
+    this.isLoading = true;
+    const { email, password } = this.registerForm.value;
 
-  register() {
-    if (this.registerForm.valid) {
-      const user = this.registerForm.value;
-
-      // Check if Gmail ID already exists before attempting registration
-      this.userService.checkIfEmailExists(user.gmailId).subscribe(
-        (response: any) => {
-          if (response.exists) {
-            this.toastService.show('Gmail ID already registered', 'warning');
-          } else {
-            // Continue with registration
-            if (!this.isFirstLetterCapital(user.firstName) || !this.isFirstLetterCapital(user.lastName)) {
-              this.toastService.show('First letter of the names must be capitalized.', 'warning');
-              return;
-            }
-
-            user.username = this.createUsername(user.firstName, user.lastName);
-
-            this.userService.registerUser(user).subscribe(
-              (registerResponse: any) => {
-                if (registerResponse.message === 'Registered successfully') {
-                  this.toastService.show('Registered Successfully', 'success');
-                  this.router.navigate(['/signin']);
-                } else {
-                  this.toastService.show('Registration failed', 'danger');
-                }
-              },
-              (error: any) => this.handleRegistrationError(error)
-            );
-          }
-        },
-        (error: any) => {
-          console.error(error);
-          this.toastService.show('Error checking Gmail ID. Please try again.', 'danger');
-        }
-      );
-    } else {
-      this.toastService.show('Please fill in all required fields.', 'warning');
-    }
-  }
-
-  private handleRegistrationError(error: any) {
-    console.error(error);
-    this.toastService.show('Error during registration. Please try again.', 'danger');
-  }
-
-  private createUsername(firstName: string, lastName: string): string {
-    return `${firstName} ${lastName}`.trim();
-  }
-
-  private isFirstLetterCapital(name: string): boolean {
-    return /^[A-Z]/.test(name);
-  }
-
-  signin() {
-    this.router.navigate(['/signin']);
-  }
-
-  async googleLogin() {
     try {
-      const idToken = await this.authService.signInWithGoogle();
-      this.userService.googleLogin(idToken).subscribe(
-        (response: any) => {
-          if (response.authenticated) {
-            localStorage.setItem('token', response.token);
-            this.userService.setLoggedInUser(response.username);
-            this.toastService.show(`Signup/Login Successful. Welcome, ${response.username}!`, 'success');
-            this.router.navigate(['/home']);
-          } else {
-            this.toastService.show('Authentication failed. Please try again.', 'danger');
-          }
-        },
-        (error: any) => {
-          console.error('Backend Verification Failed', error);
-          this.toastService.show('Signup failed. Please try again.', 'danger');
-        }
-      );
+      await this.authService.signUpWithEmail(email, password);
+      this.showVerificationMessage = true;
+      this.toastService.show('Account created! Please check your email to verify your account.', 'success');
+
+      // Redirect to signin after 3 seconds
+      setTimeout(() => {
+        this.router.navigate(['/signin']);
+      }, 3000);
     } catch (error: any) {
-      console.error('Google Sign-In Error', error);
-      if (error.code === 'auth/popup-closed-by-user') {
-        this.toastService.show('Sign-in cancelled', 'info');
-      } else if (error.code === 'auth/unauthorized-domain') {
-        this.toastService.show('This domain is not authorized for Google Sign-In. Please contact support.', 'danger');
-      } else {
-        this.toastService.show('Google Sign-In failed. Please try again.', 'danger');
-      }
+      console.error('Signup Error:', error);
+      this.handleSignupError(error);
+    } finally {
+      this.isLoading = false;
     }
   }
 
+  async googleSignup(): Promise<void> {
+    this.isLoading = true;
+    try {
+      const result = await this.authService.signInWithGoogle();
+      if (result) {
+        this.toastService.show(`Welcome! Signed up successfully.`, 'success');
+        this.router.navigate(['/home']);
+      }
+    } catch (error: any) {
+      console.error('Google Signup Error:', error);
+      if (error.code === 'auth/popup-closed-by-user') {
+        this.toastService.show('Sign-up cancelled', 'info');
+      } else if (error.code === 'auth/unauthorized-domain') {
+        this.toastService.show('This domain is not authorized. Please contact support.', 'danger');
+      } else {
+        this.toastService.show('Google sign-up failed. Please try again.', 'danger');
+      }
+    } finally {
+      this.isLoading = false;
+    }
+  }
 
+  private handleSignupError(error: any): void {
+    switch (error.code) {
+      case 'auth/email-already-in-use':
+        this.toastService.show('This email is already registered. Please sign in instead.', 'warning');
+        break;
+      case 'auth/invalid-email':
+        this.toastService.show('Invalid email address', 'danger');
+        break;
+      case 'auth/weak-password':
+        this.toastService.show('Password is too weak. Please use a stronger password.', 'warning');
+        break;
+      case 'auth/operation-not-allowed':
+        this.toastService.show('Email/password sign-up is not enabled. Please contact support.', 'danger');
+        break;
+      default:
+        this.toastService.show('Sign-up failed. Please try again.', 'danger');
+    }
+  }
 
-  togglePasswordVisibility() {
+  togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
+  }
+
+  goToSignin(): void {
+    this.router.navigate(['/signin']);
   }
 }
