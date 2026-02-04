@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn } from
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { ToastService } from '../../toast.service';
 
 @Component({
   selector: 'app-signup',
@@ -18,7 +19,8 @@ export class SignupComponent implements OnInit {
     private userService: UserService,
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastService: ToastService
   ) {
     this.initializeRegisterForm();
   }
@@ -100,11 +102,11 @@ export class SignupComponent implements OnInit {
       this.userService.checkIfEmailExists(user.gmailId).subscribe(
         (response: any) => {
           if (response.exists) {
-            alert('Gmail ID already registered');
+            this.toastService.show('Gmail ID already registered', 'warning');
           } else {
             // Continue with registration
             if (!this.isFirstLetterCapital(user.firstName) || !this.isFirstLetterCapital(user.lastName)) {
-              alert('First letter of the names must be capitalized.');
+              this.toastService.show('First letter of the names must be capitalized.', 'warning');
               return;
             }
 
@@ -113,10 +115,10 @@ export class SignupComponent implements OnInit {
             this.userService.registerUser(user).subscribe(
               (registerResponse: any) => {
                 if (registerResponse.message === 'Registered successfully') {
-                  alert('Registered Successfully');
+                  this.toastService.show('Registered Successfully', 'success');
                   this.router.navigate(['/signin']);
                 } else {
-                  alert('Registration failed');
+                  this.toastService.show('Registration failed', 'danger');
                 }
               },
               (error: any) => this.handleRegistrationError(error)
@@ -125,17 +127,17 @@ export class SignupComponent implements OnInit {
         },
         (error: any) => {
           console.error(error);
-          alert('Error checking Gmail ID. Please try again.');
+          this.toastService.show('Error checking Gmail ID. Please try again.', 'danger');
         }
       );
     } else {
-      alert('Please fill in all required fields.');
+      this.toastService.show('Please fill in all required fields.', 'warning');
     }
   }
 
   private handleRegistrationError(error: any) {
     console.error(error);
-    alert('Error during registration. Please try again.');
+    this.toastService.show('Error during registration. Please try again.', 'danger');
   }
 
   private createUsername(firstName: string, lastName: string): string {
@@ -158,13 +160,13 @@ export class SignupComponent implements OnInit {
           if (response.authenticated) {
             localStorage.setItem('token', response.token);
             this.userService.setLoggedInUser(response.username);
-            alert(`Signup/Login Successful. Welcome, ${response.username}!`);
+            this.toastService.show(`Signup/Login Successful. Welcome, ${response.username}!`, 'success');
             this.router.navigate(['/home']);
           }
         },
         (error: any) => {
           console.error('Backend Verification Failed', error);
-          alert('Signup failed');
+          this.toastService.show('Signup failed', 'danger');
         }
       );
     } catch (error) {

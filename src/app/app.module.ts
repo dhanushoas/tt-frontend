@@ -33,6 +33,7 @@ import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { AuthInterceptor } from './auth.interceptor';
 
 import { SecureImagePipe } from './secure-image.pipe';
+import { ToastComponent } from './toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { SecureImagePipe } from './secure-image.pipe';
     AllPaymentsComponent,
     FollowUsComponent,
     SecureImagePipe,
+    ToastComponent,
   ],
   imports: [
     BrowserModule,

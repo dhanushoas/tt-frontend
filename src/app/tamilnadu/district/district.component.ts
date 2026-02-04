@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { VisitService } from '../visit.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/user/user.service';
+import { ToastService } from '../../toast.service';
 
 @Component({
   selector: 'app-district',
@@ -19,7 +20,8 @@ export class DistrictComponent implements OnInit {
     private visitService: VisitService,
     private userService: UserService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -51,7 +53,7 @@ export class DistrictComponent implements OnInit {
   }
 
   redirectToHome(): void {
-    alert(`No images found for "${this.location}". Redirecting to home.`);
+    this.toastService.show(`No images found for "${this.location}". Redirecting to home.`, 'info');
     this.router.navigate(['/']); // Redirect to home page (or another page)
   }
 
@@ -73,14 +75,15 @@ export class DistrictComponent implements OnInit {
         this.visitService.storeSelectedPlaces({ username, location, selectedPlaces: [place.name] }).subscribe({
           next: (response) => {
             console.log('Selected places stored successfully:', response);
+            this.toastService.show('Place added to your visit list!', 'success');
           },
           error: (error) => {
             console.error('Error storing selected places:', error);
-            alert('Error storing selected places. Check console for details.');
+            this.toastService.show('Error storing selected places.', 'danger');
           }
         });
       } else {
-        alert('This place has already been added to your visit.');
+        this.toastService.show('This place has already been added to your visit.', 'warning');
       }
     } else {
       this.router.navigate(['/signin']);

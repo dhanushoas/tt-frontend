@@ -4,6 +4,7 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { UserService } from '../user.service';
 import { AuthService } from '../auth.service';
+import { ToastService } from '../../toast.service';
 
 @Component({
   selector: 'app-signin',
@@ -21,7 +22,8 @@ export class SigninComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastService: ToastService
   ) {
     this.initializeLoginForm();
   }
@@ -36,7 +38,7 @@ export class SigninComponent implements OnInit {
       if (token && username) {
         localStorage.setItem('token', token);
         this.userService.setLoggedInUser(username);
-        alert(`Login Successful. Welcome, ${username}!`);
+        this.toastService.show(`Login Successful. Welcome, ${username}!`, 'success');
         this.router.navigate(['/home']);
       }
     });
@@ -65,16 +67,16 @@ export class SigninComponent implements OnInit {
 
           if (response.authenticated) {
             console.log('Signin user:', loginData.username);
-            alert(`Login Successful. Welcome, ${loginData.username}!`);
+            this.toastService.show(`Login Successful. Welcome, ${loginData.username}!`, 'success');
             this.userService.setLoggedInUser(loginData.username);
             this.router.navigate(['/home']);
           } else {
-            alert('Invalid username or password');
+            this.toastService.show('Invalid username or password', 'danger');
           }
         },
         (error: any) => {
           console.error(error);
-          alert('Error during login. Please try again.');
+          this.toastService.show('Error during login. Please try again.', 'danger');
         }
       );
     }
@@ -94,13 +96,13 @@ export class SigninComponent implements OnInit {
           if (response.authenticated) {
             localStorage.setItem('token', response.token);
             this.userService.setLoggedInUser(response.username);
-            alert(`Login Successful. Welcome, ${response.username}!`);
+            this.toastService.show(`Login Successful. Welcome, ${response.username}!`, 'success');
             this.router.navigate(['/home']);
           }
         },
         (error: any) => {
           console.error('Backend Verification Failed', error);
-          alert('Login failed');
+          this.toastService.show('Login failed', 'danger');
         }
       );
     } catch (error) {

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ImageService } from '../image-upload/image.service';
+import { ToastService } from '../../../toast.service';
 
 @Component({
   selector: 'app-images-by-location',
@@ -13,7 +14,7 @@ export class ImagesByLocationComponent {
   fileToUpload: File | null = null;
   imageName: string = '';
 
-  constructor(private imageService: ImageService) {}
+  constructor(private imageService: ImageService, private toastService: ToastService) { }
 
   getImagesByLocation() {
     if (!this.location) {
@@ -28,7 +29,7 @@ export class ImagesByLocationComponent {
       },
       error => {
         console.error(error);
-        alert('Error fetching images by location!');
+        this.toastService.show('Error fetching images by location!', 'danger');
       }
     );
   }
@@ -42,27 +43,27 @@ export class ImagesByLocationComponent {
       console.error('Please provide all required fields!');
       return;
     }
-  
+
     const formData = new FormData();
     formData.append('image', this.fileToUpload);
     formData.append('name', this.imageName);
     formData.append('location', this.location);
-  
+
     this.imageService.uploadImage(formData).subscribe(
       response => {
         console.log(response);
         if (response instanceof HttpErrorResponse) {
           console.error(response.error);
-          alert('Error uploading image: ' + response.error);
+          this.toastService.show('Error uploading image: ' + response.error, 'danger');
         } else {
           console.log(response);
-          alert('Image uploaded successfully!');
+          this.toastService.show('Image uploaded successfully!', 'success');
           this.getImagesByLocation();
         }
       },
       error => {
         console.error(error);
-        alert('Error uploading image!');
+        this.toastService.show('Error uploading image!', 'danger');
       }
     );
   }
@@ -71,36 +72,36 @@ export class ImagesByLocationComponent {
     this.imageService.deleteImage(imageName).subscribe(
       response => {
         console.log(response);
-        alert('Image deleted successfully!');
+        this.toastService.show('Image deleted successfully!', 'success');
         // Remove the deleted image from the images array
         this.images = this.images.filter(image => image.name !== imageName);
       },
       error => {
         console.error(error);
-        alert('Error deleting image!');
+        this.toastService.show('Error deleting image!', 'danger');
       }
     );
-}
+  }
 
 
   updateImage(image: any) {
     const newName = prompt('Enter new name:', image.name);
     const newLocation = prompt('Enter new location:', image.location);
-  
+
     if (newName && newLocation) {
       this.imageService.updateImage(image.name, newName, newLocation).subscribe(
         response => {
           console.log(response);
-          alert('Image updated successfully!');
+          this.toastService.show('Image updated successfully!', 'success');
           this.getImagesByLocation();
         },
         error => {
           console.error(error);
-          alert('Error updating image!');
+          this.toastService.show('Error updating image!', 'danger');
         }
       );
     } else {
-      alert('Please provide both name and location!');
+      this.toastService.show('Please provide both name and location!', 'warning');
     }
   }
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ImageService } from './image.service';
+import { ToastService } from '../../../toast.service';
 
 @Component({
   selector: 'app-image-upload',
@@ -11,7 +12,7 @@ export class ImageUploadComponent {
   location: string = '';
   fileToUpload: File | null = null;
 
-  constructor(private imageService: ImageService) {}
+  constructor(private imageService: ImageService, private toastService: ToastService) { }
 
   onFileSelected(event: any) {
     this.fileToUpload = event.target.files[0];
@@ -31,13 +32,13 @@ export class ImageUploadComponent {
     this.imageService.uploadImage(formData).subscribe(
       response => {
         console.log(response);
-        alert('Image uploaded successfully: ' + response.message);
+        this.toastService.show('Image uploaded successfully: ' + response.message, 'success');
         this.imageName = '';
         this.location = '';
       },
       error => {
         console.error(error);
-        alert('Error uploading image!');
+        this.toastService.show('Error uploading image!', 'danger');
       }
     );
   }
