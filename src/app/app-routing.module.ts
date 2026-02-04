@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { VerifyEmailComponent } from './user/verify-email/verify-email.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { ViewComponent } from './book-now/payment/view.component';
 import { UpdateComponent } from './book-now/update/update.component';
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'about-us', component: AboutUsComponent, canActivate: [authGuard] },
   { path: 'signup', component: SignupComponent },
   { path: 'signin', component: SigninComponent },
+  { path: 'verify-email', component: VerifyEmailComponent },
   { path: 'admin-home', component: AdminHomeComponent, canActivate: [authGuard] },
   { path: 'admin-signin', component: AdminSigninComponent },
   { path: 'admin-signup', component: AdminSignupComponent },

@@ -35,6 +35,8 @@ import { AuthInterceptor } from './auth.interceptor';
 import { SecureImagePipe } from './secure-image.pipe';
 import { ToastComponent } from './toast/toast.component';
 
+import { VerifyEmailComponent } from './user/verify-email/verify-email.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,6 +63,7 @@ import { ToastComponent } from './toast/toast.component';
     FollowUsComponent,
     SecureImagePipe,
     ToastComponent,
+    VerifyEmailComponent,
   ],
   imports: [
     BrowserModule,

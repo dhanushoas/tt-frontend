@@ -35,6 +35,10 @@ export class UserService {
     return this.http.post(`${this.baseUrl}/auth/google-signin`, { idToken });
   }
 
+  verifyEmail(token: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/user/verify-email`, { token });
+  }
+
   private loggedInUserSubject = new BehaviorSubject<string | null>(localStorage.getItem('loggedInUser'));
   loggedInUser$ = this.loggedInUserSubject.asObservable();
 
