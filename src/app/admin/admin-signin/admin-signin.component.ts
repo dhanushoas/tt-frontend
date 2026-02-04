@@ -52,8 +52,8 @@ export class AdminSigninComponent implements OnInit {
             // Store admin token and name
             this.adminService.setLoggedInAdmin(response.adminname, response.token);
 
-            // Navigate to the admin home page
-            this.router.navigate(['/admin-home']);
+            // Navigate to the admin home page and replace history entry
+            this.router.navigate(['/admin-home'], { replaceUrl: true });
           } else {
             this.toastService.show('Invalid credentials', 'danger');
           }

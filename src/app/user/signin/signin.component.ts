@@ -60,10 +60,10 @@ export class SigninComponent implements OnInit {
 
         this.toastService.show(`Welcome back, ${response.username}!`, 'success');
 
-        // Navigate to home page
+        // Navigate to home page and replace history entry to prevent back button navigation
         setTimeout(() => {
           console.log('Navigating to /home');
-          this.router.navigate(['/home']).then(
+          this.router.navigate(['/home'], { replaceUrl: true }).then(
             success => console.log('Navigation success:', success),
             error => console.error('Navigation error:', error)
           );
@@ -97,9 +97,9 @@ export class SigninComponent implements OnInit {
 
           this.toastService.show(`Welcome back, ${mongoResult.username}!`, 'success');
 
-          // 5. Navigate
+          // 5. Navigate and replace history entry
           setTimeout(() => {
-            this.router.navigate(['/home']);
+            this.router.navigate(['/home'], { replaceUrl: true });
           }, 100);
         }
       }
