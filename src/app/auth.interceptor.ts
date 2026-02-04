@@ -33,7 +33,13 @@ export class AuthInterceptor implements HttpInterceptor {
                 if (error.status === 401 || error.status === 403) {
                     // Auto logout if 401/403 returned from API
                     localStorage.removeItem('token');
-                    this.router.navigate(['/signin']);
+                    localStorage.removeItem('loggedInUser');
+
+                    // Only redirect if not already on signin/signup page
+                    const currentUrl = this.router.url;
+                    if (!currentUrl.includes('/signin') && !currentUrl.includes('/signup')) {
+                        this.router.navigate(['/signin']);
+                    }
                 }
                 return throwError(error);
             })

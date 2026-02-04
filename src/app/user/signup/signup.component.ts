@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { UserService } from '../user.service';
 import { ToastService } from '../../toast.service';
 
 @Component({
@@ -19,6 +20,7 @@ export class SignupComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
+    private userService: UserService,
     private toastService: ToastService
   ) {
     this.initializeForm();
@@ -59,9 +61,32 @@ export class SignupComponent implements OnInit {
     const { email, password } = this.registerForm.value;
 
     try {
-      await this.authService.signUpWithEmail(email, password);
+      // Check if email already exists in MongoDB
+      const emailCheck = await this.userService.checkIfEmailExists(email).toPromise();
+
+      if (emailCheck.exists) {
+        this.toastService.show('This email is already registered. Redirecting to sign in...', 'warning');
+        setTimeout(() => {
+          this.router.navigate(['/signin']);
+        }, 2000);
+        return;
+      }
+
+      // Extract username from email (before @)
+      const username = email.split('@')[0];
+
+      // Register user in MongoDB
+      const userData = {
+        username: username,
+        gmailId: email,
+        password: password,
+        dob: new Date() // You can add a DOB field to the form if needed
+      };
+
+      await this.userService.registerUser(userData).toPromise();
+
       this.showVerificationMessage = true;
-      this.toastService.show('Account created! Please check your email to verify your account.', 'success');
+      this.toastService.show('Account created successfully! Please sign in.', 'success');
 
       // Redirect to signin after 3 seconds
       setTimeout(() => {
@@ -75,44 +100,21 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  async googleSignup(): Promise<void> {
-    this.isLoading = true;
-    try {
-      const result = await this.authService.signInWithGoogle();
-      if (result) {
-        this.toastService.show(`Welcome! Signed up successfully.`, 'success');
-        this.router.navigate(['/home']);
-      }
-    } catch (error: any) {
-      console.error('Google Signup Error:', error);
-      if (error.code === 'auth/popup-closed-by-user') {
-        this.toastService.show('Sign-up cancelled', 'info');
-      } else if (error.code === 'auth/unauthorized-domain') {
-        this.toastService.show('This domain is not authorized. Please contact support.', 'danger');
-      } else {
-        this.toastService.show('Google sign-up failed. Please try again.', 'danger');
-      }
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
   private handleSignupError(error: any): void {
-    switch (error.code) {
-      case 'auth/email-already-in-use':
-        this.toastService.show('This email is already registered. Please sign in instead.', 'warning');
-        break;
-      case 'auth/invalid-email':
-        this.toastService.show('Invalid email address', 'danger');
-        break;
-      case 'auth/weak-password':
-        this.toastService.show('Password is too weak. Please use a stronger password.', 'warning');
-        break;
-      case 'auth/operation-not-allowed':
-        this.toastService.show('Email/password sign-up is not enabled. Please contact support.', 'danger');
-        break;
-      default:
-        this.toastService.show('Sign-up failed. Please try again.', 'danger');
+    // Handle MongoDB backend errors
+    if (error.message) {
+      if (error.message.includes('Gmail ID already registered') || error.message.includes('already registered')) {
+        this.toastService.show('This email is already registered. Redirecting to sign in...', 'warning');
+        setTimeout(() => {
+          this.router.navigate(['/signin']);
+        }, 2000);
+      } else {
+        this.toastService.show(error.message, 'danger');
+      }
+    } else if (error.error && error.error.message) {
+      this.toastService.show(error.error.message, 'danger');
+    } else {
+      this.toastService.show('Sign-up failed. Please try again.', 'danger');
     }
   }
 

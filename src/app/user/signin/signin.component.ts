@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { UserService } from '../user.service';
 import { ToastService } from '../../toast.service';
 
 @Component({
@@ -18,6 +19,7 @@ export class SigninComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
+    private userService: UserService,
     private toastService: ToastService
   ) {
     this.initializeForm();
@@ -44,11 +46,37 @@ export class SigninComponent implements OnInit {
     const { email, password } = this.loginForm.value;
 
     try {
-      const user = await this.authService.signInWithEmail(email, password);
+      // Call MongoDB backend login
+      const response: any = await this.userService.loginUser({
+        email: email,
+        password: password
+      }).toPromise();
 
-      if (user) {
-        this.toastService.show(`Welcome back!`, 'success');
-        this.router.navigate(['/home']);
+      console.log('Login response:', response);
+
+      if (response && response.authenticated) {
+        // Store token and username in localStorage
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('loggedInUser', response.username);
+
+        console.log('Token stored:', localStorage.getItem('token'));
+        console.log('User stored:', localStorage.getItem('loggedInUser'));
+
+        // Update UserService
+        this.userService.setLoggedInUser(response.username);
+
+        this.toastService.show(`Welcome back, ${response.username}!`, 'success');
+
+        // Navigate to home page with a small delay to ensure localStorage is updated
+        setTimeout(() => {
+          console.log('Navigating to /home');
+          this.router.navigate(['/home']).then(
+            success => console.log('Navigation success:', success),
+            error => console.error('Navigation error:', error)
+          );
+        }, 100);
+      } else {
+        this.toastService.show('Login failed. Please try again.', 'danger');
       }
     } catch (error: any) {
       console.error('Login Error:', error);
@@ -81,27 +109,15 @@ export class SigninComponent implements OnInit {
   }
 
   private handleLoginError(error: any): void {
-    switch (error.code) {
-      case 'auth/user-not-found':
-        this.toastService.show('No account found with this email. Please sign up first.', 'warning');
-        break;
-      case 'auth/wrong-password':
-        this.toastService.show('Incorrect password. Please try again.', 'danger');
-        break;
-      case 'auth/invalid-email':
-        this.toastService.show('Invalid email address', 'danger');
-        break;
-      case 'auth/user-disabled':
-        this.toastService.show('This account has been disabled. Please contact support.', 'danger');
-        break;
-      case 'auth/too-many-requests':
-        this.toastService.show('Too many failed attempts. Please try again later.', 'warning');
-        break;
-      case 'auth/invalid-credential':
-        this.toastService.show('Invalid email or password', 'danger');
-        break;
-      default:
-        this.toastService.show('Sign-in failed. Please try again.', 'danger');
+    // Handle MongoDB backend errors
+    if (error.status === 401) {
+      this.toastService.show('Invalid email or password', 'danger');
+    } else if (error.error && error.error.message) {
+      this.toastService.show(error.error.message, 'danger');
+    } else if (error.message) {
+      this.toastService.show(error.message, 'danger');
+    } else {
+      this.toastService.show('Sign-in failed. Please try again.', 'danger');
     }
   }
 

@@ -24,18 +24,29 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private router: Router,
     private userService: UserService,
     private visitService: VisitService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const storedUser = localStorage.getItem('loggedInUser');
     const storedAdmin = localStorage.getItem('loggedInAdminname');
-  
+    const token = localStorage.getItem('token');
+
     if (storedUser && storedAdmin) {
       // If both user and admin are logged in, log out both
       this.userSignOut();
       this.adminSignOut();
     } else if (storedUser) {
-      // If user is logged in, set user and fetch selected place count
+      // Validate that token exists with user
+      if (!token) {
+        // Invalid state - user exists but no token, clear it
+        console.warn('Found user without token, clearing invalid state');
+        localStorage.removeItem('loggedInUser');
+        this.user = null;
+        this.selectedPlaceCount = 0;
+        return;
+      }
+
+      // If user is logged in with valid token, set user and fetch selected place count
       this.user = { username: storedUser };
       this.fetchSelectedPlaceCount();
       this.startCounting();
@@ -44,7 +55,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.admin = { adminname: storedAdmin };
     }
   }
-  
+
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -57,11 +68,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   fetchSelectedPlaceCount(): void {
     const loggedInUser = localStorage.getItem('loggedInUser');
+    const token = localStorage.getItem('token');
 
-    if (loggedInUser) {
+    if (loggedInUser && token) {
       this.visitService.getSelectedPlaceCount().subscribe(
         (response: any) => {
           this.selectedPlaceCount = response.count;
+        },
+        (error: any) => {
+          // Silently handle error to avoid console spam
+          this.selectedPlaceCount = 0;
         }
       );
     } else {
@@ -70,10 +86,24 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private startCounting(): void {
+    const token = localStorage.getItem('token');
+
+    // Only start polling if user is authenticated
+    if (!token) {
+      return;
+    }
+
     interval(1000)
       .pipe(
         startWith(0),
-        switchMap(() => this.visitService.getSelectedPlaceCount()),
+        switchMap(() => {
+          // Check token on each poll
+          const currentToken = localStorage.getItem('token');
+          if (!currentToken) {
+            throw new Error('No token available');
+          }
+          return this.visitService.getSelectedPlaceCount();
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe(
@@ -81,7 +111,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
           this.selectedPlaceCount = response.count;
         },
         (error: any) => {
-          console.log('Error fetching selected places count', error);
+          // Silently handle error - user might have logged out
+          this.selectedPlaceCount = 0;
         }
       );
   }
