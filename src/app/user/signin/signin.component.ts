@@ -112,7 +112,12 @@ export class SigninComponent implements OnInit {
         } catch (backendError: any) {
           console.error('Backend Verification Failed:', backendError);
           if (backendError.status === 503) {
-            this.toastService.show('Server login service unavailable. Please try again later.', 'danger');
+            const diag = backendError.error?.diagnostic;
+            let msg = 'Server Auth Service Unavailable.';
+            if (diag) {
+              msg += ` (EnvVar: ${diag.hasEnvVar}, LocalFile: ${diag.hasLocalFile})`;
+            }
+            this.toastService.show(msg, 'danger');
           } else {
             this.toastService.show('Login verification failed on server.', 'danger');
           }
