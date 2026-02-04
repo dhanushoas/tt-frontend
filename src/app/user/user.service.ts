@@ -3,8 +3,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { User } from './user';
-
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 export class UserService {
   private baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   checkIfEmailExists(email: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/user/check-email`, { gmailId: email });
@@ -50,6 +50,8 @@ export class UserService {
     } else {
       localStorage.removeItem('loggedInUser');
       localStorage.removeItem('token');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('userEmail');
       this.loggedInUserSubject.next(null);
       this.isAuthenticatedSubject.next(false);
     }
@@ -65,6 +67,9 @@ export class UserService {
 
   signOut(): void {
     this.setLoggedInUser(null);
-    window.location.reload();
+    // Use replaceUrl to prevent the user from going back to the protected page
+    this.router.navigate(['/signin'], { replaceUrl: true }).then(() => {
+      window.location.reload();
+    });
   }
 }

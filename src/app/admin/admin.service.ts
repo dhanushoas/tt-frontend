@@ -3,8 +3,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Admin } from './admin';
-
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class AdminService {
 
   private baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   checkIfEmailExists(email: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/admin/check-email`, { gmailId: email });
@@ -61,7 +61,9 @@ export class AdminService {
 
   signOut(): void {
     this.setLoggedInAdmin(null);
-    window.location.reload();
+    this.router.navigate(['/admin-signin'], { replaceUrl: true }).then(() => {
+      window.location.reload();
+    });
   }
 
   // Backwards compatibility for now

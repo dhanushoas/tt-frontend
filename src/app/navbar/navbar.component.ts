@@ -129,24 +129,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   userSignOut() {
-    localStorage.removeItem('loggedInUser');
-    this.selectedPlaceCount = 0;
-    this.user = null;
-
-    // Clear admin sign-in when user signs in
-    localStorage.removeItem('loggedInAdminname');
-
-    this.router.navigate(['/signin']);
+    this.userService.signOut();
   }
 
   adminSignOut() {
-    localStorage.removeItem('loggedInAdminname');
-    this.admin = null;
-
-    // Clear user sign-in when admin signs in
-    localStorage.removeItem('loggedInUser');
-
-    this.router.navigate(['/admin-signin']);
+    this.adminService.signOut();
   }
 
 }
