@@ -82,30 +82,53 @@ export class SigninComponent implements OnInit {
   async googleLogin(): Promise<void> {
     this.isLoading = true;
     try {
+      console.log('Starting Google Sign-In...');
       // 1. Sign in with Firebase
       const fbResult = await this.authService.signInWithGoogle();
+
       if (fbResult) {
+        console.log('Firebase Login Success. User:', fbResult.email);
+
         // 2. Get the ID token from Firebase user
         const idToken = await fbResult.getIdToken();
+        console.log('ID Token retrieved. Sending to backend...');
 
         // 3. Connect with MongoDB backend
-        const mongoResult: any = await this.userService.googleLogin(idToken).toPromise();
+        try {
+          const mongoResult: any = await this.userService.googleLogin(idToken).toPromise();
+          console.log('Backend Verification Success:', mongoResult);
 
-        if (mongoResult && mongoResult.authenticated) {
-          // 4. Store token and update state
-          this.userService.setLoggedInUser(mongoResult.username, mongoResult.token);
+          if (mongoResult && mongoResult.authenticated) {
+            // 4. Store token and update state
+            this.userService.setLoggedInUser(mongoResult.username, mongoResult.token);
 
-          this.toastService.show(`Welcome back, ${mongoResult.username}!`, 'success');
+            this.toastService.show(`Welcome back, ${mongoResult.username}!`, 'success');
 
-          // 5. Navigate and replace history entry
-          setTimeout(() => {
-            this.router.navigate(['/home'], { replaceUrl: true });
-          }, 100);
+            // 5. Navigate and replace history entry
+            setTimeout(() => {
+              this.router.navigate(['/home'], { replaceUrl: true });
+            }, 100);
+          }
+        } catch (backendError: any) {
+          console.error('Backend Verification Failed:', backendError);
+          if (backendError.status === 503) {
+            this.toastService.show('Server login service unavailable. Please try again later.', 'danger');
+          } else {
+            this.toastService.show('Login verification failed on server.', 'danger');
+          }
         }
       }
     } catch (error: any) {
       console.error('Google Login Error:', error);
-      this.toastService.show('Google login failed. Please try again.', 'danger');
+      if (error.code === 'auth/popup-closed-by-user') {
+        this.toastService.show('Sign-in cancelled', 'info');
+      } else if (error.code === 'auth/unauthorized-domain') {
+        this.toastService.show('Domain not authorized in Firebase Console.', 'danger');
+      } else if (error.code === 'auth/popup-blocked') {
+        this.toastService.show('Popup blocked. Please allow popups for this site.', 'warning');
+      } else {
+        this.toastService.show('Google sign-in failed. Check console for details.', 'danger');
+      }
     } finally {
       this.isLoading = false;
     }
