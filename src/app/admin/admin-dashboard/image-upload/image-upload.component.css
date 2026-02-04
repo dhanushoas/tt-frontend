@@ -1,0 +1,35 @@
+.custom-form {
+    background-color: #f8f9fa; /* Light gray background */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.custom-heading {
+    color: #007bff; /* Blue color for heading */
+}
+
+.custom-label {
+    color:black; /* Dark gray color for labels */
+    font-weight: bolder;
+}
+
+.custom-file-input {
+    background-color: #ffffff; /* White background for file input */
+    border: 1px solid #ced4da; /* Gray border */
+}
+
+.custom-input {
+    background-color: #ffffff; /* White background for inputs */
+    border: 1px solid #ced4da; /* Gray border */
+}
+
+.custom-btn {
+    background-color: #28a745; /* Green color for button */
+    border-color: #28a745; /* Green border color */
+    color: #ffffff; /* White text color */
+}
+
+.custom-btn:hover {
+    background-color: #218838; /* Darker green on hover */
+    border-color: #1e7e34;
+}

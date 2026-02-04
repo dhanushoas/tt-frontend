@@ -1,0 +1,76 @@
+<!-- update.component.html -->
+
+<div class="form-container mt-5">
+  <div class="form">
+    <form #myForm="ngForm" (ngSubmit)="goToUpdate()">
+      <div class="form-group">
+        <label for="customId"><b>Booking Id :</b></label>
+        <input type="number" class="form-control" name="customId" [(ngModel)]="book.customId" required readonly #customId="ngModel">
+        <div style="color: red;" *ngIf="customId.invalid && (customId.dirty || customId.touched)">Custom ID is required</div>
+      </div>
+  
+      <div class="form-group">
+        <label for="nameOfVisitor"><b>Name of Visitor :</b></label>
+        <input type="text" name="nameOfVisitor" [(ngModel)]="book.nameOfVisitor" readonly required #nameField="ngModel">
+        <div style="color: red;" *ngIf="nameField.invalid && (nameField.dirty || nameField.touched)">
+          Name of Visitor is required
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="mobileNumber"><b>Mobile Number :</b></label>
+        <input type="tel" name="mobileNumber" [(ngModel)]="book.mobileNumber" pattern="[6-9]\d{9}" required>
+        <div style="color: red;" *ngIf="myForm.controls['mobileNumber']?.errors?.['required'] && (myForm.controls['mobileNumber'].dirty || myForm.controls['mobileNumber'].touched)">
+          Mobile Number is required
+        </div>
+        <div style="color: red;" *ngIf="myForm.controls['mobileNumber']?.errors?.['pattern'] && (myForm.controls['mobileNumber'].dirty || myForm.controls['mobileNumber'].touched)">
+          Invalid Mobile Number.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="date"><b>Date of Travel :</b></label>
+        <input type="text" name="date" [(ngModel)]="book.date" required>
+        <div style="color: red;" *ngIf="myForm.controls['date']?.errors?.['required'] && (myForm.controls['date'].dirty || myForm.controls['date'].touched)">
+          Date is required
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="visitingPlaces"><b>Visiting Places :</b></label>
+        <input type="text" name="visitingPlaces" [(ngModel)]="book.visitingPlaces" required readonly>
+        <div style="color: red;" *ngIf="myForm.controls['visitingPlaces']?.errors?.['required'] && (myForm.controls['visitingPlaces'].dirty || myForm.controls['visitingPlaces'].touched)">
+          Visiting Places is required
+        </div>
+      </div>
+      
+  
+      <div class="form-group">
+        <label for="noOfDays"><b>Total Days :</b></label>
+        <input type="number" name="noOfDays" [(ngModel)]="book.noOfDays" required readonly>
+        <div style="color: red;" *ngIf="myForm.controls['noOfDays']?.errors?.['required'] && (myForm.controls['noOfDays'].dirty || myForm.controls['noOfDays'].touched)">
+          Number of Days is required
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="noOfMembers"><b>Total Members :</b></label>
+        <input type="number" name="noOfMembers" [(ngModel)]="book.noOfMembers" required readonly> 
+        <div style="color: red;" *ngIf="myForm.controls['noOfMembers']?.errors?.['required'] && (myForm.controls['noOfMembers'].dirty || myForm.controls['noOfMembers'].touched)">
+          Number of Members is required
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="totalCost"><b>Total Cost :</b></label>
+        <input type="number" class="form-control" name="totalCost" [(ngModel)]="book.totalCost" readonly #totalCost="ngModel">
+      </div>
+  
+      <button [disabled]="myForm.invalid" type="submit" class="mt-3">Submit</button>
+    </form>
+  
+    <div style="color: red;" *ngIf="myForm.submitted && myForm.invalid">
+      Please fill out all required fields.
+    </div>
+  </div>
+</div>

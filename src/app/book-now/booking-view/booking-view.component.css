@@ -1,0 +1,16 @@
+/* booking-view.component.css */
+.remove-button {
+  border: 1px solid #ccc; /* Add your preferred border style */
+  padding: 5px 10px; /* Add padding for better styling */
+  cursor: pointer; /* Change cursor on hover */
+  background-color: #fff; /* Add your preferred background color */
+}
+
+button {
+  cursor: pointer;
+}
+
+p {
+  color:blue;
+  font-size: larger;
+}

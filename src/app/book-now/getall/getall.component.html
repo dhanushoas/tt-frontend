@@ -1,0 +1,30 @@
+<div class="container text-center mt-5">
+  <h3 class="heading">BOOKINGS</h3>
+</div>
+
+<div class="container mt-4">
+  <div class="row">
+    <div *ngFor="let item of books; let i = index;" class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-center mb-3">Booking {{ i + 1 }} </h5>
+          <p><b>Booking ID:</b> {{ item.customId }}</p>
+          <p><b>Visitor Name:</b> {{ item.nameOfVisitor }}</p>
+          <p><b>Mobile Number:</b> {{ item.mobileNumber }}</p>
+          <p><b>Register Date:</b> {{ item.date }}</p>
+          <p><b>Visiting Places:</b> {{ item.visitingPlaces }}</p>
+          <p><b>Total Days:</b> {{ item.noOfDays }}</p>
+          <p><b>Total Members:</b> {{ item.noOfMembers }}</p>
+          <p><b>Total Cost:</b> {{ item.totalCost }}</p>
+        </div>
+        <div class="card-footer">
+          <div class="btn-group mt-3">
+            <button *ngIf="item.customId" (click)="gotoGet(item.customId)" class="btn btn-success">Payment</button>
+            <button *ngIf="item.customId" (click)="gotoUpdate(item.customId)" class="btn btn-primary">Edit</button>
+            <button *ngIf="item.customId" (click)="gotoDelete(item.customId)" class="btn btn-danger">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

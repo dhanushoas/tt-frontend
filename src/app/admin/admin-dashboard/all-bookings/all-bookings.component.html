@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="row mt-4 justify-content-center align-items-center">
+        <div class="col">
+            <h3 class="text-center">All Bookings</h3>
+            <div class="mb-3 mt-3 text-center">
+                <button class="btn btn-primary" (click)="toggleBookings()">Show/Hide Bookings</button>
+            </div>
+            <div class="row" *ngIf="showBookings">
+                <div class="col-md-4 mb-4" *ngFor="let booking of bookings">
+                    <div class="booking-box">
+                        <div class="bold-tags ms-3 mb-3">
+                            <div class="booking-content text-center">
+                                <h5 class="card-title" [style.color]="bookingColor">{{ booking.nameOfVisitor }}</h5>
+                            </div>
+                            <p class="card-text mt-3"><b>Custom ID:</b>{{ booking.customId }}</p>
+                            <p class="card-text"><b>Mobile Number:</b> {{ booking.mobileNumber }}</p>
+                            <p class="card-text"><b>Date:</b> {{ booking.date }}</p>
+                            <p class="card-text"><b>Visiting Places:</b> {{ booking.visitingPlaces }}</p>
+                            <p class="card-text"><b>No. of Days:</b> {{ booking.noOfDays }}</p>
+                            <p class="card-text"><b>No. of Members:</b> {{ booking.noOfMembers }}</p>
+                            <p class="card-text"><b>Total Cost:</b> {{ booking.totalCost }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

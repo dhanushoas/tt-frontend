@@ -1,0 +1,23 @@
+/* district.component.css */
+.card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s; /* Add a smooth transition effect for the transform property */
+}
+
+.card:hover {
+  transform: scale(1.05); /* Scale the entire card on hover */
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+}
+
+/* Center the button */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

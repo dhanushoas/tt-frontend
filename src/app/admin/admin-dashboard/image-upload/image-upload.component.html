@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6 custom-form">
+            <h3 class="text-center custom-heading">Upload Image</h3><br>
+            <label class="mt-4 custom-label">Choose File:</label><br>
+            <input class="mt-2 mb-4 form-control-file custom-file-input" type="file" (change)="onFileSelected($event)" /><br>
+            
+            <label class="custom-label">Image Name:</label>
+            <input type="text" [(ngModel)]="imageName" class="form-control mt-2 mb-4 custom-input" placeholder="Enter image name" />
+            
+            <label class="custom-label">Image Location:</label>
+            <input type="text" [(ngModel)]="location" class="form-control mt-2 mb-4 custom-input" placeholder="Enter location" />
+            
+            <button class="btn btn-primary btn-block custom-btn" (click)="uploadImage()">Upload Image</button>
+        </div>
+    </div>
+</div>

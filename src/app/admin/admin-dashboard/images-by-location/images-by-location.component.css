@@ -1,0 +1,35 @@
+img {
+    height: 5cm;
+    width: 5cm;
+}
+
+.image-container {
+    border: 1px solid #ced4da; /* Border color */
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    padding: 1rem; /* Add padding */
+}
+
+.image-container:hover {
+    border-color: #007bff; /* Border color on hover */
+}
+ 
+label {
+    font-weight: bolder;
+    font-size: larger;
+}
+
+.border-style {
+    border: 2px solid #007bff; /* Border style */
+    border-radius: 8px; /* Border radius */
+}
+
+/* Custom styling for input */
+input[type="text"] {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px 10px;
+    width: 100%;
+    box-sizing: border-box; /* Include padding and border in element's total width */
+}

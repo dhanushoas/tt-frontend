@@ -1,0 +1,41 @@
+<!-- booking-view.component.html -->
+<div *ngIf="selectedPlaces.length > 0; else emptyCart">
+  <table class="table table-bordered container mt-5">
+    <thead>
+      <tr>
+        <th>Serial No</th>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Action</th>
+        <!-- Add more table headers as needed -->
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Use *ngFor to iterate over the selectedPlaces array -->
+      <tr *ngFor="let place of selectedPlaces; let i = index">
+        <td>{{ i + 1 }}</td> <!-- Serial number -->
+        <td>{{ place.name }}</td>
+        <td>{{ place.location }}</td>
+        <td>
+          <!-- Add a remove button with a border design -->
+          <button class="btn btn-danger" (click)="removePlace(place)">Remove</button>
+        </td>
+        <!-- Add more table cells as needed -->
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Centered Confirm Booking button -->
+  <div class="text-center mt-3">
+    <button class="btn btn-primary" [disabled]="selectedPlaces.length === 0" (click)="confirmBooking()">Confirm Booking</button>
+  </div>
+</div>
+
+<ng-template #emptyCart>
+  <div class="text-center mt-5">
+    <p>Oops! Choose Tourism Places</p>
+    <img *ngIf="emptyImage" [src]="emptyImage" class="mainImg" alt="Empty Cart Image">
+
+    <!-- <img src="assets/empty.jpg"> -->
+  </div>
+</ng-template>

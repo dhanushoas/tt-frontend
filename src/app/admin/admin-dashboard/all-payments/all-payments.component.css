@@ -1,0 +1,10 @@
+/* Add this CSS to your styles.css or styles.scss file */
+.payment-box {
+    border: 1px solid #ccc; /* Set border color and style */
+    border-radius: 5px; /* Add border radius for rounded corners */
+    padding: 10px; /* Add padding inside the box */
+}
+
+.bold-tags {
+    margin-bottom: 10px; /* Adjust margin for spacing between bold tags and content */
+}

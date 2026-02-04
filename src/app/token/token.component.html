@@ -1,0 +1,11 @@
+<div class="container">
+    <h1>Enter Token</h1>
+    <div class="token-input">
+      <input type="text" id="jwt-token" placeholder="Enter your token">
+      <button (click)="verifyToken()">Submit</button>
+      <div *ngIf="alertMessage" class="alert" [ngClass]="{'alert-success': alertMessage.includes('verified successfully'), 'alert-danger': alertMessage.includes('Error')}">
+        {{ alertMessage }}
+      </div>
+    </div>
+  </div>
+  

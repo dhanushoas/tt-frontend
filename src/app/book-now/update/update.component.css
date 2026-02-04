@@ -1,0 +1,66 @@
+/* update.component.css */
+
+/* Container styles */
+.form-container {
+  width: 50%;
+  margin: auto;
+}
+
+/* Form styles */
+.form {
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Form group styles */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Label styles */
+.form-group label {
+  font-weight: bold;
+}
+
+/* Input styles */
+input[type="text"],
+input[type="number"],
+input[type="tel"] {
+  margin-top: 10px;
+  width: calc(100% - 22px); /* Adjust width as needed */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Error message styles */
+.error-message {
+  color: red;
+  margin-top: 5px;
+}
+
+/* Submit button styles */
+button[type="submit"] {
+  width: calc(100% - 22px); /* Adjust width as needed */
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button[type="submit"]:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .form-container {
+    width: 90%;
+  }
+}
+input:hover{
+  border-color:lightblue;
+}

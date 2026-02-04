@@ -1,0 +1,19 @@
+<!-- district.component.html -->
+<div class="container">
+  <h1 class="text-center mt-5 mb-3" style="font-size: x-large;">{{ capitalizeFirstLetter(location) }} Tourist Places
+  </h1>
+
+  <div class="row mt-5">
+    <div *ngFor="let image of images" class="col-md-4">
+      <div class="card mb-4">
+        <img class="card-img-top" [src]="getImageUrl(image.name) | secureImage | async"
+          style="height: 200px; width: 100%;" alt="{{ image.name }}">
+        <div class="card-body">
+          <h5 class="card-title text-center">{{ image.name }}</h5>
+          <button class="btn btn-primary btn-block text-center mt-2" (click)="addtoCartAndStore(image)">Add to
+            Visit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

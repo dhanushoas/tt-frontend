@@ -1,0 +1,18 @@
+<!-- view.component.html -->
+<h4 class="mt-5" style="color: black; text-align: center;">Payment Section</h4>
+<div #receipt class="product-details" class="product-details">
+  <pre>
+    <button type="button" class="btn btn-success d-block mx-auto" (click)="makePayment(book.customId)">Make Payment</button>
+    <b>BOOKING ID</b>      : {{ book.customId }}<br><br>
+    <b>NAME OF VISITOR</b> : {{ book.nameOfVisitor }}<br><br>
+    <b>MOBILE NUMBER</b>   : {{ book.mobileNumber }}<br><br>
+    <b>DATE OF TRAVEL</b>  : {{ book.date }}<br><br>
+    <b>VISITING PLACES</b> : {{ book.visitingPlaces }}<br><br>
+    <b>TOTAL DAYS</b>      : {{ book.noOfDays }}<br><br>
+    <b>TOTAL MEMBERS</b>   : {{ book.noOfMembers }}<br><br>
+    <b>TOTAL COST</b>      : {{ book.totalCost }}<br><br>
+
+    <!-- Display "Print Receipt" button only if payment was successful -->
+    <button *ngIf="paymentSuccess" type="button" class="btn btn-primary" routerLink="/home">Home</button>
+  </pre>
+</div>

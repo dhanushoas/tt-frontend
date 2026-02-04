@@ -1,0 +1,57 @@
+.form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.form-image {
+  height: 100%;
+  width:100%;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="tel"] {
+  width: calc(100% - 16px);
+  padding: 8px;
+  margin-top: 5px;
+  border-top: none; /* Hide top border */
+  border-right: none; /* Hide right border */
+  border-left: none; /* Hide left border */
+}
+
+.invalid-feedback {
+  color: red;
+  margin-top: 5px;
+}
+
+.btn-primary,
+.btn-secondary {
+  width: calc(100% - 16px);
+  margin-top: 10px;
+}
+
+p {
+  font-weight: bold;
+  font-size: larger;
+}
+
+img {
+  border-radius: 10px;
+}
+
+button {
+  cursor: pointer;
+}

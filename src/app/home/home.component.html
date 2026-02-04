@@ -1,0 +1,195 @@
+<div class="container mt-3">
+  <div class="row">
+    <div class="container position-relative">
+      <!-- Tamil Nadu Image (Displayed First) -->
+      <img *ngIf="tamilnaduImage" [src]="tamilnaduImage" class="img-fluid" alt="Tamil Nadu Image">
+      <!-- <img src="/assets/tamilnadu.jpg" class="img-fluid"/> -->
+      <div class="position-absolute mt-5 ms-5 p-2 top-0 start-5" style="color: white;">
+        <div class="input-group position-relative">
+          <input id="searchInput" 
+                 type="text" 
+                 class="form-control" 
+                 placeholder="Search District" 
+                 aria-label="Search" 
+                 aria-describedby="searchButton" 
+                 [(ngModel)]="searchText"
+                 (input)="filterDistricts()"
+                 (keydown)="handleKeyDown($event)" 
+                 (keyup.enter)="searchDistrict()" 
+                 style="width: 350px;">
+          
+          <button class="btn btn-outline-primary" type="button" (click)="searchDistrict()">SEARCH</button>
+        
+          <ul *ngIf="filteredDistricts.length > 0" 
+              class="list-group position-absolute w-100 bg-light" 
+              style="z-index: 1000; top: 100%;">
+            <li *ngFor="let district of filteredDistricts; let i = index" 
+                class="list-group-item list-group-item-action" 
+                [class.active]="i === selectedIndex"
+                (click)="selectDistrict(district)">
+              {{ district }}
+            </li>
+          </ul>
+        </div>                
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-3 mb-3 text-center">
+    <h1>
+      <span style="color: crimson">TAMILNADU TOUR</span> & HOLIDAY PACKAGES 2024
+    </h1>
+  </div>
+  <p class="mt-3">A Kaleidoscope of traditions, culture, and vibrant geographies, Tamilnadu speaks for itself as a soul-stirring journey. Snow-covered peaks of the Himalayas stretch of coastline, natural greenery to depths of spirituality, and clusters of cultural shades. All of these aspects join together to define the raw beauty through which Tamilnadu captures the heart of every tourist.
+
+    Discover the different facets of this multicolored country as it shapes your vision at every fold. With the country's tourism branched into several forms, Tamilnadu has a chunk for every kind of traveler. To get things going, here is an Tamilnadu travel planner which incorporates must-visit tourist attractions, places to visit in Tamilnadu, how to reach, and the best time to visit.</p>
+ </div>
+
+<div class="container mt-4">
+  <h2 class="text-center" style="color: tomato">POPULAR PACKAGES</h2>
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <div class="container position-relative">
+        <img *ngIf="templeImage" [src]="templeImage" class="img-fluid img-thumbnail" alt="Temple">
+        <!-- <img src="/assets/temple.jpg" alt="" class="img-fluid img-thumbnail" > -->
+        <div class="position-absolute top-50 start-50 translate-middle text-center" style="color: white;">
+          <h3>Devotional Packages</h3>
+          <button class="btn btn-warning">108 TOURS</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="container position-relative">
+        <img *ngIf="educationImage" [src]="educationImage" class="img-fluid img-thumbnail" alt="Education">
+        <!-- <img src="/assets/education.jpg" alt="" class="img-fluid img-thumbnail"> -->
+        <div class="position-absolute top-50 start-50 translate-middle text-center" style="color: white;">
+          <h3>Educational Packages</h3>
+          <button class="btn btn-warning">12 TOURS</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" style="margin-top: 2%;">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="container position-relative">
+        <img *ngIf="honeymoonImage" [src]="honeymoonImage" class="img-fluid img-thumbnail" alt="Honeymoon">
+        <!-- <img src="/assets/honeymoon.jpg" alt="" class="img-fluid img-thumbnail"> -->
+        <div class="position-absolute top-50 start-50 translate-middle text-center" style="color: white;">
+          <h3>Honeymoon Packages</h3>
+          <button class="btn btn-warning">17 TOURS</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="container position-relative">
+        <img *ngIf="mountainImage" [src]="mountainImage" class="img-fluid img-thumbnail" alt="Mountain">
+        <!-- <img src="/assets/mountain.jpg" alt="" class="img-fluid img-thumbnail"> -->
+        <div class="position-absolute top-50 start-50 translate-middle text-center" style="color: white;">
+          <h3>Nature Packages</h3>
+          <button class="btn btn-warning">44 TOURS</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="container position-relative">
+        <img *ngIf="partyImage" [src]="partyImage" class="img-fluid img-thumbnail" alt="Party">
+        <!-- <img src="/assets/party.jpg" alt="" class="img-fluid img-thumbnail"> -->
+        <div class="position-absolute top-50 start-50 translate-middle text-center" style="color: white;">
+          <h3>DJ Packages</h3>
+          <button class="btn btn-warning">15 TOURS</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container text-center" style="margin-top: 1%">
+  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+    <h2 class="text-center" style="color: tomato">TOP RATED PACKAGES</h2>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="container mt-3">
+          <div class="row">
+            <div class="col-md-4">
+              <img *ngIf="beachImage" [src]="beachImage" class="img-fluid img-thumbnail" alt="Beach">
+              <!-- <img src="/assets/beach.jpg" data-bs-toggle="modal" data-bs-target="#staticBackdrop5" style="width: 300px; height: 200px" /> -->
+              <div class="card-body">
+                <h4 class="card-title mt-2">Marinabeach</h4>
+                <p class="card-text mt-1 mb-2">
+                  Marina beach in Chennai along the Bay of Bengal is India's longest and world's second longest beach.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <img *ngIf="kanyakumariImage" [src]="kanyakumariImage" class="img-fluid img-thumbnail" alt="Kanyakumari">
+              <!-- <img src="/assets/kanyakumari.jpg" data-bs-toggle="modal" data-bs-target="#staticBackdrop3" style="width: 300px; height: 200px" /> -->
+              <div class="card-body">
+                <h4 class="card-title mt-2">Kanyakumari</h4>
+                <p class="card-text mt-1 mb-2">
+                  Famous for being the only place in India where you can observe the sunrise and sunset at the same beach.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <img *ngIf="kodaikanalImage" [src]="kodaikanalImage" class="img-fluid img-thumbnail" alt="Kodaikanal">
+              <!-- <img src="/assets/kodaikanal.jpg" data-bs-toggle="modal" data-bs-target="#staticBackdrop4" style="width: 300px; height: 200px" /> -->
+              <div class="card-body">
+                <h4 class="card-title mt-2">Kodaikanal</h4>
+                <p class="card-text mt-1 mb-2">
+                  Kodaikanal is one of the very popular holiday destination hill resorts in South India.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+              <img *ngIf="mahapalipuramImage" [src]="mahapalipuramImage" class="img-fluid img-thumbnail" alt="Mahabalipuram">
+              <!-- <img src="/assets/mahapalipuram.jpg" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" style="width: 300px; height: 200px" /> -->
+              <div class="card-body">
+                <h4 class="card-title mt-2">Mahapalipuram</h4>
+                <p class="card-text mt-1 mb-2">
+                  The World Heritage Site of 7th- and 8th-century Hindu Group of Monuments at Mahabalipuram.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <img *ngIf="samayapuramImage" [src]="samayapuramImage" class="img-fluid img-thumbnail" alt="Samayapuram">
+              <!-- <img src="/assets/samayapuram.jpg" data-bs-toggle="modal" data-bs-target="#staticBackdrop5" style="width: 300px; height: 200px" /> -->
+              <div class="card-body">
+                <h4 class="card-title mt-2">Samayapuram</h4>
+                <p class="card-text mt-1 mb-2">
+                  The pilgrim town of Samayapuram is located on the outskirts of Tiruchirappalli.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <img *ngIf="srirangamImage" [src]="srirangamImage" class="img-fluid img-thumbnail" alt="Srirangam">
+              <!-- <img src="/assets/srirangam.jpg" data-bs-toggle="modal" data-bs-target="#staticBackdrop5" style="width: 300px; height: 200px" /> -->
+              <div class="card-body">
+                <h4 class="card-title mt-2">Srirangam</h4>
+                <p class="card-text mt-1 mb-2">
+                  Srirangam is one of a few self-manifested shrines of Vishnu.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>

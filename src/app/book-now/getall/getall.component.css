@@ -1,0 +1,65 @@
+.heading {
+  color: #007bff; /* Blue color for the "BOOKINGS" heading */
+}
+
+.card {
+  height: 100%; /* Set a fixed height for the cards */
+}
+
+.card-body {
+  margin-bottom: 15px;
+}
+
+.card-body p {
+  margin-bottom: 5px;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn {
+  margin-left: 5px;
+}
+
+/* Button hover effects */
+.btn-success:hover {
+  background-color: #28a745; /* Green */
+  border-color: #218838; /* Darker green */
+}
+
+.btn-primary:hover {
+  background-color: #007bff; /* Blue */
+  border-color: #007bff; /* Blue */
+}
+
+.btn-danger:hover {
+  background-color: #dc3545; /* Red */
+  border-color: #dc3545; /* Red */
+}
+
+.booking-title {
+  color: #28a745; /* Green color for the booking title */
+}
+
+h5 {
+  color: #007bff;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Align items evenly in the row */
+}
+
+.col-md-4 {
+  flex: 0 0 calc(33.333% - 20px); /* Adjust width to fit three cards in a row */
+  margin-bottom: 20px; /* Add margin to create space between cards */
+}
+
+@media (max-width: 767px) {
+  .col-md-4 {
+    flex: 0 0 calc(50% - 20px); /* Adjust width for smaller screens to fit two cards in a row */
+  }
+}

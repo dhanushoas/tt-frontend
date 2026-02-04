@@ -1,0 +1,79 @@
+<div class="container mt-5">
+  <div class="row">
+    <!-- First column for the image -->
+    <div class="col-md-6">
+      <img *ngIf="bookingImage" [src]="bookingImage" class="img-fluid form-image" alt="Booking Image">
+
+      <!-- <img src="./assets/booking.jpg" alt="Image" class="img-fluid form-image"> -->
+    </div>
+    <!-- Second column for the form -->
+    <div class="col-md-6">
+      <p class="mt-5 mb-5 text-center">One More Step to Start Journey</p>
+      <div class="form mt-5">
+        <form [formGroup]="bookForm" (ngSubmit)="postBooks()" class="needs-validation" novalidate>
+      
+          <div class="form-group">
+            <label for="customId"><b>Booking Id</b></label>
+            <input type="number" class="form-control" formControlName="customId" readonly required>
+            <div style="color: red;" *ngIf="bookForm.get('customId')?.invalid && (bookForm.get('customId')?.dirty || bookForm.get('customId')?.touched)">Serial Number is required</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="nameOfVisitor"><b>Name of Visitor</b></label>
+            <input type="text" class="form-control" formControlName="nameOfVisitor" required>
+            <div style="color: red;" *ngIf="bookForm.get('nameOfVisitor')?.invalid && (bookForm.get('nameOfVisitor')?.dirty || bookForm.get('nameOfVisitor')?.touched)">Name of Visitor is required</div>
+          </div>
+      
+          <div class="form-group">
+            <label for="mobileNumber"><b>Mobile Number</b></label>
+            <input type="tel" class="form-control" formControlName="mobileNumber" pattern="[0-9]{10}" required>
+            <div style="color: red;" *ngIf="bookForm.get('mobileNumber')?.invalid && (bookForm.get('mobileNumber')?.dirty || bookForm.get('mobileNumber')?.touched)">
+              Invalid Mobile Number.
+            </div>
+          </div>
+      
+          <div class="form-group">
+            <label for="date"><b>Date of Travel</b></label>
+            <input type="date" class="form-control" formControlName="date" required>
+            <div style="color: red;" *ngIf="bookForm.get('date')?.invalid && (bookForm.get('date')?.dirty || bookForm.get('date')?.touched)">Date is required</div>
+          </div>
+      
+          <div class="form-group">
+            <label for="visitingPlaces"><b>Visiting Places</b></label>
+            <input type="text" class="form-control" formControlName="visitingPlaces" readonly required>
+            <div style="color: red;" *ngIf="bookForm.get('visitingPlaces')?.invalid && (bookForm.get('visitingPlaces')?.dirty || bookForm.get('visitingPlaces')?.touched)">Visiting Places is required</div>
+          </div>
+          
+      
+          <div class="form-group">
+            <label for="noOfDays"><b>Total Days</b></label>
+            <input type="number" class="form-control" formControlName="noOfDays" pattern="[0-9]{1,5}" required>
+            <div style="color: red;" *ngIf="bookForm.get('noOfDays')?.invalid && (bookForm.get('noOfDays')?.dirty || bookForm.get('noOfDays')?.touched)">
+              Number of Days is required and less than 11
+            </div>
+          </div>
+      
+          <div class="form-group">
+            <label for="noOfMembers"><b>Total Members</b></label>
+            <input type="number" class="form-control" formControlName="noOfMembers" pattern="[0-9]{1,5}" required>
+            <div style="color: red;" *ngIf="bookForm.get('noOfMembers')?.invalid && (bookForm.get('noOfMembers')?.dirty || bookForm.get('noOfMembers')?.touched)">
+              Number of Members is required and less than 51
+            </div>
+          </div>
+      
+          <div class="form-group">
+            <label for="totalCost"><b>Total Cost</b></label>
+            <input type="number" class="form-control" formControlName="totalCost" readonly>
+          </div>
+      
+          <div class="form-group">
+            <button type="submit" [disabled]="bookForm.invalid" class="btn btn-primary btn-block" style="width: 100%">Submit</button>
+          </div>
+          <div class="form-group">
+            <button type="button" (click)="onCancel()" class="btn btn-secondary btn-block" style="width: 100%">Back</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

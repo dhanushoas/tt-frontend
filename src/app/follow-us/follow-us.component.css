@@ -1,0 +1,99 @@
+/* CSS for the footer */
+
+.footer {
+    background-color: #f8f9fa; /* Set the background color */
+    padding-top: 30px; /* Add padding to the top */
+    padding-bottom: 30px; /* Add padding to the bottom */
+}
+
+.single_footer {
+    margin-bottom: 20px; /* Add margin at the bottom */
+}
+
+.single_footer h4 {
+    font-size: 20px; /* Set the font size for footer headings */
+    font-weight: bold; /* Make the font weight bold */
+    margin-left: 15px; /* Add margin to the left */
+}
+
+.single_footer ul {
+    list-style: none; /* Remove default list styles */
+    margin-left: 15px; /* Add margin to the left */
+}
+
+.single_footer ul li {
+    margin-bottom: 10px; /* Add margin at the bottom of each list item */
+}
+
+.single_footer ul li a {
+    text-decoration: none; /* Remove underline from links */
+    color: #333; /* Set the color of the links */
+    font-size: 16px; /* Set the font size for links */
+}
+
+.single_footer ul li a:hover {
+    color: #ff3666; /* Change link color on hover */
+}
+
+.signup_form {
+    margin-top: 20px; /* Add margin at the top */
+}
+
+.subscribe__input {
+    width: calc(100% - 60px); /* Set the width of the input field */
+    height: 40px; /* Set the height of the input field */
+    border-radius: 5px; /* Add border radius */
+    border: 1px solid #ced4da; /* Add border */
+    padding: 0 15px; /* Add padding */
+}
+
+.subscribe__btn {
+    width: 50px; /* Set the width of the button */
+    height: 40px; /* Set the height of the button */
+    border: none; /* Remove border */
+    background-color: #007bff; /* Set background color */
+    color: #fff; /* Set text color */
+    border-radius: 0 5px 5px 0; /* Add border radius */
+    cursor: pointer; /* Add cursor pointer */
+}
+
+.subscribe__btn:hover {
+    background-color: #0056b3; /* Change button background color on hover */
+}
+
+.social_profile ul {
+    list-style: none; /* Remove default list styles */
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
+}
+
+.social_profile ul li {
+    display: inline-block; /* Display items inline */
+    margin-right: 10px; /* Add margin on the right */
+}
+
+.social_profile ul li a {
+    text-decoration: none; /* Remove underline from links */
+    color: #333; /* Set the color of the links */
+    font-size: 24px; /* Set the font size for links */
+}
+
+.social_profile ul li a:hover {
+    color: #ff3666; /* Change link color on hover */
+}
+
+/* Copyright text */
+.copyright {
+    text-align: center; /* Align text to the center */
+    margin-top: 20px; /* Add margin at the top */
+    font-size: 14px; /* Set the font size */
+}
+
+.copyright a {
+    color: #333; /* Set the color of the link */
+    text-decoration: none; /* Remove underline from the link */
+}
+
+.copyright a:hover {
+    color: #ff3666; /* Change link color on hover */
+}
