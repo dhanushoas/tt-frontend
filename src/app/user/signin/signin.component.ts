@@ -110,7 +110,8 @@ export class SigninComponent implements OnInit {
             }, 100);
           }
         } catch (backendError: any) {
-          console.error('Backend Verification Failed:', backendError);
+          console.error('Backend Verification Failed Status:', backendError.status);
+          console.error('Backend Verification Failed Body:', JSON.stringify(backendError.error, null, 2));
           if (backendError.status === 503) {
             const diag = backendError.error?.diagnostic;
             let msg = 'Server Auth Service Unavailable.';
