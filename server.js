@@ -9,7 +9,7 @@ const buildPath = path.join(__dirname, 'dist', 'bcrypt');
 app.use(express.static(buildPath));
 
 // Handle Angular routing by returning index.html for all non-file requests
-app.get('*', function (req, res) {
+app.get(/.*/, function (req, res) {
     res.sendFile(path.join(buildPath, 'index.html'));
 });
 
