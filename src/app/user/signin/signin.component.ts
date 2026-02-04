@@ -98,15 +98,24 @@ export class SigninComponent implements OnInit {
             this.userService.setLoggedInUser(response.username);
             this.toastService.show(`Login Successful. Welcome, ${response.username}!`, 'success');
             this.router.navigate(['/home']);
+          } else {
+            this.toastService.show('Authentication failed. Please try again.', 'danger');
           }
         },
         (error: any) => {
           console.error('Backend Verification Failed', error);
-          this.toastService.show('Login failed', 'danger');
+          this.toastService.show('Login failed. Please try again.', 'danger');
         }
       );
-    } catch (error) {
+    } catch (error: any) {
       console.error('Google Sign-In Error', error);
+      if (error.code === 'auth/popup-closed-by-user') {
+        this.toastService.show('Sign-in cancelled', 'info');
+      } else if (error.code === 'auth/unauthorized-domain') {
+        this.toastService.show('This domain is not authorized for Google Sign-In. Please contact support.', 'danger');
+      } else {
+        this.toastService.show('Google Sign-In failed. Please try again.', 'danger');
+      }
     }
   }
 
