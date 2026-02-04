@@ -31,15 +31,23 @@ export class AdminService {
     return this.http.post(`${this.baseUrl}/admin/login`, admin);
   }
 
-  private loggedInAdminnameSubject = new BehaviorSubject<string | null>(null);
+  private loggedInAdminnameSubject = new BehaviorSubject<string | null>(localStorage.getItem('loggedInAdminname'));
   loggedInAdminname$ = this.loggedInAdminnameSubject.asObservable();
 
-  setLoggedInAdmin(adminname: string | null) {
-    this.loggedInAdminnameSubject.next(adminname);
-    if (adminname !== null) {
+  private isAdminAuthenticatedSubject = new BehaviorSubject<boolean>(!!localStorage.getItem('adminToken'));
+  isAdminAuthenticated$ = this.isAdminAuthenticatedSubject.asObservable();
+
+  setLoggedInAdmin(adminname: string | null, token?: string) {
+    if (adminname && token) {
       localStorage.setItem('loggedInAdminname', adminname);
+      localStorage.setItem('adminToken', token);
+      this.loggedInAdminnameSubject.next(adminname);
+      this.isAdminAuthenticatedSubject.next(true);
     } else {
       localStorage.removeItem('loggedInAdminname');
+      localStorage.removeItem('adminToken');
+      this.loggedInAdminnameSubject.next(null);
+      this.isAdminAuthenticatedSubject.next(false);
     }
   }
 
@@ -47,21 +55,21 @@ export class AdminService {
     return localStorage.getItem('loggedInAdminname');
   }
 
+  getAdminToken(): string | null {
+    return localStorage.getItem('adminToken');
+  }
+
   signOut(): void {
-    // Reset authentication state when signing out
     this.setLoggedInAdmin(null);
-    this.authenticateAdmin(false);
+    window.location.reload();
   }
 
-  private isLoggedInFlag: boolean = false; // Track admin authentication status
-
-  // Method to check if the admin is logged in
+  // Backwards compatibility for now
   isLoggedIn(): boolean {
-    return this.isLoggedInFlag;
+    return !!localStorage.getItem('adminToken');
   }
 
-  // Method to authenticate admin (e.g., called after successful sign-in)
   authenticateAdmin(isLoggedIn: boolean): void {
-    this.isLoggedInFlag = isLoggedIn;
+    this.isAdminAuthenticatedSubject.next(isLoggedIn);
   }
 }

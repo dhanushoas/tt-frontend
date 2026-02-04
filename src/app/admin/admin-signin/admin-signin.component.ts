@@ -45,19 +45,26 @@ export class AdminSigninComponent implements OnInit {
       const loginData = this.loginForm.value;
       this.adminService.loginAdmin(loginData).subscribe(
         (response: any) => {
-          console.log('Signin admin:', loginData.adminname);
-          this.toastService.show(`Login Successful. Welcome, ${loginData.adminname}!`, 'success');
+          if (response && response.authenticated) {
+            console.log('Signin admin:', response.adminname);
+            this.toastService.show(`Login Successful. Welcome, ${response.adminname}!`, 'success');
 
-          this.adminService.setLoggedInAdmin(loginData.adminname);
-          this.adminService.authenticateAdmin(true);
+            // Store admin token and name
+            this.adminService.setLoggedInAdmin(response.adminname, response.token);
 
-          // Navigate to the home page
-          this.router.navigate(['/admin-home']);
+            // Navigate to the admin home page
+            this.router.navigate(['/admin-home']);
+          } else {
+            this.toastService.show('Invalid credentials', 'danger');
+          }
         },
         (error: any) => {
-          this.toastService.show('Invalid adminname or password', 'danger');
+          console.error('Admin login error:', error);
+          this.toastService.show('Invalid credentials', 'danger');
         }
       );
+    } else {
+      this.toastService.show('Please fill in all required fields correctly', 'warning');
     }
   }
 

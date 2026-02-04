@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { interval, Subject } from 'rxjs';
 import { switchMap, startWith, takeUntil } from 'rxjs/operators';
 import { UserService } from '../user/user.service';
+import { AdminService } from '../admin/admin.service';
 import { VisitService } from '../tamilnadu/visit.service';
 
 @Component({
@@ -23,28 +24,37 @@ export class NavbarComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private userService: UserService,
+    private adminService: AdminService,
     private visitService: VisitService
   ) { }
 
   ngOnInit(): void {
-    // Subscribe to authentication state for reactive updates
+    // Subscribe to user authentication state
     this.userService.isAuthenticated$.pipe(
       takeUntil(this.destroy$)
     ).subscribe(isAuthenticated => {
       const storedUser = localStorage.getItem('loggedInUser');
-      const storedAdmin = localStorage.getItem('loggedInAdminname');
       const token = localStorage.getItem('token');
 
       if (isAuthenticated && storedUser && token) {
         this.user = { username: storedUser };
         this.fetchSelectedPlaceCount();
         this.startCounting();
-      } else if (storedAdmin) {
-        this.admin = { adminname: storedAdmin };
       } else {
         this.user = null;
-        this.admin = null;
         this.selectedPlaceCount = 0;
+      }
+    });
+
+    // Subscribe to admin authentication state
+    this.adminService.isAdminAuthenticated$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(isAdminAuthenticated => {
+      const storedAdmin = localStorage.getItem('loggedInAdminname');
+      if (isAdminAuthenticated && storedAdmin) {
+        this.admin = { adminname: storedAdmin };
+      } else {
+        this.admin = null;
       }
     });
 

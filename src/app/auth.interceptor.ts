@@ -16,8 +16,8 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private router: Router) { }
 
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-        // Get the toke from localStorage
-        const token = localStorage.getItem('token');
+        // Get the token from localStorage (prefer adminToken if present, else user token)
+        const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
 
         if (token) {
             // Clone the request and add the Authorization header
@@ -31,14 +31,22 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(
             catchError((error: HttpErrorResponse) => {
                 if (error.status === 401 || error.status === 403) {
-                    // Auto logout if 401/403 returned from API
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('loggedInUser');
-
-                    // Only redirect if not already on signin/signup page
                     const currentUrl = this.router.url;
-                    if (!currentUrl.includes('/signin') && !currentUrl.includes('/signup')) {
-                        this.router.navigate(['/signin']);
+
+                    if (localStorage.getItem('adminToken')) {
+                        // Admin logout
+                        localStorage.removeItem('adminToken');
+                        localStorage.removeItem('loggedInAdminname');
+                        if (!currentUrl.includes('/admin-signin')) {
+                            this.router.navigate(['/admin-signin']);
+                        }
+                    } else {
+                        // User logout
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('loggedInUser');
+                        if (!currentUrl.includes('/signin') && !currentUrl.includes('/signup')) {
+                            this.router.navigate(['/signin']);
+                        }
                     }
                 }
                 return throwError(error);
