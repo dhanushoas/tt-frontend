@@ -110,15 +110,8 @@ export class SigninComponent implements OnInit {
             }, 100);
           }
         } catch (backendError: any) {
-          console.error('Backend Verification Failed Status:', backendError.status);
-          console.error('Backend Verification Failed Body:', JSON.stringify(backendError.error, null, 2));
           if (backendError.status === 503) {
-            const diag = backendError.error?.diagnostic;
-            let msg = 'Server Auth Service Unavailable.';
-            if (diag) {
-              msg += ` (EnvVar: ${diag.hasEnvVar}, Error: ${diag.initError})`;
-            }
-            this.toastService.show(msg, 'danger');
+            this.toastService.show('Server Auth Service Unavailable. Please try again later.', 'danger');
           } else {
             this.toastService.show('Login verification failed on server.', 'danger');
           }
