@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AdminService } from '../admin.service';
+import { ToastService } from '../../toast.service';
 
 @Component({
   selector: 'app-admin-signin',
@@ -16,6 +17,7 @@ export class AdminSigninComponent implements OnInit {
     private adminService: AdminService,
     private fb: FormBuilder,
     private router: Router,
+    private toastService: ToastService
   ) {
     this.initializeLoginForm();
   }
@@ -44,21 +46,21 @@ export class AdminSigninComponent implements OnInit {
       this.adminService.loginAdmin(loginData).subscribe(
         (response: any) => {
           console.log('Signin admin:', loginData.adminname);
-          alert(`Login Successful. Welcome, ${loginData.adminname}!`);
-  
+          this.toastService.show(`Login Successful. Welcome, ${loginData.adminname}!`, 'success');
+
           this.adminService.setLoggedInAdmin(loginData.adminname);
           this.adminService.authenticateAdmin(true);
-  
+
           // Navigate to the home page
           this.router.navigate(['/admin-home']);
         },
         (error: any) => {
-          alert('Invalid adminname or password');
+          this.toastService.show('Invalid adminname or password', 'danger');
         }
       );
     }
   }
-  
+
   signup() {
     this.router.navigate(['/admin-signup']).then(() => {
       this.adminService.signOut();
