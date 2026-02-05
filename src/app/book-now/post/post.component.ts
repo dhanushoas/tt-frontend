@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { Book, BookService } from '../book.service';
 import { ImageService } from 'src/app/admin/admin-dashboard/image-upload/image.service';
 
+import { ToastService } from 'src/app/toast.service';
+
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
@@ -24,7 +26,8 @@ export class PostComponent implements OnInit {
     private visitService: VisitService,
     private userService: UserService,
     private router: Router,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private toastService: ToastService
 
   ) {
     const generatedBookingId = Math.floor(100000 + Math.random() * 900000);
@@ -49,7 +52,7 @@ export class PostComponent implements OnInit {
         if (response.success) {
           const selectedPlacesArray = response.selectedPlaces.selectedPlaces || [];
           const selectedPlaceNames = Array.isArray(selectedPlacesArray)
-            ? selectedPlacesArray.map((place: any) => place.name)
+            ? selectedPlacesArray.map((place: any) => place.name.replace(/\.[^/.]+$/, ""))
             : [];
 
           this.bookForm.get('visitingPlaces')?.setValue(selectedPlaceNames.join(', '));
@@ -114,7 +117,7 @@ export class PostComponent implements OnInit {
       this.bookService.addBook(bookToPost).subscribe(
         (response: any) => {
           if (response && response.message === 'Book added successfully' && response.book) {
-            alert('Form submitted successfully!');
+            this.toastService.show('Form submitted successfully!', 'success');
 
             // Remove selected places from MongoDB
             this.visitService.deleteSelectedPlaces(signedInUsername).subscribe(

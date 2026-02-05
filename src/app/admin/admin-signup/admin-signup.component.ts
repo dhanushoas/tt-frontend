@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AdminService } from '../admin.service';
+import { ToastService } from 'src/app/toast.service';
 
 @Component({
   selector: 'app-admin-signup',
@@ -13,7 +14,7 @@ export class AdminSignupComponent implements OnInit {
   registerForm!: FormGroup;
   showPassword: boolean = false; // Added property
 
-  constructor(private adminService: AdminService, private fb: FormBuilder, private router: Router) {
+  constructor(private adminService: AdminService, private fb: FormBuilder, private router: Router, private toastService: ToastService) {
     this.initializeRegisterForm();
   }
 
@@ -94,11 +95,11 @@ export class AdminSignupComponent implements OnInit {
       this.adminService.checkIfEmailExists(admin.gmailId).subscribe(
         (response: any) => {
           if (response.exists) {
-            alert('Gmail ID already registered');
+            this.toastService.show('Gmail ID already registered', 'danger');
           } else {
             // Continue with registration
             if (!this.isFirstLetterCapital(admin.firstName) || !this.isFirstLetterCapital(admin.lastName)) {
-              alert('First letter of the names must be capitalized.');
+              this.toastService.show('First letter of the names must be capitalized.', 'warning');
               return;
             }
 
@@ -107,10 +108,10 @@ export class AdminSignupComponent implements OnInit {
             this.adminService.registerAdmin(admin).subscribe(
               (registerResponse: any) => {
                 if (registerResponse.message === 'Registered successfully') {
-                  alert('Registered Successfully');
+                  this.toastService.show('Registered Successfully', 'success');
                   this.router.navigate(['/admin-signin']);
                 } else {
-                  alert('Registration failed');
+                  this.toastService.show('Registration failed', 'danger');
                 }
               },
               (error: any) => this.handleRegistrationError(error)
@@ -119,11 +120,11 @@ export class AdminSignupComponent implements OnInit {
         },
         (error: any) => {
           console.error(error);
-          alert('Error checking Gmail ID. Please try again.');
+          this.toastService.show('Error checking Gmail ID. Please try again.', 'danger');
         }
       );
     } else {
-      alert('Please fill in all required fields.');
+      this.toastService.show('Please fill in all required fields.', 'warning');
     }
   }
 
@@ -137,7 +138,7 @@ export class AdminSignupComponent implements OnInit {
 
   private handleRegistrationError(error: any) {
     console.error(error);
-    alert('Registration failed');
+    this.toastService.show('Registration failed', 'danger');
   }
 
   togglePasswordVisibility() {

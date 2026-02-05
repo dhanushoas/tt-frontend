@@ -39,7 +39,8 @@ export class DistrictComponent implements OnInit {
         if (data.length > 0) {
           this.images = data.map((image: { name: string }) => ({
             ...image,
-            name: this.capitalizeFirstLetter(image.name)
+            fileName: image.name, // Original for URL
+            name: this.capitalizeFirstLetter(image.name.replace(/\.[^/.]+$/, "")) // Stripped for UI
           }));
         } else {
           this.redirectToHome(); // If no images, redirect
@@ -102,7 +103,7 @@ export class DistrictComponent implements OnInit {
     return this.selectedPlaces.map(place => place.name);
   }
 
-  getImageUrl(imageName: string): string {
-    return `${environment.apiUrl}/image/images/${imageName}`;
+  getImageUrl(image: any): string {
+    return `${environment.apiUrl}/image/images/${image.fileName || image.name}`;
   }
 }

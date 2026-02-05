@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Book, BookService } from '../book.service';
 import { PaymentService } from './payment.service';
+import { ToastService } from 'src/app/toast.service';
 
 @Component({
   selector: 'app-view',
@@ -20,8 +21,9 @@ export class ViewComponent implements OnInit {
     private bookService: BookService,
     private paymentService: PaymentService,
     private active: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private toastService: ToastService
+  ) { }
 
   ngOnInit(): void {
     this.customId = +this.active.snapshot.params['customId'];
@@ -43,7 +45,7 @@ export class ViewComponent implements OnInit {
 
     // Check if the ID has already been paid for
     if (this.paidIds.has(this.customId)) {
-      alert('You have already paid for this ID.');
+      this.toastService.show('You have already paid for this ID.', 'info');
       this.paymentSuccess = true;
     }
   }
@@ -54,14 +56,14 @@ export class ViewComponent implements OnInit {
 
   makePayment(customId: number): void {
     if (this.paidIds.has(customId)) {
-      alert('You have already paid for this ID.');
+      this.toastService.show('You have already paid for this ID.', 'info');
       this.paymentSuccess = true;
     } else {
       // Check if the payment date exists for the custom ID
       this.paymentService.getPaidIds().subscribe(
         (paidIds: number[]) => {
           if (paidIds.includes(customId)) {
-            alert('You have already paid for this ID.');
+            this.toastService.show('You have already paid for this ID.', 'info');
             this.paymentSuccess = true;
           } else {
             // Proceed with payment as payment date doesn't exist
@@ -75,31 +77,31 @@ export class ViewComponent implements OnInit {
               noOfMembers: this.book.noOfMembers,
               totalCost: this.book.totalCost,
             };
-  
+
             this.paymentService.makePayment(paymentDetails).subscribe(
               (paymentResult: any) => {
                 if (paymentResult.success) {
                   const paymentId = paymentResult.paymentId;
                   const amount = paymentResult.amount;
-          
-                  // Show an alert with booking ID and amount
-                  alert(`Booking ID: ${paymentId}\nAmount Paid: ${amount}`);
+
+                  // Show toast with booking ID and amount
+                  this.toastService.show(`Booking ID: ${paymentId}\nAmount Paid: ${amount}`, 'success');
                   this.paymentSuccess = true;
                   this.paidIds.add(customId); // Add the paid ID to the set
-          
+
                   // Save paid IDs to localStorage
                   localStorage.setItem('paidIds', JSON.stringify(Array.from(this.paidIds)));
                 } else {
                   console.error('Payment failed:', paymentResult.error);
-                  // Show an alert with payment failure message
-                  alert('Payment failed. Please try again.');
+                  // Show toast with payment failure message
+                  this.toastService.show('Payment failed. Please try again.', 'danger');
                   this.paymentSuccess = false;
                 }
               },
               (error: any) => {
                 console.error('Payment failed:', error);
-                // Show an alert with payment failure message
-                alert('Payment failed. Please try again.');
+                // Show toast with payment failure message
+                this.toastService.show('Payment failed. Please try again.', 'danger');
                 this.paymentSuccess = false;
               }
             );
@@ -107,15 +109,15 @@ export class ViewComponent implements OnInit {
         },
         (error: any) => {
           console.error('Error fetching paid IDs:', error);
-          // Show an alert with error message
-          alert('Error fetching paid IDs. Please try again.');
+          // Show toast with error message
+          this.toastService.show('Error fetching paid IDs. Please try again.', 'danger');
           this.paymentSuccess = false;
         }
       );
     }
   }
-  
-  
+
+
 
   printReceipt(): void {
     console.log('Printing receipt...');

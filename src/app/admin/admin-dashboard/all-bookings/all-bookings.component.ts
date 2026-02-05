@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BookService } from 'src/app/book-now/book.service';
-
+import { ToastService } from 'src/app/toast.service';
 
 @Component({
   selector: 'app-all-bookings',
@@ -12,7 +12,7 @@ export class AllBookingsComponent {
   showBookings: boolean = false;
   bookingColor: string = 'blue';
 
-  constructor(private bookingService: BookService) {}
+  constructor(private bookingService: BookService, private toastService: ToastService) { }
 
   toggleBookings() {
     this.showBookings = !this.showBookings;
@@ -27,12 +27,12 @@ export class AllBookingsComponent {
         if (response.success) {
           this.bookings = response.bookings;
         } else {
-          alert('Failed to fetch bookings');
+          this.toastService.show('Failed to fetch bookings', 'danger');
         }
       },
       (error: any) => {
         console.error(error);
-        alert('Error fetching bookings!');
+        this.toastService.show('Error fetching bookings!', 'danger');
       }
     );
   }

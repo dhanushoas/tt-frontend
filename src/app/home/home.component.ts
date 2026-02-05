@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { VisitService } from '../tamilnadu/visit.service';
 import { ImageService } from '../admin/admin-dashboard/image-upload/image.service';
+import { ToastService } from '../toast.service';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,10 @@ export class HomeComponent {
   filteredDistricts: string[] = [];
   selectedIndex: number = -1;
 
-  constructor(private router: Router, private visitService: VisitService, private imageService: ImageService) { }
+  constructor(private router: Router,
+    private visitService: VisitService,
+    private imageService: ImageService,
+    private toastService: ToastService) { }
 
   filterDistricts(): void {
     const query = this.searchText.toLowerCase();
@@ -46,17 +50,17 @@ export class HomeComponent {
           if (data.length > 0) {
             this.router.navigate(['/district'], { queryParams: { location: lowerCaseDistrict } });
           } else {
-            alert('No districts found. Choose another district name.');
+            this.toastService.show('No districts found. Choose another district name.', 'info');
           }
         },
         error: (error: any) => {
           console.error('Error checking images:', error);
-          alert('No districts found. Choose another district name.');
+          this.toastService.show('No districts found. Choose another district name.', 'danger');
         }
       });
 
     } else {
-      alert('Please enter a district name.');
+      this.toastService.show('Please enter a district name.', 'warning');
     }
   }
 
