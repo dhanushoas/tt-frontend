@@ -113,104 +113,97 @@
   </div>
 </div>
 
-<div class="container text-center" style="margin-top: 1%">
-  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-    <h2 class="text-center" style="color: tomato">TOP RATED PACKAGES</h2>
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <div class="container mt-3">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="top-rated-card" routerLink="/district" [queryParams]="{location: 'chennai'}">
-                <img *ngIf="beachImage" [src]="beachImage" class="img-fluid img-thumbnail" alt="Beach">
-                <div class="card-body">
-                  <h4 class="card-title mt-2">Marinabeach</h4>
-                  <p class="card-text mt-1 mb-2">
-                    Marina beach in Chennai along the Bay of Bengal is India's longest and world's second longest beach.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="top-rated-card" routerLink="/district" [queryParams]="{location: 'kanyakumari'}">
-                <img *ngIf="kanyakumariImage" [src]="kanyakumariImage" class="img-fluid img-thumbnail"
-                  alt="Kanyakumari">
-                <div class="card-body">
-                  <h4 class="card-title mt-2">Kanyakumari</h4>
-                  <p class="card-text mt-1 mb-2">
-                    Famous for being the only place in India where you can observe the sunrise and sunset at the same
-                    beach.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="top-rated-card" routerLink="/district" [queryParams]="{location: 'dindigul'}">
-                <img *ngIf="kodaikanalImage" [src]="kodaikanalImage" class="img-fluid img-thumbnail" alt="Kodaikanal">
-                <div class="card-body">
-                  <h4 class="card-title mt-2">Kodaikanal</h4>
-                  <p class="card-text mt-1 mb-2">
-                    Kodaikanal is one of the very popular holiday destination hill resorts in South India.
-                  </p>
-                </div>
-              </div>
+<div class="top-rated-section py-5">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+      <div>
+        <h2 class="section-title mb-0" style="color: tomato">TOP RATED <span class="text-dark">PACKAGES</span></h2>
+        <p class="text-muted mb-0">Handpicked destinations based on traveler ratings</p>
+      </div>
+      <div class="carousel-nav-buttons d-none d-md-flex">
+        <!-- Custom navigators if needed, but we'll use a grid/scroll for now -->
+      </div>
+    </div>
+
+    <div class="top-rated-grid">
+      <!-- Chennai -->
+      <div class="top-rated-card-wrapper" routerLink="/district" [queryParams]="{location: 'chennai'}">
+        <div class="modern-top-card">
+          <div class="card-img-box">
+            <img *ngIf="beachImage" [src]="beachImage" alt="Beach">
+            <div class="rating-badge"><i class="bi bi-star-fill"></i> 4.9</div>
+          </div>
+          <div class="card-content">
+            <div class="category">COASTAL</div>
+            <h4>Marinabeach</h4>
+            <p>India's longest and world's second longest beach along the Bay of Bengal.</p>
+            <div class="card-footer-meta">
+              <span><i class="bi bi-geo-alt"></i> Chennai</span>
+              <span class="view-btn">Explore <i class="bi bi-arrow-right"></i></span>
             </div>
           </div>
         </div>
       </div>
-      <div class="carousel-item">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="top-rated-card" routerLink="/district" [queryParams]="{location: 'chengalpattu'}">
-                <img *ngIf="mahapalipuramImage" [src]="mahapalipuramImage" class="img-fluid img-thumbnail"
-                  alt="Mahabalipuram">
-                <div class="card-body">
-                  <h4 class="card-title mt-2">Mahapalipuram</h4>
-                  <p class="card-text mt-1 mb-2">
-                    The World Heritage Site of 7th- and 8th-century Hindu Group of Monuments at Mahabalipuram.
-                  </p>
-                </div>
-              </div>
+
+      <!-- Kanyakumari -->
+      <div class="top-rated-card-wrapper" routerLink="/district" [queryParams]="{location: 'kanyakumari'}">
+        <div class="modern-top-card">
+          <div class="card-img-box">
+            <img *ngIf="kanyakumariImage" [src]="kanyakumariImage" alt="Kanyakumari">
+            <div class="rating-badge"><i class="bi bi-star-fill"></i> 4.8</div>
+          </div>
+          <div class="card-content">
+            <div class="category">LANDS END</div>
+            <h4>Kanyakumari</h4>
+            <p>The only place in India where you can observe sunrise and sunset at the same beach.</p>
+            <div class="card-footer-meta">
+              <span><i class="bi bi-geo-alt"></i> Kanyakumari</span>
+              <span class="view-btn">Explore <i class="bi bi-arrow-right"></i></span>
             </div>
-            <div class="col-md-4">
-              <div class="top-rated-card" routerLink="/district" [queryParams]="{location: 'tiruchirappalli'}">
-                <img *ngIf="samayapuramImage" [src]="samayapuramImage" class="img-fluid img-thumbnail"
-                  alt="Samayapuram">
-                <div class="card-body">
-                  <h4 class="card-title mt-2">Samayapuram</h4>
-                  <p class="card-text mt-1 mb-2">
-                    The pilgrim town of Samayapuram is located on the outskirts of Tiruchirappalli.
-                  </p>
-                </div>
-              </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kodaikanal -->
+      <div class="top-rated-card-wrapper" routerLink="/district" [queryParams]="{location: 'dindigul'}">
+        <div class="modern-top-card">
+          <div class="card-img-box">
+            <img *ngIf="kodaikanalImage" [src]="kodaikanalImage" alt="Kodaikanal">
+            <div class="rating-badge"><i class="bi bi-star-fill"></i> 4.7</div>
+          </div>
+          <div class="card-content">
+            <div class="category">HILL STATION</div>
+            <h4>Kodaikanal</h4>
+            <p>One of the very popular holiday destination hill resorts in South India.</p>
+            <div class="card-footer-meta">
+              <span><i class="bi bi-geo-alt"></i> Dindigul</span>
+              <span class="view-btn">Explore <i class="bi bi-arrow-right"></i></span>
             </div>
-            <div class="col-md-4">
-              <div class="top-rated-card" routerLink="/district" [queryParams]="{location: 'tiruchirappalli'}">
-                <img *ngIf="srirangamImage" [src]="srirangamImage" class="img-fluid img-thumbnail" alt="Srirangam">
-                <div class="card-body">
-                  <h4 class="card-title mt-2">Srirangam</h4>
-                  <p class="card-text mt-1 mb-2">
-                    Srirangam is one of a few self-manifested shrines of Vishnu.
-                  </p>
-                </div>
-              </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mahabalipuram -->
+      <div class="top-rated-card-wrapper" routerLink="/district" [queryParams]="{location: 'chengalpattu'}">
+        <div class="modern-top-card">
+          <div class="card-img-box">
+            <img *ngIf="mahapalipuramImage" [src]="mahapalipuramImage" alt="Mahabalipuram">
+            <div class="rating-badge"><i class="bi bi-star-fill"></i> 4.9</div>
+          </div>
+          <div class="card-content">
+            <div class="category">HERITAGE</div>
+            <h4>Mahapalipuram</h4>
+            <p>The World Heritage Site of 7th- and 8th-century Hindu Group of Monuments.</p>
+            <div class="card-footer-meta">
+              <span><i class="bi bi-geo-alt"></i> Chengalpattu</span>
+              <span class="view-btn">Explore <i class="bi bi-arrow-right"></i></span>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-      data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-      data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
   </div>
+</div>
 
-  <app-festival-calendar></app-festival-calendar>
+<app-festival-calendar></app-festival-calendar>
 </div>
