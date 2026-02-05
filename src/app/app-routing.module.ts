@@ -20,6 +20,9 @@ import { AllPaymentsComponent } from './admin/admin-dashboard/all-payments/all-p
 import { ImagesByLocationComponent } from './admin/admin-dashboard/images-by-location/images-by-location.component';
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { PackageDetailsComponent } from './packages/package-details/package-details.component';
+import { FoodServiceComponent } from './services/food-service/food-service.component';
+import { BusServiceComponent } from './services/bus-service/bus-service.component';
+import { CustomerServiceComponent } from './services/customer-service/customer-service.component';
 
 import { authGuard } from './auth.guard';
 
@@ -45,6 +48,9 @@ const routes: Routes = [
   { path: 'post', component: PostComponent, canActivate: [authGuard] },
   { path: 'booking-view', component: BookingViewComponent, canActivate: [authGuard] },
   { path: 'packages', component: PackageDetailsComponent, canActivate: [authGuard] },
+  { path: 'food-service', component: FoodServiceComponent, canActivate: [authGuard] },
+  { path: 'bus-service', component: BusServiceComponent, canActivate: [authGuard] },
+  { path: 'customer-service', component: CustomerServiceComponent, canActivate: [authGuard] },
 ];
 
 @NgModule({

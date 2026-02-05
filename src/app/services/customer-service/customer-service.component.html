@@ -1,0 +1,71 @@
+<div class="service-container">
+    <div class="header-section text-center">
+        <div class="icon-box animate__animated animate__pulse animate__infinite">
+            <i class="bi bi-headset"></i>
+        </div>
+        <h1 class="display-4 fw-bold mt-3">24/7 <span class="text-primary">Support</span></h1>
+        <p class="lead text-muted">We are here to assist you with any queries or issues.</p>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row g-5">
+            <!-- Info Side -->
+            <div class="col-lg-6">
+                <div class="info-card h-100">
+                    <h3 class="fw-bold mb-4">How Can We Help?</h3>
+                    <div class="feature-item">
+                        <i class="bi bi-chat-dots-fill text-primary"></i>
+                        <div>
+                            <h5>Live Assistance</h5>
+                            <p>Connect with our travel experts for immediate help with your bookings.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="bi bi-question-square-fill text-primary"></i>
+                        <div>
+                            <h5>General Queries</h5>
+                            <p>Questions about destinations, best time to visit, or package details.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+                        <div>
+                            <h5>Emergency Support</h5>
+                            <p>On-trip emergency assistance available round the clock.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Side -->
+            <div class="col-lg-6">
+                <div class="form-card">
+                    <h4 class="fw-bold mb-4">Send a Support Message</h4>
+                    <form (ngSubmit)="onSubmit()" #supportForm="ngForm">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" name="name" [(ngModel)]="requestData.name" required
+                                placeholder="Enter your name">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" name="email" [(ngModel)]="requestData.email"
+                                required placeholder="email@example.com">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Describe your issue or query</label>
+                            <textarea class="form-control" rows="4" name="details" [(ngModel)]="requestData.details"
+                                required placeholder="Provide details here..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill"
+                            [disabled]="supportForm.invalid || isSubmitting">
+                            <span *ngIf="!isSubmitting">Send Message <i
+                                    class="bi bi-chat-left-text-fill ms-2"></i></span>
+                            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
