@@ -1,10 +1,194 @@
-/* Add this CSS to your styles.css or styles.scss file */
-.payment-box {
-    border: 1px solid #ccc; /* Set border color and style */
-    border-radius: 5px; /* Add border radius for rounded corners */
-    padding: 10px; /* Add padding inside the box */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:host {
+    font-family: 'Outfit', sans-serif;
+    display: block;
+    background-color: #f8fafc;
+    min-height: 100vh;
+    padding: 30px;
 }
 
-.bold-tags {
-    margin-bottom: 10px; /* Adjust margin for spacing between bold tags and content */
+.admin-page-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.page-header {
+    margin-bottom: 40px;
+}
+
+.back-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #667eea;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 15px;
+    width: fit-content;
+}
+
+.header-info h1 {
+    font-weight: 800;
+    color: #1a202c;
+    margin: 0;
+}
+
+.header-info p {
+    color: #718096;
+}
+
+.btn-primary-modern {
+    background: white;
+    border: 1px solid #e2e8f0;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    color: #4a5568;
+    transition: all 0.2s;
+}
+
+.btn-primary-modern:hover {
+    background: #f8fafc;
+    transform: translateY(-1px);
+}
+
+/* Modern Record Card */
+.modern-record-card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.card-status-indicator.success {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: #16a34a;
+}
+
+.card-flex-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.card-main-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.visitor-avatar {
+    width: 50px;
+    height: 50px;
+    background: #f0fdf4;
+    color: #16a34a;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+}
+
+.payment-status-badge {
+    background: #dcfce7;
+    color: #166534;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.visitor-details h4 {
+    margin: 0;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.booking-id {
+    font-size: 0.85rem;
+    color: #a0aec0;
+    font-weight: 600;
+}
+
+.card-grid-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+    border-top: 1px solid #f1f5f9;
+}
+
+.info-item label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #94a3b8;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.info-item span {
+    font-size: 0.95rem;
+    color: #334155;
+    font-weight: 600;
+}
+
+.price-tag {
+    color: #16a34a !important;
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+}
+
+.card-footer-details {
+    font-size: 0.88rem;
+    color: #64748b;
+}
+
+/* Masked State */
+.content-masked {
+    padding: 60px 0;
+    text-align: center;
+}
+
+.blur-card {
+    background: white;
+    padding: 50px;
+    border-radius: 20px;
+    display: inline-block;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+
+.blur-card i {
+    font-size: 3.5rem;
+    color: #e2e8f0;
+    margin-bottom: 25px;
+    display: block;
+}
+
+.blur-card h3 {
+    font-weight: 700;
+    color: #4a5568;
+}
+
+.blur-card p {
+    color: #94a3b8;
+}
+
+@media (max-width: 600px) {
+    .card-flex-header {
+        flex-direction: column;
+        gap: 15px;
+    }
 }

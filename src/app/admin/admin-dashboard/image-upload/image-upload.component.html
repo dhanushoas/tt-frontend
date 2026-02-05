@@ -1,17 +1,78 @@
-<div class="container">
-    <div class="row justify-content-center mt-4">
-        <div class="col-md-6 custom-form">
-            <h3 class="text-center custom-heading">Upload Image</h3><br>
-            <label class="mt-4 custom-label">Choose File:</label><br>
-            <input class="mt-2 mb-4 form-control-file custom-file-input" type="file" (change)="onFileSelected($event)" /><br>
-            
-            <label class="custom-label">Image Name:</label>
-            <input type="text" [(ngModel)]="imageName" class="form-control mt-2 mb-4 custom-input" placeholder="Enter image name" />
-            
-            <label class="custom-label">Image Location:</label>
-            <input type="text" [(ngModel)]="location" class="form-control mt-2 mb-4 custom-input" placeholder="Enter location" />
-            
-            <button class="btn btn-primary btn-block custom-btn" (click)="uploadImage()">Upload Image</button>
+<div class="admin-page-container">
+    <div class="page-header">
+        <div class="back-nav" routerLink="/admin-home">
+            <i class="bi bi-arrow-left"></i> <span>Dashboard</span>
+        </div>
+        <div class="header-info">
+            <h1>Upload Destination</h1>
+            <p>Expand the tourism portal by adding new travel spots</p>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="upload-card">
+                <div class="upload-form-body">
+                    <h4 class="mb-4 fw-bold"><i class="bi bi-plus-circle me-2 text-primary"></i> New Destination Data
+                    </h4>
+
+                    <div class="form-section">
+                        <!-- File Drop Zone -->
+                        <div class="upload-drop-zone" [class.has-file]="fileToUpload" (click)="fileInput.click()">
+                            <input type="file" #fileInput (change)="onFileSelected($event)" hidden accept="image/*">
+                            <i class="bi" [class.bi-cloud-check]="fileToUpload"
+                                [class.bi-cloud-upload]="!fileToUpload"></i>
+                            <div class="drop-text" *ngIf="!fileToUpload">
+                                <strong>Click to choose an image</strong>
+                                <span>Supports: JPG, PNG, WEBP</span>
+                            </div>
+                            <div class="file-meta" *ngIf="fileToUpload">
+                                <strong>{{ fileToUpload.name }}</strong>
+                                <span>Size: {{ (fileToUpload.size / 1024).toFixed(1) }} KB</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Destination Name</label>
+                            <div class="input-wrapper">
+                                <i class="bi bi-tag-fill input-icon"></i>
+                                <input type="text" [(ngModel)]="imageName" class="form-control"
+                                    placeholder="e.g. Marina Beach" (keyup)="onValueChange()">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">District Location</label>
+                            <div class="input-wrapper">
+                                <i class="bi bi-geo-alt-fill input-icon"></i>
+                                <input type="text" [(ngModel)]="location" class="form-control"
+                                    placeholder="e.g. Chennai" (keyup)="onValueChange()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="validation-summary mt-2" *ngIf="validationMessage">
+                        <p class="text-danger small"><i class="bi bi-info-circle me-1"></i> {{validationMessage}}</p>
+                    </div>
+
+                    <div class="form-actions mt-4 text-center">
+                        <button class="btn btn-upload-modern w-100" [disabled]="!isFormValid || isUploading"
+                            (click)="uploadImage()">
+                            <span *ngIf="!isUploading">Publish to Map <i class="bi bi-send ms-2"></i></span>
+                            <span *ngIf="isUploading" class="spinner-border spinner-border-sm me-2"></span>
+                            <span *ngIf="isUploading">Uploading...</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="upload-card-footer">
+                    <p class="small text-muted mb-0">
+                        <i class="bi bi-shield-check me-1"></i> Authorized upload - All content is reviewed before going
+                        live.
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </div>

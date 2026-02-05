@@ -1,35 +1,168 @@
-.custom-form {
-    background-color: #f8f9fa; /* Light gray background */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:host {
+    font-family: 'Outfit', sans-serif;
+    display: block;
+    background-color: #f1f5f9;
+    min-height: 100vh;
+    padding: 30px;
+}
+
+.admin-page-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.page-header {
+    margin-bottom: 40px;
+}
+
+.back-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4f46e5;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 12px;
+}
+
+.header-info h1 {
+    font-weight: 800;
+    color: #1a1a1a;
+}
+
+.header-info p {
+    color: #64748b;
+}
+
+/* Upload Card Styling */
+.upload-card {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.upload-form-body {
+    padding: 40px;
+}
+
+.form-label {
+    font-weight: 700;
+    color: #334155;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    color: #94a3b8;
+}
+
+.form-control {
+    padding: 12px 15px 12px 45px;
+    border-radius: 12px;
+    border: 1.5px solid #e2e8f0;
+    background: #f8fafc;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    background: white;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+/* Drop Zone */
+.upload-drop-zone {
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 20px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.upload-drop-zone:hover {
+    background: #f1f5f9;
+    border-color: #4f46e5;
+}
+
+.upload-drop-zone.has-file {
+    background: #f0fdf4;
+    border-color: #22c55e;
+    border-style: solid;
+}
+
+.upload-drop-zone i {
+    font-size: 3rem;
+    color: #64748b;
+}
+
+.upload-drop-zone.has-file i {
+    color: #22c55e;
+}
+
+.drop-text strong {
+    display: block;
+    color: #334155;
+}
+
+.drop-text span {
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+.file-meta strong {
+    display: block;
+    color: #166534;
+}
+
+.file-meta span {
+    color: #16a34a;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Upload Button */
+.btn-upload-modern {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+}
+
+.btn-upload-modern:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
+}
+
+.btn-upload-modern:disabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.upload-card-footer {
+    background: #f8fafc;
     padding: 20px;
-    border-radius: 10px;
-}
-
-.custom-heading {
-    color: #007bff; /* Blue color for heading */
-}
-
-.custom-label {
-    color:black; /* Dark gray color for labels */
-    font-weight: bolder;
-}
-
-.custom-file-input {
-    background-color: #ffffff; /* White background for file input */
-    border: 1px solid #ced4da; /* Gray border */
-}
-
-.custom-input {
-    background-color: #ffffff; /* White background for inputs */
-    border: 1px solid #ced4da; /* Gray border */
-}
-
-.custom-btn {
-    background-color: #28a745; /* Green color for button */
-    border-color: #28a745; /* Green border color */
-    color: #ffffff; /* White text color */
-}
-
-.custom-btn:hover {
-    background-color: #218838; /* Darker green on hover */
-    border-color: #1e7e34;
+    border-top: 1px solid #f1f5f9;
+    text-align: center;
 }

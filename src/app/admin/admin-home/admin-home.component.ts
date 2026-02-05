@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AdminService } from '../admin.service';
 
 @Component({
   selector: 'app-admin-home',
@@ -7,4 +9,9 @@ import { Component } from '@angular/core';
 })
 export class AdminHomeComponent {
 
+  constructor(private adminService: AdminService, private router: Router) { }
+
+  adminSignOut() {
+    this.adminService.signOut();
+  }
 }

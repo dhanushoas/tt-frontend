@@ -38,6 +38,7 @@ import { ToastComponent } from './toast/toast.component';
 import { VerifyEmailComponent } from './user/verify-email/verify-email.component';
 import { HighlightPipe } from './highlight.pipe';
 import { PackageDetailsComponent } from './packages/package-details/package-details.component';
+import { StripExtensionPipe } from './strip-extension.pipe';
 import { FooterComponent } from './footer/footer.component';
 import { FoodServiceComponent } from './services/food-service/food-service.component';
 import { BusServiceComponent } from './services/bus-service/bus-service.component';
@@ -76,6 +77,7 @@ import { CustomerServiceComponent } from './services/customer-service/customer-s
     FoodServiceComponent,
     BusServiceComponent,
     CustomerServiceComponent,
+    StripExtensionPipe,
   ],
   imports: [
     BrowserModule,

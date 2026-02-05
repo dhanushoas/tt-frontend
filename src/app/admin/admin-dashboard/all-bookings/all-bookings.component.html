@@ -1,28 +1,74 @@
-<div class="container">
-    <div class="row mt-4 justify-content-center align-items-center">
-        <div class="col">
-            <h3 class="text-center">All Bookings</h3>
-            <div class="mb-3 mt-3 text-center">
-                <button class="btn btn-primary" (click)="toggleBookings()">Show/Hide Bookings</button>
-            </div>
-            <div class="row" *ngIf="showBookings">
-                <div class="col-md-4 mb-4" *ngFor="let booking of bookings">
-                    <div class="booking-box">
-                        <div class="bold-tags ms-3 mb-3">
-                            <div class="booking-content text-center">
-                                <h5 class="card-title" [style.color]="bookingColor">{{ booking.nameOfVisitor }}</h5>
-                            </div>
-                            <p class="card-text mt-3"><b>Custom ID:</b>{{ booking.customId }}</p>
-                            <p class="card-text"><b>Mobile Number:</b> {{ booking.mobileNumber }}</p>
-                            <p class="card-text"><b>Date:</b> {{ booking.date }}</p>
-                            <p class="card-text"><b>Visiting Places:</b> {{ booking.visitingPlaces }}</p>
-                            <p class="card-text"><b>No. of Days:</b> {{ booking.noOfDays }}</p>
-                            <p class="card-text"><b>No. of Members:</b> {{ booking.noOfMembers }}</p>
-                            <p class="card-text"><b>Total Cost:</b> {{ booking.totalCost }}</p>
+<div class="admin-page-container">
+    <div class="page-header">
+        <div class="back-nav" routerLink="/admin-home">
+            <i class="bi bi-arrow-left"></i> <span>Dashboard</span>
+        </div>
+        <div class="header-info">
+            <h1>Booking Records</h1>
+            <p>Total {{ bookings.length }} confirmed trip requests</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-primary-modern" (click)="toggleBookings()">
+                <i class="bi" [class.bi-eye]="!showBookings" [class.bi-eye-slash]="showBookings"></i>
+                {{ showBookings ? 'Hide Data' : 'Reveal Data' }}
+            </button>
+        </div>
+    </div>
+
+    <div class="content-area" *ngIf="showBookings">
+        <div class="row g-4">
+            <div class="col-12" *ngFor="let booking of bookings">
+                <div class="modern-record-card">
+                    <div class="card-status-indicator"></div>
+                    <div class="card-main-info">
+                        <div class="visitor-avatar">
+                            {{ booking.nameOfVisitor.charAt(0) }}
                         </div>
+                        <div class="visitor-details">
+                            <h4>{{ booking.nameOfVisitor }}</h4>
+                            <span class="booking-id">ID: #{{ booking.customId }}</span>
+                        </div>
+                    </div>
+
+                    <div class="card-grid-info">
+                        <div class="info-item">
+                            <label>Travel Date</label>
+                            <span><i class="bi bi-calendar-event me-2"></i>{{ booking.date }}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Contact</label>
+                            <span><i class="bi bi-telephone me-2"></i>{{ booking.mobileNumber }}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Pax & Duration</label>
+                            <span><i class="bi bi-people me-2"></i>{{ booking.noOfMembers }} Members / {{
+                                booking.noOfDays }} Days</span>
+                        </div>
+                        <div class="info-item cost">
+                            <label>Total Cost</label>
+                            <span class="price-tag">₹{{ booking.totalCost }}</span>
+                        </div>
+                    </div>
+
+                    <div class="card-places mt-3">
+                        <label><i class="bi bi-geo-alt-fill me-1"></i> Destinations:</label>
+                        <p>{{ booking.visitingPlaces }}</p>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div *ngIf="bookings.length === 0" class="empty-state">
+            <i class="bi bi-inbox fs-1"></i>
+            <p>No bookings found in the database.</p>
+        </div>
+    </div>
+
+    <div class="content-masked" *ngIf="!showBookings">
+        <div class="blur-card">
+            <i class="bi bi-shield-lock"></i>
+            <h3>Data is currently hidden</h3>
+            <p>Click the reveal button above to view booking details</p>
         </div>
     </div>
 </div>

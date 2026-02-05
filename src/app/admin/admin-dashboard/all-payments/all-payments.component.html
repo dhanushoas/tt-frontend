@@ -1,29 +1,87 @@
-<div class="container">
-    <div class="row mt-4 justify-content-center align-items-center">
-        <div class="col">
-            <h3 class="text-center">All Payments</h3>
-            <div class="mb-3 mt-3 text-center">
-                <button class="btn btn-primary" (click)="togglePayments()">Show/Hide Payments</button>
-            </div>
-            <div class="row" *ngIf="showPayments">
-                <div class="col-md-4 mb-4" *ngFor="let payment of payments">
-                    <div class="payment-box">
-                        <div class="bold-tags ms-3 mb-3">
-                            <div class="payment-content text-center">
-                                <h5 class="card-title" [style.color]="paymentsColor">{{ payment.nameOfVisitor }}</h5>
+<div class="admin-page-container">
+    <div class="page-header">
+        <div class="back-nav" routerLink="/admin-home">
+            <i class="bi bi-arrow-left"></i> <span>Dashboard</span>
+        </div>
+        <div class="header-info">
+            <h1>Payment History</h1>
+            <p>Total {{ payments.length }} transactions processed</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-primary-modern" (click)="togglePayments()">
+                <i class="bi" [class.bi-lock]="!showPayments" [class.bi-unlock]="showPayments"></i>
+                {{ showPayments ? 'Hide Private Data' : 'View Payment Data' }}
+            </button>
+        </div>
+    </div>
+
+    <div class="content-area" *ngIf="showPayments">
+        <div class="row g-4">
+            <div class="col-12" *ngFor="let payment of payments">
+                <div class="modern-record-card payment-card">
+                    <div class="card-status-indicator success"></div>
+
+                    <div class="card-flex-header">
+                        <div class="card-main-info">
+                            <div class="visitor-avatar">
+                                <i class="bi bi-person"></i>
                             </div>
-                            <p class="card-text mt-3"><b>Custom ID:</b>{{ payment.customId }}</p>
-                            <p class="card-text"><b>Mobile Number:</b> {{ payment.mobileNumber }}</p>
-                            <p class="card-text"><b>Date:</b> {{ payment.date }}</p>
-                            <p class="card-text"><b>Visiting Places:</b> {{ payment.visitingPlaces }}</p>
-                            <p class="card-text"><b>No. of Days:</b> {{ payment.noOfDays }}</p>
-                            <p class="card-text"><b>No. of Members:</b> {{ payment.noOfMembers }}</p>
-                            <p class="card-text"><b>Total Cost:</b> {{ payment.totalCost }}</p>
-                            <p class="card-text"><b>Payment Date:</b> {{ payment.paymentDate | date }}</p>
+                            <div class="visitor-details">
+                                <h4>{{ payment.nameOfVisitor }}</h4>
+                                <span class="booking-id">Ref: #PAY-{{ payment.customId }}</span>
+                            </div>
+                        </div>
+                        <div class="payment-status-badge">
+                            <i class="bi bi-patch-check-fill me-1"></i> Paid
+                        </div>
+                    </div>
+
+                    <div class="card-grid-info">
+                        <div class="info-item">
+                            <label>Transaction Date</label>
+                            <span><i class="bi bi-clock-history me-2"></i>{{ payment.paymentDate | date:'medium'
+                                }}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Contact Info</label>
+                            <span><i class="bi bi-telephone me-2"></i>{{ payment.mobileNumber }}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Trip Start</label>
+                            <span><i class="bi bi-calendar-check me-2"></i>{{ payment.date }}</span>
+                        </div>
+                        <div class="info-item cost highlight">
+                            <label>Amount Received</label>
+                            <span class="price-tag">₹{{ payment.totalCost }}</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer-details mt-3 pt-3 border-top">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="pax-info">
+                                <i class="bi bi-people me-1"></i> {{ payment.noOfMembers }} Members / {{
+                                payment.noOfDays }} Days
+                            </div>
+                            <div class="destinations-summary text-end">
+                                <small class="text-muted">Destinations: {{ payment.visitingPlaces }}</small>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div *ngIf="payments.length === 0" class="empty-state">
+            <i class="bi bi-cash-stack fs-1"></i>
+            <p>No payment history records found.</p>
+        </div>
+    </div>
+
+    <div class="content-masked" *ngIf="!showPayments">
+        <div class="blur-card">
+            <i class="bi bi-shield-shaded"></i>
+            <h3>Financial data protected</h3>
+            <p>Authentication required to view payment history</p>
         </div>
     </div>
 </div>
