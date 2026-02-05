@@ -1,57 +1,184 @@
-/* Customize dropdown styles */
-.dropdowns {
-  width: 500px;
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap');
+
+:host {
+  font-family: 'Outfit', sans-serif;
+  display: block;
 }
 
+.navbar {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 0.8rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #333;
+  letter-spacing: -0.5px;
+}
+
+.navbar-nav {
+  align-items: center;
+}
+
+.nav-item {
+  position: relative;
+  margin: 0 15px;
+}
+
+.nav-link {
+  color: #555 !important;
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #0d6efd !important;
+  background: rgba(13, 110, 253, 0.05);
+}
+
+.nav-link i {
+  margin-left: 5px;
+}
+
+/* Badge for count */
+.badge-count {
+  background: #ff4757;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+/* Dropdown Styles */
 .dropdown-menu {
-  background-color: #ffffff; /* Background color of dropdown menu */
-  border: 1px solid rgba(0, 0, 0, 0.15); /* Border color */
-  border-radius: 0.25rem; /* Border radius */
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Dropdown box shadow */
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-top: 15px;
+  animation: slideUp 0.3s ease forwards;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .dropdown-item {
-  color: #000; /* Text color of dropdown items */
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #444;
+  transition: all 0.2s;
 }
 
-.dropdown-item:hover,
-.dropdown-item:focus {
-  background-color: #c3d8ed; /* Background color on hover/focus */
+.dropdown-item:hover {
+  background-color: #f0f7ff;
+  color: #0d6efd;
+  padding-left: 20px;
+  /* Slight slide right effect */
 }
 
-/* Navbar headings style */
-.navbar-nav .nav-link {
-  font-size: 18px; /* Adjust font size as needed */
-  color: #333; /* Default color */
-  padding: 0 10px; /* Add padding to the headings */
-  transition: color 0.3s; /* Smooth transition for color change */
+/* Specific styling for the large districts dropdown */
+.districts-dropdown {
+  width: 600px;
+  max-width: 90vw;
+  padding: 20px;
 }
 
-/* Navbar headings hover effect */
-.navbar-nav .nav-link:hover {
-  color: #007bff; /* Change color on hover */
+.districts-dropdown .row {
+  max-height: 400px;
+  overflow-y: auto;
 }
 
-/* Hover effect for all navbar links */
-.navbar-nav .nav-link {
-  position: relative;
-  padding: 0.5rem 1rem;
-  transition: color 0.3s ease;
+.districts-dropdown .col-md-4 {
+  padding: 5px;
 }
 
-/* Light blue hover boxes */
-.navbar-nav .nav-link::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 123, 255, 0); /* Transparent background */
-  z-index: -1;
-  transition: background-color 0.3s; /* Smooth transition for color change */
+/* Profile Section Styling */
+.profile-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.navbar-nav .nav-link:hover::before {
-  background-color: rgba(0, 123, 255, 0.1); /* Light blue hover color */
+.avatar-circle {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.profile-dropdown-header {
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 5px;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #333;
+  display: block;
+}
+
+.user-email {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+/* Mobile Toggler */
+.navbar-toggler {
+  border: none;
+  padding: 0;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+  }
+
+  .nav-item {
+    margin: 5px 0;
+  }
+
+  .districts-dropdown {
+    width: 100%;
+  }
 }
