@@ -95,47 +95,20 @@ export class SignupComponent implements OnInit {
         dob: new Date() // You can add a DOB field to the form if needed
       };
 
-      const response = await this.userService.registerUser(userData).toPromise();
+      await this.userService.registerUser(userData).toPromise();
 
-      // On success, show OTP input
-      this.registeredEmail = email;
-      this.showOtpInput = true;
-      this.toastService.show('Verification code sent to your email!', 'success');
+      this.showVerificationMessage = true;
+      this.isLoading = false;
+      this.toastService.show('Account created successfully! Please check your email.', 'success');
+
+      // Redirect to signin after 3 seconds
+      setTimeout(() => {
+        this.router.navigate(['/signin']);
+      }, 5000);
 
     } catch (error: any) {
       console.error('Signup Error:', error);
       this.handleSignupError(error);
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
-  async verifyOtp(): Promise<void> {
-    if (!this.otp || this.otp.length < 6) {
-      this.toastService.show('Please enter a valid 6-digit code', 'warning');
-      return;
-    }
-
-    this.isLoading = true;
-    try {
-      const response = await this.userService.verifyUserOtp(this.registeredEmail, this.otp).toPromise();
-
-      if (response && response.authenticated) {
-        this.userService.setLoggedInUser(response.username, response.token);
-        this.toastService.show('Account verified! Welcome to TN Tourism.', 'success');
-
-        // Navigate to home page
-        setTimeout(() => {
-          this.router.navigate(['/home'], { replaceUrl: true });
-        }, 500);
-      }
-    } catch (error: any) {
-      console.error('OTP Verification Error:', error);
-      if (error.error && error.error.message) {
-        this.toastService.show(error.error.message, 'danger');
-      } else {
-        this.toastService.show('Verification failed. Please try again.', 'danger');
-      }
     } finally {
       this.isLoading = false;
     }
