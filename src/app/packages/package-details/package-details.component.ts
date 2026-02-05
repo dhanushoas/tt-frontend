@@ -5,7 +5,7 @@ import { UserService } from '../../user/user.service';
 import { ToastService } from '../../toast.service';
 import { environment } from 'src/environments/environment';
 import { ImageService } from 'src/app/admin/admin-dashboard/image-upload/image.service';
-import { TourPackage, CategoryInfo, TEMPLE_PACKAGES, EDUCATION_PACKAGES, HONEYMOON_PACKAGES, PARTY_PACKAGES, CATEGORY_METADATA } from '../packages.data';
+import { TourPackage, CategoryInfo, TEMPLE_PACKAGES, EDUCATION_PACKAGES, HONEYMOON_PACKAGES, MOUNTAIN_PACKAGES, PARTY_PACKAGES, CATEGORY_METADATA } from '../packages.data';
 
 @Component({
   selector: 'app-package-details',
@@ -63,6 +63,7 @@ export class PackageDetailsComponent implements OnInit {
       case 'temple': this.packages = TEMPLE_PACKAGES; break;
       case 'education': this.packages = EDUCATION_PACKAGES; break;
       case 'honeymoon': this.packages = HONEYMOON_PACKAGES; break;
+      case 'mountain': this.packages = MOUNTAIN_PACKAGES; break;
       case 'party': this.packages = PARTY_PACKAGES; break;
       default: this.packages = [];
     }

@@ -241,6 +241,77 @@ export const PARTY_PACKAGES: TourPackage[] = [
     }
 ];
 
+export const MOUNTAIN_PACKAGES: TourPackage[] = [
+    {
+        title: 'Ooty Mountain Tour – Queen of Hill Stations',
+        rating: 5,
+        placesCovered: [
+            { name: 'Ooty Lake', description: 'Boating & Scenic Views' },
+            { name: 'Doddabetta Peak', description: 'Highest Peak in Nilgiris' },
+            { name: 'Tea Gardens', description: 'Estate Exploration' }
+        ],
+        highlights: [
+            'Famous UNESCO Toy Train ride experience',
+            'Breathtaking views from Doddabetta Peak',
+            'Fresh mountain air and lush tea plantations'
+        ],
+        duration: '3 to 4 Days',
+        image: 'mountain_ooty',
+        cost: '₹8,000+'
+    },
+    {
+        title: 'Kodaikanal Mountain Retreat – Princess of Hills',
+        rating: 5,
+        placesCovered: [
+            { name: 'Kodai Lake', description: 'Star-shaped Scenic Body' },
+            { name: 'Coaker’s Walk', description: 'Misty Valley Walk' },
+            { name: 'Pillar Rocks', description: 'Majestic Stone Formations' }
+        ],
+        highlights: [
+            'Serene cycling around the star-shaped Kodai Lake',
+            'Walking above the clouds at Coaker’s Walk',
+            'Visiting the misty Pine Forests and waterfalls'
+        ],
+        duration: '2 to 3 Days',
+        image: 'mountain_kodai',
+        cost: '₹7,000+'
+    },
+    {
+        title: 'Yercaud Budget Hill Station Tour',
+        rating: 4,
+        placesCovered: [
+            { name: 'Yercaud Lake', description: 'Lake Boating' },
+            { name: 'Pagoda Point', description: 'Sunset Viewpoint' },
+            { name: 'Coffee Estates', description: 'Plantation Tours' }
+        ],
+        highlights: [
+            'Budget-friendly and peaceful mountain escape',
+            'Stunning sunset views from Pagoda Point',
+            'Refreshing walk through coffee plantations'
+        ],
+        duration: '2 Days',
+        image: 'mountain_yercaud',
+        cost: '₹5,000+'
+    },
+    {
+        title: 'Valparai Mountain & Wildlife Discovery',
+        rating: 4,
+        placesCovered: [
+            { name: 'Aliyar Dam', description: 'Scenic Reservoir' },
+            { name: 'Anamalai', description: 'Tiger Reserve' },
+            { name: 'Monkey Falls', description: 'Natural Waterfall' }
+        ],
+        highlights: [
+            'Discover hidden mountain gems and wildlife',
+            'Scenic hair-pin bend drive with tea estate views',
+            'Tiger reserve interaction and nature trails'
+        ],
+        duration: '2 to 3 Days',
+        image: 'mountain_valparai',
+        cost: '₹8,000+'
+    }
+];
+
 export const CATEGORY_METADATA: { [key: string]: CategoryInfo } = {
     temple: {
         title: 'Spiritual',
@@ -276,6 +347,15 @@ export const CATEGORY_METADATA: { [key: string]: CategoryInfo } = {
         inclusions: ['Sound systems', 'Lighting setup', 'DJ Artist', 'Events coordination'],
         extrasections: [
             { title: 'Popular Party Spots', items: ['ECR Beach Resorts', 'Ooty Private Halls', 'Chennai City Venues'], icon: 'bi-music-note-beamed' }
+        ]
+    },
+    mountain: {
+        title: 'Mountain',
+        description: 'Breathtaking hill stations with cool climates and misty valleys.',
+        bestTime: { period: 'October to June', details: 'Winter for mist, Summer for escaping the heat.' },
+        inclusions: ['Mountain resort stays', 'Sightseeing transport', 'Trekking equipment (on request)', 'Guided nature walks'],
+        extrasections: [
+            { title: 'Benefits', items: ['Stress relief & relaxation', 'Adventure trekking', 'Wildlife experience', 'Cool weather vacation'], icon: 'bi-mountain' }
         ]
     }
 };
