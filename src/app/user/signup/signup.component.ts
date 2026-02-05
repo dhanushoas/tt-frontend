@@ -15,6 +15,9 @@ export class SignupComponent implements OnInit {
   showPassword: boolean = false;
   isLoading: boolean = false;
   showVerificationMessage: boolean = false;
+  showOtpInput: boolean = false;
+  otp: string = '';
+  registeredEmail: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -51,6 +54,15 @@ export class SignupComponent implements OnInit {
     });
   }
 
+  // Keypress event to restrict input to numbers only
+  onlyNumbers(event: KeyboardEvent): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
   async register(): Promise<void> {
     if (this.registerForm.invalid) {
       this.toastService.show('Please fill in all fields correctly', 'warning');
@@ -83,18 +95,47 @@ export class SignupComponent implements OnInit {
         dob: new Date() // You can add a DOB field to the form if needed
       };
 
-      await this.userService.registerUser(userData).toPromise();
+      const response = await this.userService.registerUser(userData).toPromise();
 
-      this.showVerificationMessage = true;
-      this.toastService.show('Account created successfully! Please sign in.', 'success');
+      // On success, show OTP input
+      this.registeredEmail = email;
+      this.showOtpInput = true;
+      this.toastService.show('Verification code sent to your email!', 'success');
 
-      // Redirect to signin after 3 seconds
-      setTimeout(() => {
-        this.router.navigate(['/signin']);
-      }, 3000);
     } catch (error: any) {
       console.error('Signup Error:', error);
       this.handleSignupError(error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async verifyOtp(): Promise<void> {
+    if (!this.otp || this.otp.length < 6) {
+      this.toastService.show('Please enter a valid 6-digit code', 'warning');
+      return;
+    }
+
+    this.isLoading = true;
+    try {
+      const response = await this.userService.verifyUserOtp(this.registeredEmail, this.otp).toPromise();
+
+      if (response && response.authenticated) {
+        this.userService.setLoggedInUser(response.username, response.token);
+        this.toastService.show('Account verified! Welcome to TN Tourism.', 'success');
+
+        // Navigate to home page
+        setTimeout(() => {
+          this.router.navigate(['/home'], { replaceUrl: true });
+        }, 500);
+      }
+    } catch (error: any) {
+      console.error('OTP Verification Error:', error);
+      if (error.error && error.error.message) {
+        this.toastService.show(error.error.message, 'danger');
+      } else {
+        this.toastService.show('Verification failed. Please try again.', 'danger');
+      }
     } finally {
       this.isLoading = false;
     }

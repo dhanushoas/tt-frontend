@@ -292,3 +292,17 @@
     padding: 24px 20px;
   }
 }
+
+.text-center {
+  text-align: center;
+}
+
+.text-lg {
+  font-size: 1.25rem !important;
+}
+
+.otp-section .form-control {
+  letter-spacing: 5px;
+  font-weight: 700;
+  color: #4a5568;
+}

@@ -39,6 +39,10 @@ export class UserService {
     return this.http.post(`${this.baseUrl}/user/verify-email`, { token });
   }
 
+  verifyUserOtp(email: string, otp: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/user/verify-otp`, { email, otp });
+  }
+
   private loggedInUserSubject = new BehaviorSubject<string | null>(localStorage.getItem('loggedInUser'));
   loggedInUser$ = this.loggedInUserSubject.asObservable();
 
