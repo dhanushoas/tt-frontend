@@ -50,7 +50,8 @@ export class BookingViewComponent implements OnInit {
         if (response.success) {
           const places = response.selectedPlaces?.selectedPlaces || [];
           this.selectedPlaces = places.map((place: any) => ({
-            name: place.name.replace(/\.(jpg|jpeg|png|gif|webp|bmp|JPG|JPEG|PNG|GIF|WEBP|BMP)$/, "") || place.name,
+            name: place.name.trim().replace(/\.[^/.]+$/, "") || place.name,
+            originalName: place.name, // Keep original for removal
             location: this.capitalizeFirstLetter(place.location)
           }));
           console.log('Fetched places by logged-in username:', this.selectedPlaces);
@@ -69,9 +70,10 @@ export class BookingViewComponent implements OnInit {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  removePlace(place: SelectedPlace): void {
-    // Call the service method to remove the place
-    this.visitService.removeSelectedPlace(place.name).subscribe(
+  removePlace(place: any): void {
+    // Call the service method to remove the place using the original name
+    const nameToRemove = place.originalName || place.name;
+    this.visitService.removeSelectedPlace(nameToRemove).subscribe(
       () => {
         console.log(`Place ${place.name} removed successfully.`);
         // Refresh the places after removal

@@ -54,8 +54,8 @@ export class PostComponent implements OnInit {
           const selectedPlaceNames = Array.isArray(selectedPlacesArray)
             ? selectedPlacesArray.map((item: any) => {
               const name = typeof item === 'object' ? item.name : item;
-              // Double protection: strip extensions case-insensitively
-              return name.replace(/\.(jpg|jpeg|png|gif|webp|bmp|JPG|JPEG|PNG|GIF|WEBP|BMP)$/, "") || name;
+              // Remove last extension and trim
+              return name.trim().replace(/\.[^/.]+$/, "") || name;
             })
             : [];
 

@@ -63,7 +63,8 @@
                                 payment.noOfDays }} Days
                             </div>
                             <div class="destinations-summary text-end">
-                                <small class="text-muted">Destinations: {{ payment.visitingPlaces }}</small>
+                                <small class="text-muted">Destinations: {{ payment.visitingPlaces | stripExtension
+                                    }}</small>
                             </div>
                         </div>
                     </div>

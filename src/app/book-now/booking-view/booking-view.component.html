@@ -13,7 +13,7 @@
             <i class="bi bi-geo-alt"></i>
           </div>
           <div class="place-info">
-            <h5 class="place-name">{{ place.name }}</h5>
+            <h5 class="place-name">{{ place.name | stripExtension }}</h5>
             <span class="location-tag">{{ place.location }}</span>
           </div>
           <div class="place-actions">
