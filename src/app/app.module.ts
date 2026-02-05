@@ -38,6 +38,7 @@ import { ToastComponent } from './toast/toast.component';
 import { VerifyEmailComponent } from './user/verify-email/verify-email.component';
 import { HighlightPipe } from './highlight.pipe';
 import { PackageDetailsComponent } from './packages/package-details/package-details.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { PackageDetailsComponent } from './packages/package-details/package-deta
     VerifyEmailComponent,
     HighlightPipe,
     PackageDetailsComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

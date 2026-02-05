@@ -1,27 +1,74 @@
-<div class="container text-center mt-5">
-  <h3 class="heading">BOOKINGS</h3>
+<div class="dashboard-header text-center">
+  <div class="container">
+    <h2>My <span class="text-primary">Bookings</span></h2>
+    <p class="text-muted">Manage your travel plans and upcoming journeys</p>
+  </div>
 </div>
 
-<div class="container mt-4">
-  <div class="row">
-    <div *ngFor="let item of books; let i = index;" class="col-md-4 mb-4">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title text-center mb-3">Booking {{ i + 1 }} </h5>
-          <p><b>Booking ID:</b> {{ item.customId }}</p>
-          <p><b>Visitor Name:</b> {{ item.nameOfVisitor }}</p>
-          <p><b>Mobile Number:</b> {{ item.mobileNumber }}</p>
-          <p><b>Register Date:</b> {{ item.date }}</p>
-          <p><b>Visiting Places:</b> {{ item.visitingPlaces }}</p>
-          <p><b>Total Days:</b> {{ item.noOfDays }}</p>
-          <p><b>Total Members:</b> {{ item.noOfMembers }}</p>
-          <p><b>Total Cost:</b> {{ item.totalCost }}</p>
+<div class="container">
+  <!-- Empty State -->
+  <div *ngIf="books.length === 0" class="empty-state">
+    <div class="empty-icon">
+      <i class="bi bi-calendar-x"></i>
+    </div>
+    <h3>No Bookings Yet</h3>
+    <p class="text-muted">You haven't made any travel bookings. Start your journey today!</p>
+    <button class="btn btn-primary btn-lg px-5 mt-3" routerLink="/home">Explore Destinations</button>
+  </div>
+
+  <!-- Bookings Grid -->
+  <div class="row g-4" *ngIf="books.length > 0">
+    <div *ngFor="let item of books; let i = index;" class="col-lg-4 col-md-6">
+      <div class="booking-card h-100">
+        <div class="card-header-accent">
+          <div class="id-badge">ID: {{ item.customId }}</div>
         </div>
+
+        <div class="card-body">
+          <h5 class="visitor-name">{{ item.nameOfVisitor }}</h5>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">Travel Date</span>
+              <span class="info-value"><i class="bi bi-calendar3 me-2 text-primary"></i>{{ item.date }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Mobile</span>
+              <span class="info-value"><i class="bi bi-phone me-1 text-primary"></i>{{ item.mobileNumber }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Duration</span>
+              <span class="info-value"><i class="bi bi-clock me-2 text-primary"></i>{{ item.noOfDays }} Day(s)</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Members</span>
+              <span class="info-value"><i class="bi bi-people me-2 text-primary"></i>{{ item.noOfMembers }}
+                Person(s)</span>
+            </div>
+          </div>
+
+          <div class="places-box">
+            <span class="info-label d-block mb-1">Visiting Places</span>
+            <span class="info-value small text-dark">{{ item.visitingPlaces }}</span>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="info-label">Total Cost</span>
+            <span class="cost-highlight text-primary">₹{{ item.totalCost }}</span>
+          </div>
+        </div>
+
         <div class="card-footer">
-          <div class="btn-group mt-3">
-            <button *ngIf="item.customId" (click)="gotoGet(item.customId)" class="btn btn-success">Payment</button>
-            <button *ngIf="item.customId" (click)="gotoUpdate(item.customId)" class="btn btn-primary">Edit</button>
-            <button *ngIf="item.customId" (click)="gotoDelete(item.customId)" class="btn btn-danger">Cancel</button>
+          <div class="btn-group-modern">
+            <button *ngIf="item.customId" (click)="gotoGet(item.customId)" class="btn btn-success shadow-sm">
+              <i class="bi bi-credit-card"></i> Pay
+            </button>
+            <button *ngIf="item.customId" (click)="gotoUpdate(item.customId)" class="btn btn-outline-primary shadow-sm">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+            <button *ngIf="item.customId" (click)="gotoDelete(item.customId)" class="btn btn-outline-danger shadow-sm">
+              <i class="bi bi-trash"></i> Cancel
+            </button>
           </div>
         </div>
       </div>

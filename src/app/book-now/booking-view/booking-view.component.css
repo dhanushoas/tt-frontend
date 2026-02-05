@@ -1,16 +1,134 @@
-/* booking-view.component.css */
-.remove-button {
-  border: 1px solid #ccc; /* Add your preferred border style */
-  padding: 5px 10px; /* Add padding for better styling */
-  cursor: pointer; /* Change cursor on hover */
-  background-color: #fff; /* Add your preferred background color */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:host {
+  font-family: 'Outfit', sans-serif;
+  display: block;
+  background-color: #f8faff;
+  min-height: 90vh;
+  padding: 3rem 0;
 }
 
-button {
-  cursor: pointer;
+.view-header {
+  margin-bottom: 3rem;
 }
 
-p {
-  color:blue;
-  font-size: larger;
+.view-header h2 {
+  font-weight: 700;
+  color: #333;
+}
+
+.modern-list {
+  background: white;
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+}
+
+.list-item {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.list-item:hover {
+  background-color: #fcfcfc;
+}
+
+.place-icon {
+  width: 50px;
+  height: 50px;
+  background: #f0f4ff;
+  color: #667eea;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.25rem;
+  margin-right: 1.5rem;
+}
+
+.place-info {
+  flex-grow: 1;
+}
+
+.place-name {
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: #333;
+  margin: 0;
+}
+
+.location-tag {
+  font-size: 0.85rem;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-card {
+  background: white;
+  border-radius: 25px;
+  padding: 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 100px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.summary-total {
+  border-top: 2px solid #f0f0f0;
+  padding-top: 1rem;
+  margin-top: 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.btn-confirm {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 12px;
+  padding: 1rem;
+  color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  width: 100%;
+  margin-top: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-confirm:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(118, 75, 162, 0.3);
+}
+
+.btn-confirm:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.empty-view {
+  text-align: center;
+  padding: 5rem 0;
+}
+
+.empty-view .mainImg {
+  max-width: 400px;
+  margin: 2rem 0;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }

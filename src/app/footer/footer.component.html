@@ -1,0 +1,57 @@
+<footer class="modern-footer">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand mb-4">
+                        <h3 class="fw-bold"><span class="text-primary">TN</span> Tourism</h3>
+                        <p class="text-muted mt-3">Discover the soul-stirring journey of Tamil Nadu with our premium
+                            travel services. We've been crafting memories for over 20 years.</p>
+                    </div>
+                    <div class="social-links d-flex gap-3">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="fw-bold mb-4">Quick Links</h5>
+                    <ul class="footer-links list-unstyled">
+                        <li><a routerLink="/home">Home</a></li>
+                        <li><a routerLink="/about-us">About Us</a></li>
+                        <li><a routerLink="/contact-us">Contact Us</a></li>
+                        <li><a routerLink="/getall">My Bookings</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="fw-bold mb-4">Popular</h5>
+                    <ul class="footer-links list-unstyled">
+                        <li><a routerLink="/packages" [queryParams]="{category: 'temple'}">Devotional</a></li>
+                        <li><a routerLink="/packages" [queryParams]="{category: 'honeymoon'}">Honeymoon</a></li>
+                        <li><a routerLink="/packages" [queryParams]="{category: 'mountain'}">Nature</a></li>
+                        <li><a routerLink="/packages" [queryParams]="{category: 'party'}">Party</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="fw-bold mb-4">Newsletter</h5>
+                    <p class="text-muted">Stay updated with our latest holiday packages and offers.</p>
+                    <div class="input-group mt-3">
+                        <input type="email" class="form-control" placeholder="Enter your email">
+                        <button class="btn btn-primary px-3">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom text-center">
+        <div class="container border-top py-4">
+            <p class="m-0 text-muted small">&copy; 2026 Tamilnadu Tourism. All Rights Reserved. Designed with <i
+                    class="bi bi-heart-fill text-danger mx-1"></i> for explorers.</p>
+        </div>
+    </div>
+</footer>

@@ -1,39 +1,47 @@
-<div class="responsive-container-block bigContainer">
-  <p class="text-blk headingText mt-5" style="font-size: xx-large;">
-    About Us
-  </p>
-  <div class="responsive-container-block Container bottomContainer">
-    <div class="ultimateImg">
-      <!-- <img class="mainImg" src="./assets/about-us.png" style="height: 800px;width: 700px"> -->
-      <img *ngIf="aboutUsImage" [src]="aboutUsImage" class="mainImg" style="height: 800px; width: 700px;" alt="About Us Image">
-      <div class="purpleBox">
-        <p class="purpleText"></p>
-        <img class="stars" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/mp5.svg">
+<section class="about-section">
+  <div class="container">
+    <div class="modern-card">
+      <div class="row g-0">
+        <!-- Image Side -->
+        <div class="col-lg-6 image-side">
+          <img *ngIf="aboutUsImage" [src]="aboutUsImage" class="about-img" alt="Tamilnadu Tourism">
+
+          <div class="experience-badge animate__animated animate__fadeInUp">
+            <span class="exp-number">20+</span>
+            <span class="exp-text">Years of Excellence</span>
+          </div>
+        </div>
+
+        <!-- Content Side -->
+        <div class="col-lg-6">
+          <div class="content-side">
+            <span class="tagline">Our Story</span>
+            <h1 class="main-heading">Exploring the Soul of <span class="text-primary">Tamil Nadu</span></h1>
+
+            <p class="description">
+              A Kaleidoscope of traditions, culture, and vibrant geographies, Tamil Nadu speaks for itself as a
+              soul-stirring journey. From the snow-covered peaks to the coastline, natural greenery to depths of
+              spirituality.
+            </p>
+
+            <div class="highlight-box">
+              <p>"We have been providing premium tourism services across Tamil Nadu for over 20 years, crafting memories
+                that last a lifetime."</p>
+            </div>
+
+            <p class="description">
+              Tamil Nadu is a preferred travel destination for many due to its relaxation, pilgrimage, hills &
+              mountains, adventure, wildlife, and heritage. Discover the different facets of this multicolored state as
+              it shapes your vision at every fold.
+            </p>
+
+            <div class="mt-4">
+              <button class="btn btn-primary btn-lg shadow" routerLink="/home">Explore Packages</button>
+              <button class="btn btn-outline-secondary btn-lg ms-3" routerLink="/contact-us">Contact Us</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="allText bottomText">
-      <p class="text-blk subHeadingText" style="color: crimson;">
-        Tamilnadu Tourism
-      </p>
-      <p class="text-blk description" style="text-indent: 2cm; top:1cm;">
-        We are providing tourism services on all over tamilnadu for last 20 years.</p>
-        <p class="text-blk description" style="text-indent: 2cm;">
-        Tamil Nadu is a preferred travel destination for many due its Beach, Relaxation, Pilgrimage, Hills & Mountains, Adventure, Wildlife, Trek, Food and Heritage.       
-      </p>
-      <p class="text-blk description" style="text-indent: 2cm;">
-      A Kaleidoscope of traditions, culture, and vibrant geographies, Tamilnadu speaks
-      for itself as a soul-stirring journey. Snow-covered peaks of the Himalayas
-      stretch of coastline, natural greenery to depths of spirituality, and
-      clusters of cultural shades. All of these aspects join together to define
-      the raw beauty through which Tamilnadu captures the heart of every tourist.</p>
-      <p class="text-blk description" style="text-indent: 2cm;">
-      Discover the different facets of this multicolored country as it shapes your
-      vision at every fold. With the country's tourism branched into several
-      forms, Tamilnadu has a chunk for every kind of traveler. To get things going,
-      here is an Tamilnadu travel planner which incorporates must-visit tourist
-      attractions, places to visit in Tamilnadu, how to reach, and the best time to
-      visit.
-    </p>
-    </div>
   </div>
-</div>
+</section>

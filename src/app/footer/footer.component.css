@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+.modern-footer {
+    font-family: 'Outfit', sans-serif;
+    background-color: #ffffff;
+    padding-top: 5rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+.footer-top {
+    margin-bottom: 3rem;
+}
+
+.footer-brand h3 {
+    letter-spacing: -1px;
+}
+
+.footer-brand p {
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.footer-links li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.footer-links a:hover {
+    color: #667eea;
+    padding-left: 5px;
+}
+
+.social-links a {
+    width: 40px;
+    height: 40px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #667eea;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.social-links a:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-3px);
+}
+
+.input-group .form-control {
+    border-radius: 10px 0 0 10px;
+    border: 1px solid #eee;
+    padding: 12px;
+}
+
+.input-group .btn {
+    border-radius: 0 10px 10px 0;
+    font-weight: 600;
+}
+
+.footer-bottom {
+    background-color: #fcfcfc;
+}
+
+.border-top {
+    border-color: #f0f0f0 !important;
+}
+
+@media (max-width: 991px) {
+    .modern-footer {
+        padding-top: 3rem;
+    }
+}

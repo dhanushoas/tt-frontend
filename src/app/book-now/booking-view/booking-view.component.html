@@ -1,41 +1,75 @@
-<!-- booking-view.component.html -->
-<div *ngIf="selectedPlaces.length > 0; else emptyCart">
-  <table class="table table-bordered container mt-5">
-    <thead>
-      <tr>
-        <th>Serial No</th>
-        <th>Name</th>
-        <th>Location</th>
-        <th>Action</th>
-        <!-- Add more table headers as needed -->
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Use *ngFor to iterate over the selectedPlaces array -->
-      <tr *ngFor="let place of selectedPlaces; let i = index">
-        <td>{{ i + 1 }}</td> <!-- Serial number -->
-        <td>{{ place.name }}</td>
-        <td>{{ place.location }}</td>
-        <td>
-          <!-- Add a remove button with a border design -->
-          <button class="btn btn-danger" (click)="removePlace(place)">Remove</button>
-        </td>
-        <!-- Add more table cells as needed -->
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- Centered Confirm Booking button -->
-  <div class="text-center mt-3">
-    <button class="btn btn-primary" [disabled]="selectedPlaces.length === 0" (click)="confirmBooking()">Confirm Booking</button>
+<div class="container overflow-hidden">
+  <div class="view-header text-center mt-4">
+    <h2 class="display-5">Review Your <span class="text-primary">Journey</span></h2>
+    <p class="text-muted">Review the places you've selected before confirming your booking.</p>
   </div>
+
+  <div *ngIf="selectedPlaces.length > 0; else emptyCart" class="row">
+    <!-- Places List -->
+    <div class="col-lg-8 mb-4">
+      <div class="modern-list">
+        <div *ngFor="let place of selectedPlaces; let i = index" class="list-item">
+          <div class="place-icon">
+            <i class="bi bi-geo-alt"></i>
+          </div>
+          <div class="place-info">
+            <h5 class="place-name">{{ place.name }}</h5>
+            <span class="location-tag">{{ place.location }}</span>
+          </div>
+          <div class="place-actions">
+            <button class="btn btn-outline-danger btn-sm rounded-pill px-3" (click)="removePlace(place)">
+              <i class="bi bi-trash me-1"></i> Remove
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Sidebar -->
+    <div class="col-lg-4">
+      <div class="summary-card">
+        <h4 class="fw-bold mb-4">Trip Summary</h4>
+
+        <div class="summary-row">
+          <span>Destinations</span>
+          <span>{{ selectedPlaces.length }}</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Processing Fee</span>
+          <span class="text-success">FREE</span>
+        </div>
+
+        <div class="summary-row summary-total">
+          <span>Total Selected</span>
+          <span class="text-primary">{{ selectedPlaces.length }} Place(s)</span>
+        </div>
+
+        <button class="btn-confirm" (click)="confirmBooking()">
+          Confirm Booking <i class="bi bi-arrow-right-circle ms-2"></i>
+        </button>
+
+        <p class="small text-muted text-center mt-3">
+          <i class="bi bi-shield-check"></i> Secure booking via TN Tourism
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emptyCart>
+    <div class="empty-view">
+      <div class="alert alert-info d-inline-block px-4 py-3 mb-4">
+        <i class="bi bi-info-circle me-2"></i> Your bucket list is empty!
+      </div>
+      <br>
+      <img *ngIf="emptyImage" [src]="emptyImage" class="mainImg animate__animated animate__zoomIn" alt="Empty List">
+      <div *ngIf="!emptyImage" class="py-5">
+        <i class="bi bi-geo-fill display-1 text-muted opacity-25"></i>
+      </div>
+
+      <h3 class="mt-4">Start Choosing Places</h3>
+      <p class="text-muted">Browse our tourism spots and add them here to plan your trip.</p>
+      <button class="btn btn-primary btn-lg px-5 mt-3 shadow" routerLink="/home">Browse Districts</button>
+    </div>
+  </ng-template>
 </div>
-
-<ng-template #emptyCart>
-  <div class="text-center mt-5">
-    <p>Oops! Choose Tourism Places</p>
-    <img *ngIf="emptyImage" [src]="emptyImage" class="mainImg" alt="Empty Cart Image">
-
-    <!-- <img src="assets/empty.jpg"> -->
-  </div>
-</ng-template>

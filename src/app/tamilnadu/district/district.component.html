@@ -1,19 +1,40 @@
-<!-- district.component.html -->
-<div class="container">
-  <h1 class="text-center mt-5 mb-3" style="font-size: x-large;">{{ capitalizeFirstLetter(location) }} Tourist Places
-  </h1>
+<div class="container overflow-hidden">
+  <header class="district-header">
+    <h1 class="display-4 text-uppercase">{{ location }} <span class="text-primary">Exploration</span></h1>
+    <p class="lead text-muted mt-2">Discover the hidden gems and popular landmarks in {{ capitalizeFirstLetter(location)
+      }}.</p>
+  </header>
 
-  <div class="row mt-5">
-    <div *ngFor="let image of images" class="col-md-4">
-      <div class="card mb-4">
-        <img class="card-img-top" [src]="getImageUrl(image.name) | secureImage | async"
-          style="height: 200px; width: 100%;" alt="{{ image.name }}">
+  <div class="row g-4 mt-2">
+    <div *ngFor="let image of images" class="col-lg-4 col-md-6">
+      <div class="place-card">
+        <div class="img-container">
+          <img [src]="getImageUrl(image.name) | secureImage | async" class="place-img" alt="{{ image.name }}">
+          <div class="selected-overlay" [class.active]="isSelected(image)">
+            <i class="bi bi-check-circle-fill"></i>
+          </div>
+        </div>
+
         <div class="card-body">
-          <h5 class="card-title text-center">{{ image.name }}</h5>
-          <button class="btn btn-primary btn-block text-center mt-2" (click)="addtoCartAndStore(image)">Add to
-            Visit</button>
+          <h5 class="place-title">{{ image.name }}</h5>
+          <button class="btn-add" [class.btn-selected]="isSelected(image)" (click)="addtoCartAndStore(image)"
+            [disabled]="isSelected(image)">
+            <i class="bi" [class.bi-plus-lg]="!isSelected(image)" [class.bi-check-lg]="isSelected(image)"></i>
+            {{ isSelected(image) ? 'Added to List' : 'Add to Visit' }}
+          </button>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<!-- Floating Action Count -->
+<div class="floating-status" *ngIf="selectedPlaces.length > 0">
+  <span class="status-text">
+    <i class="bi bi-backpack2-fill text-primary me-2"></i>
+    {{ selectedPlaces.length }} Place(s) in your list
+  </span>
+  <button class="btn btn-view-trip" routerLink="/booking-view">
+    View List <i class="bi bi-arrow-right ms-1"></i>
+  </button>
 </div>
