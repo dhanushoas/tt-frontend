@@ -109,13 +109,13 @@ export class PostComponent implements OnInit {
     const signedInUsername = this.userService.getLoggedInUser();
     if (signedInUsername) {
       const bookToPost: Book = { ...this.bookForm.value, username: signedInUsername };
-  
+
       // Post the book
       this.bookService.addBook(bookToPost).subscribe(
         (response: any) => {
           if (response && response.message === 'Book added successfully' && response.book) {
             alert('Form submitted successfully!');
-  
+
             // Remove selected places from MongoDB
             this.visitService.deleteSelectedPlaces(signedInUsername).subscribe(
               () => {
@@ -141,8 +141,8 @@ export class PostComponent implements OnInit {
       console.error('Error: No signed-in username available');
     }
   }
-  
-  
+
+
 
   onCancel(): void {
     this.router.navigate(['booking-view']);
@@ -156,18 +156,27 @@ export class PostComponent implements OnInit {
     return year + '-' + month + '-' + day;
   }
 
-   bookingImage: string = ''; 
-  
-    fetchImage(imageName: string, property: keyof this) {
-      this.imageService.getImageByName(imageName).subscribe({
-        next: (response) => {
-          const blob = new Blob([response], { type: response.type });
-          (this as any)[property] = URL.createObjectURL(blob);
-        },
-        error: (err) => {
-          console.error(`Error fetching ${imageName} image:`, err);
-        }
-      });
+  bookingImage: string = '';
+
+  fetchImage(imageName: string, property: keyof this) {
+    this.imageService.getImageByName(imageName).subscribe({
+      next: (response) => {
+        const blob = new Blob([response], { type: response.type });
+        (this as any)[property] = URL.createObjectURL(blob);
+      },
+      error: (err) => {
+        console.error(`Error fetching ${imageName} image:`, err);
+      }
+    });
+  }
+
+  // Helper to allow only numbers in input fields
+  onlyNumbers(event: any): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
     }
-  
+    return true;
+  }
+
 }
