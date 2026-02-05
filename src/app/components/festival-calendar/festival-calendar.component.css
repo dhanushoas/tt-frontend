@@ -1,0 +1,124 @@
+.festival-section {
+    border-radius: 40px;
+    margin: 40px 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+.live-indicator {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 20px;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.live-indicator .dot {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #22c55e;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.9);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(0.9);
+        opacity: 1;
+    }
+}
+
+.festival-timeline {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 20px 0 40px;
+    scrollbar-width: none;
+}
+
+.festival-timeline::-webkit-scrollbar {
+    display: none;
+}
+
+.fest-card {
+    min-width: 280px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 25px;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.fest-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-5px);
+    border-color: var(--fest-color);
+}
+
+.fest-date-box {
+    margin-bottom: 20px;
+}
+
+.fest-date {
+    background: var(--fest-color);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.fest-body {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.fest-icon {
+    font-size: 1.5rem;
+    color: var(--fest-color);
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fest-info h5 {
+    margin-bottom: 2px;
+    font-weight: 700;
+}
+
+.fest-info p {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    margin: 0;
+}
+
+.fest-badge {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--fest-color);
+    text-transform: uppercase;
+}

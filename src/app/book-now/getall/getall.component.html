@@ -5,7 +5,10 @@
   </div>
 </div>
 
-<div class="container">
+<div class="container pb-5">
+  <!-- Interactive Summary Dashboard -->
+  <app-summary-dashboard *ngIf="books.length > 0" [bookings]="books"></app-summary-dashboard>
+
   <!-- Empty State -->
   <div *ngIf="books.length === 0" class="empty-state">
     <div class="empty-icon">
@@ -20,8 +23,11 @@
   <div class="row g-4" *ngIf="books.length > 0">
     <div *ngFor="let item of books; let i = index;" class="col-lg-4 col-md-6">
       <div class="booking-card h-100">
-        <div class="card-header-accent">
+        <div class="card-header-accent d-flex justify-content-between align-items-center px-3">
           <div class="id-badge">ID: {{ item.customId }}</div>
+          <button class="btn btn-pass-lite btn-sm" (click)="viewPass(item)">
+            <i class="bi bi-ticket-perforated"></i> View Pass
+          </button>
         </div>
 
         <div class="card-body">
@@ -53,7 +59,14 @@
           </div>
 
           <div class="d-flex justify-content-between align-items-center">
-            <span class="info-label">Total Cost</span>
+            <div class="check-in-section">
+              <button class="btn btn-sm"
+                [ngClass]="isCheckInDisabled(item) ? 'btn-success disabled' : 'btn-outline-success'"
+                (click)="handleCheckIn(item)">
+                <i class="bi" [ngClass]="isCheckInDisabled(item) ? 'bi-check2-circle' : 'bi-geo-alt'"></i>
+                {{ isCheckInDisabled(item) ? 'Checked In' : 'I am Here' }}
+              </button>
+            </div>
             <span class="cost-highlight text-primary">₹{{ item.totalCost }}</span>
           </div>
         </div>
@@ -75,3 +88,6 @@
     </div>
   </div>
 </div>
+
+<!-- Traveler Pass Modal -->
+<app-traveler-pass *ngIf="showPass" [booking]="selectedBooking" (close)="closePass()"></app-traveler-pass>

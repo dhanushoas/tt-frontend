@@ -1,0 +1,185 @@
+.pass-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.pass-container {
+    background: #fff;
+    width: 600px;
+    max-width: 100%;
+    border-radius: 30px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+}
+
+.pass-header {
+    background: #f8fafc;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px dashed #e2e8f0;
+}
+
+.brand {
+    font-weight: 800;
+    font-size: 1.2rem;
+}
+
+.pass-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #64748b;
+}
+
+.btn-close-pass {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #94a3b8;
+    cursor: pointer;
+}
+
+.pass-body {
+    padding: 40px;
+}
+
+.pass-visual-top {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.qr-placeholder {
+    padding: 15px;
+    background: #f1f5f9;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.qr-block {
+    width: 80px;
+    height: 80px;
+    background: #1e293b;
+    margin-bottom: 8px;
+    mask-image: url('https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg');
+    mask-size: contain;
+}
+
+.qr-placeholder small {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #64748b;
+}
+
+.visitor-name {
+    font-weight: 800;
+    font-size: 2rem;
+    margin: 0;
+    color: #1e293b;
+}
+
+.status-confirmed {
+    color: #16a34a;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.pass-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.detail-item label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #94a3b8;
+    margin-bottom: 4px;
+}
+
+.detail-item span {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #334155;
+}
+
+.dest-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chip {
+    padding: 5px 12px;
+    background: #edf2ff;
+    color: #4f46e5;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.pass-footer {
+    background: #1e293b;
+    padding: 30px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.barcode {
+    width: 150px;
+    height: 30px;
+    background: linear-gradient(90deg, #fff 2px, transparent 2px);
+    background-size: 8px 100%;
+    margin-bottom: 5px;
+}
+
+.barcode-text {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+}
+
+.btn-print {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+@media print {
+    .pass-overlay {
+        background: white;
+        padding: 0;
+    }
+
+    .btn-close-pass,
+    .btn-print {
+        display: none;
+    }
+
+    .pass-container {
+        box-shadow: none;
+        border: 1px solid #eee;
+    }
+}

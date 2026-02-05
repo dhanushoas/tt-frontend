@@ -1,0 +1,63 @@
+<div class="pass-overlay animate__animated animate__fadeIn" (click)="close.emit()">
+    <div class="pass-container animate__animated animate__zoomIn" (click)="$event.stopPropagation()">
+        <div class="pass-header">
+            <div class="brand">
+                <span class="text-primary">TN</span> Tourism
+            </div>
+            <div class="pass-label">OFFICIAL TRAVELER PASS</div>
+            <button class="btn-close-pass" (click)="close.emit()"><i class="bi bi-x"></i></button>
+        </div>
+
+        <div class="pass-body">
+            <div class="pass-visual-top">
+                <div class="qr-placeholder">
+                    <!-- Simulated QR Code -->
+                    <div class="qr-block"></div>
+                    <small>REF-{{ booking.customId }}</small>
+                </div>
+                <div class="pass-main-meta">
+                    <h2 class="visitor-name">{{ booking.nameOfVisitor }}</h2>
+                    <p class="status-confirmed"><i class="bi bi-patch-check-fill me-1"></i> VERIFIED BOOKING</p>
+                </div>
+            </div>
+
+            <div class="pass-details-grid">
+                <div class="detail-item">
+                    <label>TRIP ID</label>
+                    <span>#{{ booking.customId }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>START DATE</label>
+                    <span>{{ booking.date }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>MEMBERS</label>
+                    <span>{{ booking.noOfMembers }} PAX</span>
+                </div>
+                <div class="detail-item">
+                    <label>DURATION</label>
+                    <span>{{ booking.noOfDays }} DAYS</span>
+                </div>
+            </div>
+
+            <div class="pass-destinations mt-4">
+                <label>PLANNED STOPS</label>
+                <div class="dest-chips">
+                    <span *ngFor="let place of booking.visitingPlaces?.split(', ')" class="chip">
+                        {{ place }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="pass-footer">
+            <div class="barcode-area">
+                <div class="barcode"></div>
+                <div class="barcode-text">TAMILNADU TOURISM DIGITAL PASS 2026</div>
+            </div>
+            <button class="btn-print" (click)="printPass()">
+                <i class="bi bi-printer me-2"></i> Print Pass
+            </button>
+        </div>
+    </div>
+</div>

@@ -11,7 +11,7 @@ import { UserService } from 'src/app/user/user.service';
 export class GetallComponent implements OnInit {
   books: Book[] = [];
 
-  constructor(private bookService: BookService, private userService: UserService, private router: Router) {}
+  constructor(private bookService: BookService, private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
     this.getAllBooks();
@@ -60,6 +60,31 @@ export class GetallComponent implements OnInit {
     } else {
       console.error('Invalid customId:', customId);
     }
+  }
+
+  showPass: boolean = false;
+  selectedBooking: any = null;
+
+  viewPass(booking: any) {
+    this.selectedBooking = booking;
+    this.showPass = true;
+  }
+
+  closePass() {
+    this.showPass = false;
+    this.selectedBooking = null;
+  }
+
+  handleCheckIn(booking: any) {
+    // Mock check-in logic
+    booking.checkedIn = true;
+    localStorage.setItem(`checkin_${booking.customId}`, 'true');
+    // In a real app, this would call an API
+    alert(`Welcome to ${booking.visitingPlaces.split(',')[0]}! You have successfully checked in.`);
+  }
+
+  isCheckInDisabled(booking: any): boolean {
+    return !!localStorage.getItem(`checkin_${booking.customId}`);
   }
 
   gotoPayment(customId: number): void {

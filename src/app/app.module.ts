@@ -43,6 +43,10 @@ import { FooterComponent } from './footer/footer.component';
 import { FoodServiceComponent } from './services/food-service/food-service.component';
 import { BusServiceComponent } from './services/bus-service/bus-service.component';
 import { CustomerServiceComponent } from './services/customer-service/customer-service.component';
+import { FestivalCalendarComponent } from './components/festival-calendar/festival-calendar.component';
+import { MoodFinderComponent } from './components/mood-finder/mood-finder.component';
+import { TravelerPassComponent } from './components/traveler-pass/traveler-pass.component';
+import { SummaryDashboardComponent } from './components/summary-dashboard/summary-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +82,10 @@ import { CustomerServiceComponent } from './services/customer-service/customer-s
     BusServiceComponent,
     CustomerServiceComponent,
     StripExtensionPipe,
+    FestivalCalendarComponent,
+    MoodFinderComponent,
+    TravelerPassComponent,
+    SummaryDashboardComponent,
   ],
   imports: [
     BrowserModule,

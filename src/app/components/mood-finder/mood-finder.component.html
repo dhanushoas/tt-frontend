@@ -1,0 +1,24 @@
+<div class="mood-finder-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">What's your <span class="text-primary">Travel Mood</span> today?</h2>
+            <p class="text-muted">Tell us how you feel, and we'll show you the perfect Tamil Nadu experience.</p>
+        </div>
+
+        <div class="mood-grid">
+            <div *ngFor="let mood of moods" class="mood-item" [style.--mood-color]="mood.color"
+                (click)="selectMood(mood.id)">
+                <div class="mood-icon-wrapper">
+                    <i class="bi" [ngClass]="mood.icon"></i>
+                </div>
+                <div class="mood-content">
+                    <h4>{{ mood.name }}</h4>
+                    <p>{{ mood.desc }}</p>
+                </div>
+                <div class="mood-arrow">
+                    <i class="bi bi-arrow-right-short"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

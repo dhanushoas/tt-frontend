@@ -1,0 +1,47 @@
+<div class="summary-dashboard p-4 mb-4">
+    <div class="row g-4">
+        <div class="col-md-3 col-6">
+            <div class="stat-widget">
+                <div class="stat-icon"><i class="bi bi-geo-fill"></i></div>
+                <div class="stat-meta">
+                    <span class="stat-value">{{ stats.totalTrips }}</span>
+                    <label>Total Trips</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-widget">
+                <div class="stat-icon"><i class="bi bi-map"></i></div>
+                <div class="stat-meta">
+                    <span class="stat-value">{{ stats.uniqueDistricts }}</span>
+                    <label>Districts</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-widget">
+                <div class="stat-icon"><i class="bi bi-people"></i></div>
+                <div class="stat-meta">
+                    <span class="stat-value">{{ stats.totalMembers }}</span>
+                    <label>Pax Hosted</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-widget highlight">
+                <div class="progress-ring">
+                    <svg viewBox="0 0 36 36" class="circular-chart">
+                        <path class="circle-bg"
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <path class="circle" [style.stroke-dasharray]="stats.explorationPercent + ', 100'"
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    </svg>
+                    <span class="percent">{{ stats.explorationPercent }}%</span>
+                </div>
+                <div class="stat-meta">
+                    <label>Explored TN</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
