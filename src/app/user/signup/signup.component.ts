@@ -95,11 +95,17 @@ export class SignupComponent implements OnInit {
         dob: new Date() // You can add a DOB field to the form if needed
       };
 
-      await this.userService.registerUser(userData).toPromise();
+      const response: any = await this.userService.registerUser(userData).toPromise();
 
       // Show Verification check UI
       this.registeredEmail = email;
-      this.showOtpInput = true; // reusing this flag to show the "Check Verification" section
+      this.showOtpInput = true;
+
+      if (response.verifyLink) {
+        console.log('DEV MODE - Verification Link:', response.verifyLink);
+        this.toastService.show('DEV MODE: Verification link logged to console', 'info');
+      }
+
       this.toastService.show('Verification link sent! Check your email.', 'success');
       this.isLoading = false;
 
@@ -131,7 +137,9 @@ export class SignupComponent implements OnInit {
         }, 500);
       }
     } catch (error: any) {
-      if (error.status === 403) {
+      // 401 means "Invalid email or password", which in this context (deferred creation) 
+      // primarily means the user hasn't been created yet (i.e., not verified).
+      if (error.status === 403 || error.status === 401) {
         this.toastService.show('Email not verified yet. Please click the link in your email.', 'warning');
       } else {
         console.error('Verification Check Error:', error);
