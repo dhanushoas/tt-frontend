@@ -98,6 +98,13 @@
           </span>
         </button>
 
+        <!-- Fallback Manual Link -->
+        <div *ngIf="verifyLink" class="alert alert-warning mt-4 text-center">
+          <p class="mb-2"><strong>Demo/Fallback Mode:</strong></p>
+          <p class="small mb-2">If you didn't receive the email, use this link:</p>
+          <a [href]="verifyLink" target="_blank" class="btn btn-sm btn-outline-dark">Verify Account Manually</a>
+        </div>
+
         <div class="auth-footer">
           <a (click)="showOtpInput = false" class="auth-link text-muted"><i class="bi bi-arrow-left"></i> Back to
             Signup</a>

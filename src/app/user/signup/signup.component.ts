@@ -18,6 +18,7 @@ export class SignupComponent implements OnInit {
   showOtpInput: boolean = false;
   otp: string = '';
   registeredEmail: string = '';
+  verifyLink: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -104,6 +105,7 @@ export class SignupComponent implements OnInit {
       if (response.verifyLink) {
         console.log('DEV MODE - Verification Link:', response.verifyLink);
         this.toastService.show('DEV MODE: Verification link logged to console', 'info');
+        this.verifyLink = response.verifyLink;
       }
 
       this.toastService.show('Verification link sent! Check your email.', 'success');
