@@ -85,26 +85,44 @@ export class HomeComponent {
   samayapuramImage: string = '';
   srirangamImage: string = '';
 
+  // Static cache to store object URLs across component instances
+  private static imageCache = new Map<string, string>();
+
   ngOnInit(): void {
-    this.fetchImage('tamilnadu', 'tamilnaduImage');
-    this.fetchImage('temple', 'templeImage');
-    this.fetchImage('education', 'educationImage');
-    this.fetchImage('honeymoon', 'honeymoonImage');
-    this.fetchImage('mountain', 'mountainImage');
-    this.fetchImage('party', 'partyImage');
-    this.fetchImage('beach', 'beachImage');
-    this.fetchImage('kanyakumari', 'kanyakumariImage');
-    this.fetchImage('kodaikanal', 'kodaikanalImage');
-    this.fetchImage('mahapalipuram', 'mahapalipuramImage');
-    this.fetchImage('samayapuram', 'samayapuramImage');
-    this.fetchImage('srirangam', 'srirangamImage');
+    // Preload important images slightly staggered if needed, but for now just load defaults
+    this.loadImage('tamilnadu', 'tamilnaduImage');
+    this.loadImage('temple', 'templeImage');
+    this.loadImage('education', 'educationImage');
+    this.loadImage('honeymoon', 'honeymoonImage');
+    this.loadImage('mountain', 'mountainImage');
+    this.loadImage('party', 'partyImage');
+    this.loadImage('beach', 'beachImage');
+    this.loadImage('kanyakumari', 'kanyakumariImage');
+    this.loadImage('kodaikanal', 'kodaikanalImage');
+    this.loadImage('mahapalipuram', 'mahapalipuramImage');
+    this.loadImage('samayapuram', 'samayapuramImage');
+    this.loadImage('srirangam', 'srirangamImage');
   }
 
   fetchImage(imageName: string, property: keyof this) {
+    this.loadImage(imageName, property);
+  }
+
+  loadImage(imageName: string, property: keyof this) {
+    // Check if we already have a cached URL for this image
+    if (HomeComponent.imageCache.has(imageName)) {
+      (this as any)[property] = HomeComponent.imageCache.get(imageName);
+      return;
+    }
+
     this.imageService.getImageByName(imageName).subscribe({
       next: (response) => {
         const blob = new Blob([response], { type: response.type });
-        (this as any)[property] = URL.createObjectURL(blob);
+        const url = URL.createObjectURL(blob);
+        (this as any)[property] = url;
+
+        // Cache the URL
+        HomeComponent.imageCache.set(imageName, url);
       },
       error: (err) => {
         console.error(`Error fetching ${imageName} image:`, err);
