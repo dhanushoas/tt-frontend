@@ -132,6 +132,19 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.cost-tag {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: #4f46e5;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+}
+
 .info-section h6 {
     font-size: 0.9rem;
     font-weight: 700;

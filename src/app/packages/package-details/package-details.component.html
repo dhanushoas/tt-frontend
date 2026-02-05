@@ -16,29 +16,32 @@
 
     <!-- Content Grid -->
     <div class="container" *ngIf="!loading">
-        <!-- Special view for Temple Category -->
-        <div *ngIf="category === 'temple'" class="row g-4 mb-5">
-            <div *ngFor="let pkg of templePackages" class="col-12 col-xl-6">
+        <!-- Modern Dynamic Packages View -->
+        <div *ngIf="packages.length > 0" class="row g-4 mb-5">
+            <div *ngFor="let pkg of packages" class="col-12 col-xl-6">
                 <div class="package-itinerary-card shadow-sm h-100">
                     <div class="row g-0 h-100">
                         <div class="col-md-5">
                             <div class="itinerary-img-wrapper h-100">
-                                <img [src]="packageImages[pkg.image] || 'assets/temple-placeholder.jpg'"
+                                <img [src]="packageImages[pkg.image] || 'assets/package-placeholder.jpg'"
                                     alt="{{pkg.title}}" class="h-100 w-100 object-fit-cover">
                                 <div class="rating-badge"><i class="bi bi-star-fill text-warning"></i> {{pkg.rating}}.0
                                 </div>
+                                <div *ngIf="pkg.cost" class="cost-tag">{{pkg.cost}}</div>
                             </div>
                         </div>
                         <div class="col-md-7">
-                            <div class="p-4">
+                            <div class="p-4 d-flex flex-column h-100">
                                 <h4 class="fw-bold mb-3">{{pkg.title}}</h4>
 
-                                <div class="info-section mb-3">
+                                <div class="info-section mb-3"
+                                    *ngIf="pkg.placesCovered && pkg.placesCovered.length > 0">
                                     <h6><i class="bi bi-geo-alt-fill text-primary"></i> Places Covered</h6>
                                     <div class="d-flex flex-wrap gap-2">
                                         <span *ngFor="let place of pkg.placesCovered"
                                             class="badge bg-light text-dark border p-2">
-                                            {{place.name}} ({{place.description}})
+                                            {{place.name}} <small class="text-muted"
+                                                *ngIf="place.description">({{place.description}})</small>
                                         </span>
                                     </div>
                                 </div>
@@ -64,28 +67,41 @@
                 </div>
             </div>
 
-            <!-- Inclusions & Best Time Section -->
-            <div class="col-12 mt-5">
+            <!-- Inclusions & Metadata Section -->
+            <div class="col-12 mt-5" *ngIf="categoryInfo">
                 <div class="row g-4">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="info-card h-100 p-4 bg-white border-0 shadow-sm rounded-4">
-                            <h5 class="fw-bold mb-3 text-success border-bottom pb-2"><i
-                                    class="bi bi-calendar-check me-2"></i> Best Time to Visit</h5>
-                            <p class="mb-2"><strong>October to March</strong> – Pleasant weather for temple architecture
-                                exploration.</p>
-                            <p class="mb-0"><strong>Festival seasons</strong> – Panguni Uthiram, Thaipusam, Navaratri
-                                for a vibrant cultural experience.</p>
+                            <h5 class="fw-bold mb-3 text-success border-bottom pb-2">
+                                <i class="bi bi-calendar-check me-2"></i> Best Time to Visit
+                            </h5>
+                            <p class="mb-2"><strong>{{ categoryInfo.bestTime.period }}</strong></p>
+                            <p class="mb-0 small text-muted">{{ categoryInfo.bestTime.details }}</p>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="info-card h-100 p-4 bg-white border-0 shadow-sm rounded-4">
-                            <h5 class="fw-bold mb-3 text-info border-bottom pb-2"><i class="bi bi-box-seam me-2"></i>
-                                Package Includes</h5>
-                            <ul class="row row-cols-2 g-2 list-unstyled mb-0">
-                                <li><i class="bi bi-check2-circle text-success me-1"></i> Transport</li>
-                                <li><i class="bi bi-check2-circle text-success me-1"></i> Hotel stay</li>
-                                <li><i class="bi bi-check2-circle text-success me-1"></i> Temple darshan assistance</li>
-                                <li><i class="bi bi-check2-circle text-success me-1"></i> Food (optional)</li>
+                            <h5 class="fw-bold mb-3 text-info border-bottom pb-2">
+                                <i class="bi bi-box-seam me-2"></i> Package Includes
+                            </h5>
+                            <ul class="list-unstyled mb-0">
+                                <li *ngFor="let item of categoryInfo.inclusions" class="mb-1 small">
+                                    <i class="bi bi-check2-circle text-success me-2"></i> {{ item }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4" *ngIf="categoryInfo.extrasections && categoryInfo.extrasections.length > 0">
+                        <div class="info-card h-100 p-4 bg-white border-0 shadow-sm rounded-4">
+                            <h5 class="fw-bold mb-3 text-primary border-bottom pb-2">
+                                <i class="bi me-2"
+                                    [ngClass]="categoryInfo.extrasections[0].icon || 'bi-info-circle'"></i>
+                                {{ categoryInfo.extrasections[0].title }}
+                            </h5>
+                            <ul class="list-unstyled mb-0">
+                                <li *ngFor="let item of categoryInfo.extrasections[0].items" class="mb-1 small">
+                                    <i class="bi bi-arrow-right-short text-primary me-1"></i> {{ item }}
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -93,9 +109,9 @@
             </div>
         </div>
 
-        <!-- Default List for other categories or additional temple places -->
-        <h4 *ngIf="category === 'temple' && images.length > 0" class="mt-5 mb-4 fw-bold">Additional Destinations in {{
-            getFormattedCategory() }}</h4>
+        <!-- Default List for additional places -->
+        <h4 *ngIf="images.length > 0" class="mt-5 mb-4 fw-bold">Additional Destinations in {{ getFormattedCategory() }}
+        </h4>
 
         <div class="row g-4">
             <div *ngFor="let image of images" class="col-md-6 col-lg-4">
@@ -108,7 +124,7 @@
                         </div>
                     </div>
                     <div class="card-body p-4 text-center">
-                        <h5 class="card-title fw-bold">{{ image.name }}</h5>
+                        <h5 class="card-title fw-bold">{{ image.name | stripExtension }}</h5>
                         <p class="card-text text-muted small">Beautiful destination in {{ getFormattedCategory() }}</p>
 
                         <button class="btn w-100" [ngClass]="isSelected(image) ? 'btn-success' : 'btn-outline-primary'"
@@ -122,7 +138,7 @@
         </div>
 
         <!-- Empty State -->
-        <div *ngIf="images.length === 0 && !loading" class="text-center mt-5">
+        <div *ngIf="images.length === 0 && packages.length === 0 && !loading" class="text-center mt-5">
             <div class="alert alert-info d-inline-block">
                 <i class="bi bi-info-circle me-2"></i> No specific packages found for this category yet.
             </div>

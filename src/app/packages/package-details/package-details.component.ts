@@ -5,7 +5,7 @@ import { UserService } from '../../user/user.service';
 import { ToastService } from '../../toast.service';
 import { environment } from 'src/environments/environment';
 import { ImageService } from 'src/app/admin/admin-dashboard/image-upload/image.service';
-import { TEMPLE_PACKAGES, TemplePackage } from '../temple-packages.data';
+import { TourPackage, CategoryInfo, TEMPLE_PACKAGES, EDUCATION_PACKAGES, HONEYMOON_PACKAGES, PARTY_PACKAGES, CATEGORY_METADATA } from '../packages.data';
 
 @Component({
   selector: 'app-package-details',
@@ -18,7 +18,8 @@ export class PackageDetailsComponent implements OnInit {
   selectedPlaces: any[] = [];
   category: string = '';
   loading: boolean = true;
-  templePackages: TemplePackage[] = TEMPLE_PACKAGES;
+  packages: TourPackage[] = [];
+  categoryInfo: CategoryInfo | null = null;
   packageImages: { [key: string]: string } = {};
 
   constructor(
@@ -34,9 +35,7 @@ export class PackageDetailsComponent implements OnInit {
     this.route.queryParams.subscribe((params: any) => {
       if (params['category']) {
         this.category = params['category'].toLowerCase();
-        if (this.category === 'temple') {
-          this.loadTemplePackageImages();
-        }
+        this.loadCategoryData();
         this.getImages();
       } else {
         this.loading = false;
@@ -48,8 +47,6 @@ export class PackageDetailsComponent implements OnInit {
       this.visitService.getAllSelectedPlaces().subscribe(
         (response: any) => {
           if (response && response.success && response.selectedPlaces) {
-            // Depending on backend structure, it might be nested or direct array
-            // Adjusting based on previous knowledge of selectedPlace.js schema
             const places = response.selectedPlaces.selectedPlaces || [];
             this.selectedPlaces = places;
           }
@@ -57,6 +54,36 @@ export class PackageDetailsComponent implements OnInit {
         (error: any) => console.error(error)
       );
     }
+  }
+
+  loadCategoryData() {
+    this.categoryInfo = CATEGORY_METADATA[this.category] || null;
+
+    switch (this.category) {
+      case 'temple': this.packages = TEMPLE_PACKAGES; break;
+      case 'education': this.packages = EDUCATION_PACKAGES; break;
+      case 'honeymoon': this.packages = HONEYMOON_PACKAGES; break;
+      case 'party': this.packages = PARTY_PACKAGES; break;
+      default: this.packages = [];
+    }
+
+    if (this.packages.length > 0) {
+      this.loadPackageImages();
+    }
+  }
+
+  loadPackageImages() {
+    this.packages.forEach(pkg => {
+      this.imageService.getImageByName(pkg.image).subscribe({
+        next: (response: any) => {
+          const blob = new Blob([response], { type: response.type });
+          this.packageImages[pkg.image] = URL.createObjectURL(blob);
+        },
+        error: () => {
+          // Fallback or ignore
+        }
+      });
+    });
   }
 
   getImages(): void {
@@ -126,21 +153,7 @@ export class PackageDetailsComponent implements OnInit {
     return this.capitalizeFirstLetter(this.category);
   }
 
-  loadTemplePackageImages() {
-    this.templePackages.forEach(pkg => {
-      this.imageService.getImageByName(pkg.image).subscribe({
-        next: (response: any) => {
-          const blob = new Blob([response], { type: response.type });
-          this.packageImages[pkg.image] = URL.createObjectURL(blob);
-        },
-        error: () => {
-          // Fallback or ignore
-        }
-      });
-    });
-  }
-
-  addPackageToTrip(pkg: TemplePackage) {
+  addPackageToTrip(pkg: TourPackage) {
     const isLoggedIn = this.userService.getLoggedInUser() !== null;
     if (!isLoggedIn) {
       this.toastService.show('Please sign in to book packages.', 'info');
