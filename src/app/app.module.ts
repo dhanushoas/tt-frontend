@@ -36,6 +36,7 @@ import { SecureImagePipe } from './secure-image.pipe';
 import { ToastComponent } from './toast/toast.component';
 
 import { VerifyEmailComponent } from './user/verify-email/verify-email.component';
+import { HighlightPipe } from './highlight.pipe';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { VerifyEmailComponent } from './user/verify-email/verify-email.component
     SecureImagePipe,
     ToastComponent,
     VerifyEmailComponent,
+    HighlightPipe,
   ],
   imports: [
     BrowserModule,
