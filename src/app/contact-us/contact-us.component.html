@@ -1,62 +1,97 @@
-<section class="contact" id="contact">
-  <div class="container">
-      <div class="heading text-center">
-          <h2>Contact
-              <span> Us </span></h2>
-          <p>You're most welcome, it's my pleasure to assist. Should you require further information or support.
-              <br> please don't hesitate to contact-us.</p>
-      </div>
-      <div class="row">
-          <div class="col-md-5">
-              <div class="title">
-                  <h3>Contact Details</h3>
-                  <p></p>
-              </div>
-              <div class="content">
-                  <!-- Info-1 -->
-                  <div class="info">
-                      <i class="fas fa-mobile-alt"></i>
-                      <h4 class="d-inline-block">PHONE :
-                          <br><br>
-                          <span>+917708522584 , +918825686053</span></h4>
-                  </div>
-                  <!-- Info-2 -->
-                  <div class="info">
-                      <i class="far fa-envelope"></i>
-                      <h4 class="d-inline-block">GMAIL :
-                          <br><br>
-                          <span>tourism@info.com</span></h4>
-                  </div>
-                  <!-- Info-3 -->
-                  <div class="info">
-                      <i class="fas fa-map-marker-alt"></i>
-                      <h4 class="d-inline-block">ADDRESS :
-                        <br><br>
-                        <span>Head Office,Tamilnadu Tourism,Trichy</span></h4>
-                  </div>
-              </div>
-          </div>
+<section class="contact-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Get in <span>Touch</span></h2>
+            <p>We'd love to hear from you. Our team is always here to help.</p>
+        </div>
 
-          <div class="col-md-7">
+        <div class="contact-card">
+            <div class="row g-0">
+                <!-- Contact Info Side -->
+                <div class="col-lg-5">
+                    <div class="info-side">
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="bi bi-geo-alt-fill"></i>
+                            </div>
+                            <div class="info-content">
+                                <h4>Address</h4>
+                                <p>Head Office, Tamilnadu Tourism,<br>Trichy, Tamil Nadu.</p>
+                            </div>
+                        </div>
 
-              <form>
-                  <div class="row">
-                      <div class="col-sm-6">
-                          <input type="text" class="form-control" placeholder="Name">
-                      </div>
-                      <div class="col-sm-6">
-                          <input type="email" class="form-control" placeholder="Email">
-                      </div>
-                      <div class="col-sm-12">
-                          <input type="text" class="form-control" placeholder="Subject">
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <textarea class="form-control" rows="5" id="comment" placeholder="Message"></textarea>
-                  </div>
-                  <button class="btn btn-block" type="submit">Send Now!</button>
-              </form>
-          </div>
-      </div>
-  </div>
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="bi bi-telephone-fill"></i>
+                            </div>
+                            <div class="info-content">
+                                <h4>Phone</h4>
+                                <p>+91 77085 22584<br>+91 88256 86053</p>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="bi bi-envelope-fill"></i>
+                            </div>
+                            <div class="info-content">
+                                <h4>Email</h4>
+                                <p>tourism@info.com<br>support@tntourism.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form Side -->
+                <div class="col-lg-7">
+                    <div class="form-side">
+                        <h3 class="mb-4 fw-bold">Send us a Message</h3>
+
+                        <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label class="form-label text-muted small">Your Name</label>
+                                    <input type="text" class="form-control" name="name" [(ngModel)]="contactData.name"
+                                        required #name="ngModel"
+                                        [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}">
+                                    <div class="invalid-feedback">Name is required.</div>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label class="form-label text-muted small">Your Email</label>
+                                    <input type="email" class="form-control" name="email"
+                                        [(ngModel)]="contactData.email" required email #email="ngModel"
+                                        [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched)}">
+                                    <div class="invalid-feedback">Please enter a valid email.</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label text-muted small">Subject</label>
+                                <input type="text" class="form-control" name="subject" [(ngModel)]="contactData.subject"
+                                    required #subject="ngModel"
+                                    [ngClass]="{'is-invalid': subject.invalid && (subject.dirty || subject.touched)}">
+                                <div class="invalid-feedback">Subject is required.</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label text-muted small">Message</label>
+                                <textarea class="form-control" rows="5" name="message" [(ngModel)]="contactData.message"
+                                    required #message="ngModel"
+                                    [ngClass]="{'is-invalid': message.invalid && (message.dirty || message.touched)}"></textarea>
+                                <div class="invalid-feedback">Message cannot be empty.</div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary"
+                                [disabled]="contactForm.invalid || isSubmitting">
+                                <span *ngIf="!isSubmitting">Send Message <i class="bi bi-send-fill ms-2"></i></span>
+                                <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status"
+                                    aria-hidden="true"></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
