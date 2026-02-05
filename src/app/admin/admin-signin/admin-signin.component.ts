@@ -10,8 +10,9 @@ import { ToastService } from '../../toast.service';
   styleUrls: ['./admin-signin.component.css']
 })
 export class AdminSigninComponent implements OnInit {
-  showLoginForm: boolean = false;
   loginForm!: FormGroup;
+  isSubmitting: boolean = false;
+  showPassword: boolean = false;
 
   constructor(
     private adminService: AdminService,
@@ -42,28 +43,27 @@ export class AdminSigninComponent implements OnInit {
 
   login() {
     if (this.loginForm.valid) {
+      this.isSubmitting = true;
       const loginData = this.loginForm.value;
-      this.adminService.loginAdmin(loginData).subscribe(
-        (response: any) => {
+      this.adminService.loginAdmin(loginData).subscribe({
+        next: (response: any) => {
+          this.isSubmitting = false;
           if (response && response.authenticated) {
-            console.log('Signin admin:', response.adminname);
             this.toastService.show(`Login Successful. Welcome, ${response.adminname}!`, 'success');
-
-            // Store admin token and name
             this.adminService.setLoggedInAdmin(response.adminname, response.token);
-
-            // Navigate to the admin home page and replace history entry
             this.router.navigate(['/admin-home'], { replaceUrl: true });
           } else {
             this.toastService.show('Invalid credentials', 'danger');
           }
         },
-        (error: any) => {
+        error: (error: any) => {
+          this.isSubmitting = false;
           console.error('Admin login error:', error);
-          this.toastService.show('Invalid credentials', 'danger');
+          this.toastService.show('Invalid credentials or Server error', 'danger');
         }
-      );
+      });
     } else {
+      this.loginForm.markAllAsTouched();
       this.toastService.show('Please fill in all required fields correctly', 'warning');
     }
   }
@@ -73,8 +73,6 @@ export class AdminSigninComponent implements OnInit {
       this.adminService.signOut();
     });
   }
-
-  showPassword: boolean = false;
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
