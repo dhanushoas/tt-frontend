@@ -205,6 +205,13 @@ p.intro-text {
   background: white;
   margin-bottom: 15px;
   height: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.top-rated-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
 .top-rated-card .card-body {
