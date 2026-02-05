@@ -97,18 +97,46 @@ export class SignupComponent implements OnInit {
 
       await this.userService.registerUser(userData).toPromise();
 
-      this.showVerificationMessage = true;
+      // Show Verification check UI
+      this.registeredEmail = email;
+      this.showOtpInput = true; // reusing this flag to show the "Check Verification" section
+      this.toastService.show('Verification link sent! Check your email.', 'success');
       this.isLoading = false;
-      this.toastService.show('Account created successfully! Please check your email.', 'success');
-
-      // Redirect to signin after 3 seconds
-      setTimeout(() => {
-        this.router.navigate(['/signin']);
-      }, 5000);
 
     } catch (error: any) {
       console.error('Signup Error:', error);
       this.handleSignupError(error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async checkVerificationStatus(): Promise<void> {
+    this.isLoading = true;
+    const { email, password } = this.registerForm.value;
+
+    try {
+      // Attempt login to check if verified
+      const response: any = await this.userService.loginUser({
+        email: email,
+        password: password
+      }).toPromise();
+
+      if (response && response.authenticated) {
+        this.userService.setLoggedInUser(response.username, response.token);
+        this.toastService.show('Email verified! Logging in...', 'success');
+
+        setTimeout(() => {
+          this.router.navigate(['/home'], { replaceUrl: true });
+        }, 500);
+      }
+    } catch (error: any) {
+      if (error.status === 403) {
+        this.toastService.show('Email not verified yet. Please click the link in your email.', 'warning');
+      } else {
+        console.error('Verification Check Error:', error);
+        this.toastService.show('Verification check failed. Please try again.', 'danger');
+      }
     } finally {
       this.isLoading = false;
     }

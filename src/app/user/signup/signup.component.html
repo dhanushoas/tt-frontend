@@ -2,12 +2,13 @@
   <div class="auth-container">
     <div class="auth-card">
       <div class="auth-header">
-        <h1>Create Account</h1>
-        <p>Join us to explore Tamil Nadu Tourism</p>
+        <h1>{{ showOtpInput ? 'Verify Email' : 'Create Account' }}</h1>
+        <p>{{ showOtpInput ? 'We sent a verification link to your email' : 'Join us to explore Tamil Nadu Tourism' }}
+        </p>
       </div>
 
       <!-- Registration Form -->
-      <form [formGroup]="registerForm" (ngSubmit)="register()" class="auth-form">
+      <form *ngIf="!showOtpInput" [formGroup]="registerForm" (ngSubmit)="register()" class="auth-form">
 
         <!-- Email Field -->
         <div class="form-group">
@@ -76,11 +77,31 @@
         </div>
       </form>
 
-      <!-- Success Message -->
-      <div *ngIf="showVerificationMessage" class="alert alert-success mt-3" role="alert">
-        <i class="bi bi-check-circle-fill me-2"></i>
-        <strong>Account created successfully!</strong>
-        <p class="mb-0 mt-1">Please check your email to verify your account.</p>
+      <!-- Verification Check Section -->
+      <div *ngIf="showOtpInput" class="auth-form otp-section">
+        <div class="alert alert-success mb-4">
+          <i class="bi bi-envelope-check-fill me-2"></i> Verification link sent to <strong>{{ registeredEmail
+            }}</strong>
+        </div>
+
+        <p class="text-center text-muted mb-4">
+          Please click the link in the email we just sent you, then click the button below to continue.
+        </p>
+
+        <button type="button" class="btn btn-primary btn-block" (click)="checkVerificationStatus()"
+          [disabled]="isLoading">
+          <span *ngIf="!isLoading">
+            <i class="bi bi-check-circle"></i> I have verified my email
+          </span>
+          <span *ngIf="isLoading">
+            <span class="spinner-border spinner-border-sm me-2"></span> Checking...
+          </span>
+        </button>
+
+        <div class="auth-footer">
+          <a (click)="showOtpInput = false" class="auth-link text-muted"><i class="bi bi-arrow-left"></i> Back to
+            Signup</a>
+        </div>
       </div>
 
     </div>
