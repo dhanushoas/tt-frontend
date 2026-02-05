@@ -1,34 +1,209 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
+
 * {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  }
+  font-family: 'Outfit', sans-serif;
+}
 
-  button {
-    padding-right: 15px;
-    padding-left: 15px;
-    color: black;
-    border-radius: none;
-  }
+/* --- Hero Section & Google Search Style --- */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  margin-bottom: 3rem;
+}
 
-  p {
-    text-indent: 50px;
-    color: black;
-    font-size: large;
-  }
+.hero-img {
+  width: 100%;
+  height: 500px;
+  /* Fixed height for hero */
+  object-fit: cover;
+  border-radius: 20px;
+}
 
-  .img-thumbnail:hover {
-    transform: scale(1.1);
-    /* Increase the scale value for more zoom */
-    transition: transform 0.3s ease;
-  }
+.search-overlay {
+  background: rgba(0, 0, 0, 0.3);
+  /* Dark overlay */
+  backdrop-filter: blur(2px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+}
 
-  .btn.btn-warning:hover {
-    background-color: #0e0c09fa;
-    /* Change to the desired hover color */
-    color: azure;
-  }
-  .carousel-item img {
-    width: 400px;   /* Set a fixed width */
-    height: 300px;  /* Set a fixed height */
-    object-fit: cover;  /* Ensures images fill the dimensions without distortion */
-  }
-  
+.search-container {
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+}
+
+.google-search-bar {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 24px;
+  padding: 5px 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  height: 55px;
+}
+
+.google-search-bar:hover,
+.google-search-bar:focus-within {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.search-input {
+  border: none;
+  background: transparent;
+  flex: 1;
+  font-size: 1.1rem;
+  padding: 10px;
+  outline: none;
+  color: #333;
+}
+
+.search-btn-icon {
+  background: none;
+  border: none;
+  color: #4285f4;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 10px;
+  transition: transform 0.2s;
+}
+
+.search-btn-icon:hover {
+  transform: scale(1.1);
+}
+
+.suggestions-list {
+  position: absolute;
+  top: 65px;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  overflow: hidden;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  padding: 12px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.2s;
+  text-align: left;
+}
+
+.suggestion-item:hover,
+.suggestion-item.active {
+  background-color: #f1f3f4;
+}
+
+/* --- Typography & Content --- */
+h1 {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+p.intro-text {
+  text-indent: 0;
+  /* Modern style typically doesn't indent p */
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #555;
+  text-align: justify;
+  margin-bottom: 2rem;
+}
+
+/* --- Cards & Images --- */
+.package-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.package-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.package-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.package-card:hover .package-img {
+  transform: scale(1.05);
+  /* Subtle zoom */
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  padding: 20px;
+  color: white;
+  text-align: center;
+}
+
+.card-overlay h3 {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.card-overlay .badge-btn {
+  background: #ffc107;
+  color: #000;
+  font-weight: 600;
+  border: none;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+/* --- Carousel --- */
+.carousel-inner {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.top-rated-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 15px 15px 0 0;
+}
+
+.top-rated-card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  background: white;
+  margin-bottom: 15px;
+  height: 100%;
+}
+
+.top-rated-card .card-body {
+  padding: 1.5rem;
+}
