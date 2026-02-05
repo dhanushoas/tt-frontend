@@ -1,60 +1,51 @@
-<footer class="modern-footer">
-    <div class="footer-top">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="footer-brand mb-4">
-                        <h3 class="fw-bold"><span class="text-primary">TN</span> Tourism</h3>
-                        <p class="text-muted mt-3">Discover the soul-stirring journey of Tamil Nadu with our premium
-                            travel services. We've been crafting memories for over 20 years.</p>
-                    </div>
-                    <div class="social-links d-flex gap-3">
-                        <a href="#"><i class="bi bi-facebook"></i></a>
-                        <a href="#"><i class="bi bi-instagram"></i></a>
-                        <a href="#"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#"><i class="bi bi-youtube"></i></a>
-                    </div>
-                </div>
+<footer class="compact-footer">
+    <div class="container-fluid px-5">
+        <div class="footer-row d-flex flex-wrap justify-content-between align-items-start py-4">
 
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="fw-bold mb-4">PageLinks</h5>
-                    <ul class="footer-links list-unstyled">
-                        <li><a routerLink="/home"><i class="bi bi-house-door me-2"></i>Home</a></li>
-                        <li><a routerLink="/contact-us"><i class="bi bi-telephone me-2"></i>Contact-Us</a></li>
-                        <li><a routerLink="/about-us"><i class="bi bi-info-circle me-2"></i>About-Us</a></li>
-                        <li><a routerLink="/admin-signin"><i class="bi bi-person-badge me-2"></i>Admin</a></li>
-                    </ul>
-                </div>
+            <!-- Brand Section -->
+            <div class="footer-col col-brand">
+                <h6 class="footer-title">TN Tourism</h6>
+                <p class="footer-text">Discover the soul-stirring journey of Tamil Nadu with our premium travel
+                    services. We've been crafting memories for over 20 years.</p>
+            </div>
 
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="fw-bold mb-4">Services</h5>
-                    <ul class="footer-links list-unstyled">
-                        <li><a routerLink="/food-service"><i class="bi bi-egg-fried me-2"></i>Food Service</a></li>
-                        <li><a routerLink="/bus-service"><i class="bi bi-bus-front me-2"></i>Bus Service</a></li>
-                        <li><a routerLink="/customer-service"><i class="bi bi-headset me-2"></i>Customer Service</a>
-                        </li>
-                    </ul>
-                </div>
+            <!-- PageLinks Section -->
+            <div class="footer-col col-links">
+                <h6 class="footer-title">PageLinks</h6>
+                <nav class="footer-nav">
+                    <a routerLink="/home">Home</a>
+                    <a routerLink="/contact-us">Contact-Us</a>
+                    <a routerLink="/about-us">About-Us</a>
+                    <a routerLink="/admin-signin">Admin</a>
+                </nav>
+            </div>
 
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="fw-bold mb-4">Subscribe</h5>
-                    <p class="text-muted small">Enter your email to get latest updates.</p>
-                    <div class="input-group mt-3">
-                        <input type="email" class="form-control" placeholder="Enter Email Address" [(ngModel)]="email">
-                        <button class="btn btn-primary px-3" (click)="subscribe()" [disabled]="isSubmitting">
-                            <span *ngIf="!isSubmitting"><i class="bi bi-send"></i></span>
-                            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm"></span>
-                        </button>
-                    </div>
+            <!-- Services Section -->
+            <div class="footer-col col-services">
+                <h6 class="footer-title">Services</h6>
+                <nav class="footer-nav">
+                    <a routerLink="/food-service">Food Service</a>
+                    <a routerLink="/bus-service">Bus Service</a>
+                    <a routerLink="/customer-service">Customer Service</a>
+                </nav>
+            </div>
+
+            <!-- Subscribe Section -->
+            <div class="footer-col col-subscribe">
+                <h6 class="footer-title">Subscribe</h6>
+                <p class="footer-text mb-2">Enter your email to get latest updates.</p>
+                <div class="subscribe-form">
+                    <input type="email" class="sub-input" placeholder="Enter Email Address" [(ngModel)]="email">
+                    <button class="sub-btn" (click)="subscribe()" [disabled]="isSubmitting">
+                        <span *ngIf="!isSubmitting">Join</span>
+                        <div *ngIf="isSubmitting" class="spinner-border spinner-border-sm"></div>
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="footer-bottom text-center">
-        <div class="container border-top py-4">
-            <p class="m-0 text-muted small">&copy; 2026 Tamilnadu Tourism. All Rights Reserved. Designed with <i
-                    class="bi bi-heart-fill text-danger mx-1"></i> for explorers.</p>
+        <div class="footer-bottom text-center py-2 border-top">
+            <small class="text-muted">&copy; 2026 Tamilnadu Tourism. All explorers welcome.</small>
         </div>
     </div>
 </footer>
