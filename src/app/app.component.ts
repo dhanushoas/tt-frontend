@@ -10,4 +10,19 @@ import { switchMap, startWith, takeUntil } from 'rxjs/operators';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+  showNavbar: boolean = true;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe((val) => {
+      if (this.router.url === '/signin' || this.router.url === '/signup' || this.router.url.includes('admin/signin') || this.router.url.includes('admin/signup')) {
+        this.showNavbar = false;
+      } else {
+        this.showNavbar = true;
+      }
+    });
+  }
+
+  ngOnInit() {
+  }
+}

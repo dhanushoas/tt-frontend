@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<app-navbar *ngIf="showNavbar"></app-navbar>
 <router-outlet></router-outlet>
 <app-toast></app-toast>
-<app-follow-us></app-follow-us>
+<app-follow-us *ngIf="showNavbar"></app-follow-us>
