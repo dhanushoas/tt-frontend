@@ -1,0 +1,64 @@
+<div class="package-container">
+    <!-- Header -->
+    <div class="header-section text-center">
+        <h1 class="display-4 fw-bold text-primary mb-3">{{ getFormattedCategory() }} Packages</h1>
+        <p class="lead text-muted">Explore our curated list of destinations for your {{ getFormattedCategory() }} trip.
+        </p>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="text-center mt-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Fetching best places for you...</p>
+    </div>
+
+    <!-- Content Grid -->
+    <div class="container" *ngIf="!loading">
+        <div class="row g-4">
+            <div *ngFor="let image of images" class="col-md-6 col-lg-4">
+                <div class="place-card h-100">
+                    <div class="img-wrapper">
+                        <img [src]="getImageUrl(image.name) | secureImage | async" class="card-img-top"
+                            alt="{{ image.name }}">
+                        <div class="overlay" *ngIf="isSelected(image)">
+                            <i class="bi bi-check-circle-fill text-success fs-1"></i>
+                        </div>
+                    </div>
+                    <div class="card-body p-4 text-center">
+                        <h5 class="card-title fw-bold">{{ image.name }}</h5>
+                        <p class="card-text text-muted small">Beautiful destination in {{ getFormattedCategory() }}</p>
+
+                        <button class="btn w-100" [ngClass]="isSelected(image) ? 'btn-success' : 'btn-outline-primary'"
+                            (click)="addtoCartAndStore(image)" [disabled]="isSelected(image)">
+                            <i class="bi" [ngClass]="isSelected(image) ? 'bi-check-lg' : 'bi-plus-lg'"></i>
+                            {{ isSelected(image) ? 'Added to Trip' : 'Add to Trip' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="images.length === 0 && !loading" class="text-center mt-5">
+            <div class="alert alert-info d-inline-block">
+                <i class="bi bi-info-circle me-2"></i> No specific packages found for this category yet.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Action Bar (Visible when items selected) -->
+<div class="fixed-bottom bg-white shadow-lg p-3 d-flex justify-content-between align-items-center"
+    *ngIf="selectedPlaces.length > 0">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div>
+            <h5 class="m-0 fw-bold">{{ selectedPlaces.length }} Place(s) Selected</h5>
+            <small class="text-muted">Ready to customize your journey?</small>
+        </div>
+        <button class="btn btn-primary btn-lg px-5 shadow" (click)="proceedToBooking()">
+            Proceed to Booking <i class="bi bi-arrow-right ms-2"></i>
+        </button>
+    </div>
+</div>

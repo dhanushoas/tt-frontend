@@ -54,7 +54,7 @@
   <div class="row">
     <!-- Devotional -->
     <div class="col-md-6">
-      <div class="package-card">
+      <div class="package-card" routerLink="/packages" [queryParams]="{category: 'temple'}">
         <img *ngIf="templeImage" [src]="templeImage" class="package-img" alt="Temple">
         <div class="card-overlay">
           <h3>Devotional Packages</h3>
@@ -65,7 +65,7 @@
 
     <!-- Educational -->
     <div class="col-md-6">
-      <div class="package-card">
+      <div class="package-card" routerLink="/packages" [queryParams]="{category: 'education'}">
         <img *ngIf="educationImage" [src]="educationImage" class="package-img" alt="Education">
         <div class="card-overlay">
           <h3>Educational Packages</h3>
@@ -78,7 +78,7 @@
   <div class="row mt-3">
     <!-- Honeymoon -->
     <div class="col-md-4">
-      <div class="package-card">
+      <div class="package-card" routerLink="/packages" [queryParams]="{category: 'honeymoon'}">
         <img *ngIf="honeymoonImage" [src]="honeymoonImage" class="package-img" alt="Honeymoon">
         <div class="card-overlay">
           <h3>Honeymoon</h3>
@@ -89,7 +89,7 @@
 
     <!-- Nature -->
     <div class="col-md-4">
-      <div class="package-card">
+      <div class="package-card" routerLink="/packages" [queryParams]="{category: 'mountain'}">
         <img *ngIf="mountainImage" [src]="mountainImage" class="package-img" alt="Nature">
         <div class="card-overlay">
           <h3>Nature</h3>
@@ -100,7 +100,7 @@
 
     <!-- DJ / Party -->
     <div class="col-md-4">
-      <div class="package-card">
+      <div class="package-card" routerLink="/packages" [queryParams]="{category: 'party'}">
         <img *ngIf="partyImage" [src]="partyImage" class="package-img" alt="Party">
         <div class="card-overlay">
           <h3>DJ Packages</h3>

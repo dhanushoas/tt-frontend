@@ -19,6 +19,7 @@ import { AllBookingsComponent } from './admin/admin-dashboard/all-bookings/all-b
 import { AllPaymentsComponent } from './admin/admin-dashboard/all-payments/all-payments.component';
 import { ImagesByLocationComponent } from './admin/admin-dashboard/images-by-location/images-by-location.component';
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
+import { PackageDetailsComponent } from './packages/package-details/package-details.component';
 
 import { authGuard } from './auth.guard';
 
@@ -43,6 +44,7 @@ const routes: Routes = [
   { path: 'getall', component: GetallComponent, canActivate: [authGuard] },
   { path: 'post', component: PostComponent, canActivate: [authGuard] },
   { path: 'booking-view', component: BookingViewComponent, canActivate: [authGuard] },
+  { path: 'packages', component: PackageDetailsComponent, canActivate: [authGuard] },
 ];
 
 @NgModule({
