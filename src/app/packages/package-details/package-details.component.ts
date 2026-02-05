@@ -4,6 +4,8 @@ import { VisitService } from '../../tamilnadu/visit.service';
 import { UserService } from '../../user/user.service';
 import { ToastService } from '../../toast.service';
 import { environment } from 'src/environments/environment';
+import { ImageService } from 'src/app/admin/admin-dashboard/image-upload/image.service';
+import { TEMPLE_PACKAGES, TemplePackage } from '../temple-packages.data';
 
 @Component({
   selector: 'app-package-details',
@@ -16,19 +18,25 @@ export class PackageDetailsComponent implements OnInit {
   selectedPlaces: any[] = [];
   category: string = '';
   loading: boolean = true;
+  templePackages: TemplePackage[] = TEMPLE_PACKAGES;
+  packageImages: { [key: string]: string } = {};
 
   constructor(
     private visitService: VisitService,
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private imageService: ImageService
   ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: any) => {
       if (params['category']) {
         this.category = params['category'].toLowerCase();
+        if (this.category === 'temple') {
+          this.loadTemplePackageImages();
+        }
         this.getImages();
       } else {
         this.loading = false;
@@ -116,6 +124,60 @@ export class PackageDetailsComponent implements OnInit {
   getFormattedCategory(): string {
     if (this.category === 'party') return 'DJ & Party';
     return this.capitalizeFirstLetter(this.category);
+  }
+
+  loadTemplePackageImages() {
+    this.templePackages.forEach(pkg => {
+      this.imageService.getImageByName(pkg.image).subscribe({
+        next: (response: any) => {
+          const blob = new Blob([response], { type: response.type });
+          this.packageImages[pkg.image] = URL.createObjectURL(blob);
+        },
+        error: () => {
+          // Fallback or ignore
+        }
+      });
+    });
+  }
+
+  addPackageToTrip(pkg: TemplePackage) {
+    const isLoggedIn = this.userService.getLoggedInUser() !== null;
+    if (!isLoggedIn) {
+      this.toastService.show('Please sign in to book packages.', 'info');
+      this.router.navigate(['/signin']);
+      return;
+    }
+
+    const username = this.userService.getLoggedInUser();
+    const placesToStore = pkg.placesCovered.map((p: any) => p.name);
+
+    // Filter out places already selected
+    const newPlaces = placesToStore.filter((name: string) => !this.selectedPlaces.some(sp => sp.name === name));
+
+    if (newPlaces.length === 0) {
+      this.toastService.show('All places in this package are already in your list.', 'info');
+      return;
+    }
+
+    // Add to local UI
+    newPlaces.forEach((name: string) => {
+      this.selectedPlaces.push({ name, location: this.category, username });
+    });
+
+    // Store in backend
+    this.visitService.storeSelectedPlaces({
+      username,
+      location: this.category,
+      selectedPlaces: newPlaces
+    }).subscribe({
+      next: () => {
+        this.toastService.show(`Shared places from "${pkg.title}" added!`, 'success');
+      },
+      error: (err: any) => {
+        console.error(err);
+        this.toastService.show('Error adding package places.', 'danger');
+      }
+    });
   }
 
   getImageUrl(imageName: string): string {

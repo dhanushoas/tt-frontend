@@ -99,3 +99,85 @@
         transform: translateY(0);
     }
 }
+
+/* Temple Itinerary Specific Styles */
+.package-itinerary-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    border: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.package-itinerary-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+.itinerary-img-wrapper {
+    position: relative;
+    min-height: 300px;
+}
+
+.rating-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #333;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.info-section h6 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.75rem;
+}
+
+.highlights-list {
+    padding-left: 1.2rem;
+    color: #666;
+}
+
+.highlights-list li {
+    margin-bottom: 0.25rem;
+}
+
+.duration-tag {
+    background: #f0f7ff;
+    color: #0056b3;
+    padding: 6px 15px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.info-card {
+    transition: transform 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-3px);
+}
+
+.info-card ul li {
+    font-size: 0.95rem;
+    color: #555;
+    padding: 5px 0;
+}
+
+.rounded-4 {
+    border-radius: 1.25rem !important;
+}
+
+@media (max-width: 768px) {
+    .itinerary-img-wrapper {
+        min-height: 200px;
+    }
+}
