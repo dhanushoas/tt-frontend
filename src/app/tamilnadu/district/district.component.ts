@@ -40,7 +40,7 @@ export class DistrictComponent implements OnInit {
           this.images = data.map((image: { name: string }) => ({
             ...image,
             fileName: image.name, // Original for URL
-            name: this.capitalizeFirstLetter(image.name.replace(/\.[^/.]+$/, "")) // Stripped for UI
+            name: this.capitalizeFirstLetter(image.name.replace(/\.(jpg|jpeg|png|gif|webp|bmp|JPG|JPEG|PNG|GIF|WEBP|BMP)$/, "") || image.name) // Stripped for UI
           }));
         } else {
           this.redirectToHome(); // If no images, redirect

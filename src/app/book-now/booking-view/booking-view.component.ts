@@ -23,26 +23,26 @@ export class BookingViewComponent implements OnInit {
 
   selectedPlaces: SelectedPlace[] = [];
 
-  constructor(private visitService: VisitService, private router: Router, private imageService: ImageService) {}
+  constructor(private visitService: VisitService, private router: Router, private imageService: ImageService) { }
 
   ngOnInit() {
     this.fetchImage('empty', 'emptyImage');
     this.refreshSelectedPlaces();
   }
 
-   emptyImage: string = ''; 
-  
-    fetchImage(imageName: string, property: keyof this) {
-      this.imageService.getImageByName(imageName).subscribe({
-        next: (response) => {
-          const blob = new Blob([response], { type: response.type });
-          (this as any)[property] = URL.createObjectURL(blob);
-        },
-        error: (err) => {
-          console.error(`Error fetching ${imageName} image:`, err);
-        }
-      });
-    }
+  emptyImage: string = '';
+
+  fetchImage(imageName: string, property: keyof this) {
+    this.imageService.getImageByName(imageName).subscribe({
+      next: (response) => {
+        const blob = new Blob([response], { type: response.type });
+        (this as any)[property] = URL.createObjectURL(blob);
+      },
+      error: (err) => {
+        console.error(`Error fetching ${imageName} image:`, err);
+      }
+    });
+  }
 
   refreshSelectedPlaces(): void {
     this.visitService.getAllSelectedPlaces().subscribe(
@@ -50,7 +50,7 @@ export class BookingViewComponent implements OnInit {
         if (response.success) {
           const places = response.selectedPlaces?.selectedPlaces || [];
           this.selectedPlaces = places.map((place: any) => ({
-            name: place.name,
+            name: place.name.replace(/\.(jpg|jpeg|png|gif|webp|bmp|JPG|JPEG|PNG|GIF|WEBP|BMP)$/, "") || place.name,
             location: this.capitalizeFirstLetter(place.location)
           }));
           console.log('Fetched places by logged-in username:', this.selectedPlaces);
@@ -84,7 +84,7 @@ export class BookingViewComponent implements OnInit {
       }
     );
   }
-  
+
 
   confirmBooking(): void {
     if (this.selectedPlaces.length > 0) {

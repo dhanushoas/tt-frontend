@@ -52,7 +52,11 @@ export class PostComponent implements OnInit {
         if (response.success) {
           const selectedPlacesArray = response.selectedPlaces.selectedPlaces || [];
           const selectedPlaceNames = Array.isArray(selectedPlacesArray)
-            ? selectedPlacesArray.map((place: any) => place.name.replace(/\.[^/.]+$/, ""))
+            ? selectedPlacesArray.map((item: any) => {
+              const name = typeof item === 'object' ? item.name : item;
+              // Double protection: strip extensions case-insensitively
+              return name.replace(/\.(jpg|jpeg|png|gif|webp|bmp|JPG|JPEG|PNG|GIF|WEBP|BMP)$/, "") || name;
+            })
             : [];
 
           this.bookForm.get('visitingPlaces')?.setValue(selectedPlaceNames.join(', '));
