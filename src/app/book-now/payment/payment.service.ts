@@ -17,8 +17,8 @@ export class PaymentService {
     return this.http.post<any>(`${this.baseUrl}/pay/api/payments`, paymentDetails);
   }
 
-  getPaidIds(): Observable<number[]> {
-    return this.http.get<number[]>(`${this.baseUrl}/pay/api/payments/paidIds`);
+  getPaidIds(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.baseUrl}/pay/api/payments/paidIds`);
   }
 
   getAllPayments(): Observable<any> {

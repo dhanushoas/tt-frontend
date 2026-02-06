@@ -13,9 +13,9 @@ import { ToastService } from 'src/app/toast.service';
 export class ViewComponent implements OnInit {
 
   book: Book = new Book();
-  customId: number;
+  customId: string;
   paymentSuccess: boolean = false;
-  paidIds: Set<number> = new Set<number>();
+  paidIds: Set<string> = new Set<string>();
 
   constructor(
     private bookService: BookService,
@@ -26,7 +26,7 @@ export class ViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.customId = +this.active.snapshot.params['customId'];
+    this.customId = this.active.snapshot.params['customId'];
 
     this.bookService.getBookByCustomId(this.customId).subscribe(
       (book: Book) => {
@@ -40,7 +40,7 @@ export class ViewComponent implements OnInit {
     // Load paid IDs from localStorage
     const storedPaidIds = localStorage.getItem('paidIds');
     if (storedPaidIds) {
-      this.paidIds = new Set<number>(JSON.parse(storedPaidIds));
+      this.paidIds = new Set<string>(JSON.parse(storedPaidIds));
     }
 
     // Check if the ID has already been paid for
@@ -54,14 +54,14 @@ export class ViewComponent implements OnInit {
     this.router.navigate(['getall']);
   }
 
-  makePayment(customId: number): void {
+  makePayment(customId: string): void {
     if (this.paidIds.has(customId)) {
       this.toastService.show('You have already paid for this ID.', 'info');
       this.paymentSuccess = true;
     } else {
       // Check if the payment date exists for the custom ID
       this.paymentService.getPaidIds().subscribe(
-        (paidIds: number[]) => {
+        (paidIds: string[]) => {
           if (paidIds.includes(customId)) {
             this.toastService.show('You have already paid for this ID.', 'info');
             this.paymentSuccess = true;

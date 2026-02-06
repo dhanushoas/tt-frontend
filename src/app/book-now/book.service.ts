@@ -21,15 +21,15 @@ export class BookService {
     return this.http.post<Book>(`${this.baseUrl}/book/add`, book);
   }
 
-  getBookByCustomId(customId: number): Observable<Book> {
+  getBookByCustomId(customId: string): Observable<Book> {
     return this.http.get<Book>(`${this.baseUrl}/book/getByCustomId/${customId}`);
   }
 
-  updateBook(customId: number, book: Book): Observable<Book> {
+  updateBook(customId: string, book: Book): Observable<Book> {
     return this.http.put<Book>(`${this.baseUrl}/book/update/${customId}`, book);
   }
 
-  removeBook(customId: number): Observable<Book> {
+  removeBook(customId: string): Observable<Book> {
     return this.http.delete<Book>(`${this.baseUrl}/book/delete/${customId}`);
   }
 

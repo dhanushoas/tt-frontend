@@ -38,11 +38,11 @@ export class GetallComponent implements OnInit {
     }
   }
 
-  gotoUpdate(customId: number): void {
+  gotoUpdate(customId: string): void {
     this.router.navigate(['update', customId]);
   }
 
-  gotoDelete(customId: number): void {
+  gotoDelete(customId: string): void {
     this.bookService.removeBook(customId).subscribe(
       () => {
         console.log('Book Deleted Successfully');
@@ -54,7 +54,7 @@ export class GetallComponent implements OnInit {
     );
   }
 
-  gotoGet(customId: number): void {
+  gotoGet(customId: string): void {
     if (customId) {
       this.router.navigate(['view', customId]);
     } else {
@@ -87,7 +87,7 @@ export class GetallComponent implements OnInit {
     return !!localStorage.getItem(`checkin_${booking.customId}`);
   }
 
-  gotoPayment(customId: number): void {
+  gotoPayment(customId: string): void {
     console.log(`Initiating payment for customId: ${customId}`);
     this.router.navigate(['/payment']);
   }

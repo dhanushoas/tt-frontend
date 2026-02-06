@@ -17,7 +17,7 @@ export class UpdateComponent implements OnInit {
     private bookService: BookService,
     private active: ActivatedRoute,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getBookByCustomId();
@@ -27,7 +27,7 @@ export class UpdateComponent implements OnInit {
     const customId = this.active.snapshot.params['customId'];
 
     if (customId) {
-      this.bookService.getBookByCustomId(Number(customId)).subscribe(
+      this.bookService.getBookByCustomId(customId).subscribe(
         (book: Book) => {
           this.book = book;
         },
