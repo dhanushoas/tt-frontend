@@ -111,85 +111,64 @@
   background-color: #f1f3f4;
 }
 
-/* --- Typography & Content --- */
-h1 {
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-
-p.intro-text {
-  text-indent: 0;
-  /* Modern style typically doesn't indent p */
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: #555;
-  text-align: justify;
-  margin-bottom: 2rem;
-}
-
-/* --- Cards & Images --- */
-.package-card {
+/* --- Carousel Styling --- */
+.carousel-container {
   position: relative;
   overflow: hidden;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin-bottom: 20px;
+  padding: 10px 0;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 30px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  padding: 10px 0 30px;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari and Opera */
+}
+
+.carousel-nav-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid tomato;
+  background: white;
+  color: tomato;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.nav-btn:hover {
+  background: tomato;
+  color: white;
+  box-shadow: 0 4px 12px rgba(255, 99, 71, 0.3);
+}
+
+.top-rated-card-wrapper {
+  flex: 0 0 350px;
+  /* Fixed width for carousel items */
+  text-decoration: none;
   cursor: pointer;
 }
 
-.package-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-}
-
-.package-img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.package-card:hover .package-img {
-  transform: scale(1.05);
-  /* Subtle zoom */
-}
-
-.card-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-  padding: 20px;
-  color: white;
-  text-align: center;
-}
-
-.card-overlay h3 {
-  font-size: 1.5rem;
-  margin-bottom: 5px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.card-overlay .badge-btn {
-  background: #ffc107;
-  color: #000;
-  font-weight: 600;
-  border: none;
-  padding: 5px 15px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-}
-
-/* --- Top Rated Packages Section --- */
-.top-rated-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 30px;
-  margin-top: 20px;
-}
-
+/* --- Card Styling --- */
 .modern-top-card {
   background: white;
   border-radius: 24px;
@@ -198,11 +177,6 @@ p.intro-text {
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   height: 100%;
   border: 1px solid #f1f5f9;
-}
-
-.top-rated-card-wrapper {
-  text-decoration: none;
-  cursor: pointer;
 }
 
 .top-rated-card-wrapper:hover .modern-top-card {
@@ -296,13 +270,67 @@ p.intro-text {
   transform: translateX(5px);
 }
 
-@media (max-width: 576px) {
-  .top-rated-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+/* --- Package Section Styling --- */
+.package-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.package-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.package-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  padding: 20px;
+  color: white;
+  text-align: center;
+}
+
+.badge-btn {
+  background: #ffc107;
+  color: #000;
+  font-weight: 600;
+  border: none;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+h1 {
+  font-weight: 700;
+}
+
+.intro-text {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #555;
+  text-align: justify;
+}
+
+@media (max-width: 768px) {
+  .top-rated-card-wrapper {
+    flex: 0 0 300px;
   }
 
-  .card-img-box {
-    height: 200px;
+  .hero-img {
+    height: 350px;
   }
 }

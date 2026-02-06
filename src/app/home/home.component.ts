@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { VisitService } from '../tamilnadu/visit.service';
 import { ImageService } from '../admin/admin-dashboard/image-upload/image.service';
@@ -10,7 +10,7 @@ import { LanguageService } from '../services/language.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   searchText: string = '';
   districts: string[] = [
     'Ariyalur', 'Chengalpattu', 'Chennai', 'Coimbatore', 'Cuddalore', 'Dharmapuri',
@@ -22,6 +22,63 @@ export class HomeComponent {
   ];
   filteredDistricts: string[] = [];
   selectedIndex: number = -1;
+
+  topRatedPackages = [
+    {
+      name: 'Marinabeach',
+      location: 'Chennai',
+      district: 'chennai',
+      category: 'COASTAL',
+      description: "India's longest and world's second longest beach along the Bay of Bengal.",
+      rating: 4.9,
+      imageKey: 'beach'
+    },
+    {
+      name: 'Kanyakumari',
+      location: 'Kanyakumari',
+      district: 'kanyakumari',
+      category: 'LANDS END',
+      description: 'The only place in India where you can observe sunrise and sunset at the same beach.',
+      rating: 4.8,
+      imageKey: 'kanyakumari'
+    },
+    {
+      name: 'Kodaikanal',
+      location: 'Dindigul',
+      district: 'dindigul',
+      category: 'HILL STATION',
+      description: 'One of the very popular holiday destination hill resorts in South India.',
+      rating: 4.7,
+      imageKey: 'kodaikanal'
+    },
+    {
+      name: 'Mahapalipuram',
+      location: 'Chengalpattu',
+      district: 'chengalpattu',
+      category: 'HERITAGE',
+      description: 'The World Heritage Site of 7th- and 8th-century Hindu Group of Monuments.',
+      rating: 4.9,
+      imageKey: 'mahapalipuram'
+    },
+    {
+      name: 'Srirangam Temple',
+      location: 'Tiruchirappalli',
+      district: 'tiruchirappalli',
+      category: 'SPIRITUAL',
+      description: 'The largest functioning Hindu temple in the world with stunning architecture.',
+      rating: 4.9,
+      imageKey: 'srirangam'
+    },
+    {
+      name: 'Ooty Lake',
+      location: 'Nilgiris',
+      district: 'nilgiris',
+      category: 'NATURE',
+      description: 'An artificial lake located in the heart of Ooty, surrounded by Nilgiri hills.',
+      rating: 4.8,
+      imageKey: 'ooty_lake'
+    }
+  ];
 
   constructor(private router: Router,
     private visitService: VisitService,
@@ -84,40 +141,35 @@ export class HomeComponent {
   honeymoonImage: string = '';
   mountainImage: string = '';
   partyImage: string = '';
-  beachImage: string = '';
-  kanyakumariImage: string = '';
-  kodaikanalImage: string = '';
-  mahapalipuramImage: string = '';
-  samayapuramImage: string = '';
-  srirangamImage: string = '';
 
-  // Static cache to store object URLs across component instances
+  // Carousel related properties
+  carouselImages: any = {};
+  currentScrollPosition: number = 0;
+
   private static imageCache = new Map<string, string>();
 
   ngOnInit(): void {
-    // Preload important images slightly staggered if needed, but for now just load defaults
     this.loadImage('tamilnadu', 'tamilnaduImage');
     this.loadImage('temple', 'templeImage');
     this.loadImage('education', 'educationImage');
     this.loadImage('honeymoon', 'honeymoonImage');
     this.loadImage('mountain', 'mountainImage');
     this.loadImage('party', 'partyImage');
-    this.loadImage('beach', 'beachImage');
-    this.loadImage('kanyakumari', 'kanyakumariImage');
-    this.loadImage('kodaikanal', 'kodaikanalImage');
-    this.loadImage('mahapalipuram', 'mahapalipuramImage');
-    this.loadImage('samayapuram', 'samayapuramImage');
-    this.loadImage('srirangam', 'srirangamImage');
+
+    // Load top rated images
+    this.topRatedPackages.forEach(pkg => {
+      this.loadImage(pkg.imageKey, pkg.imageKey as any, true);
+    });
   }
 
-  fetchImage(imageName: string, property: keyof this) {
-    this.loadImage(imageName, property);
-  }
-
-  loadImage(imageName: string, property: keyof this) {
-    // Check if we already have a cached URL for this image
+  loadImage(imageName: string, property: keyof this, isCarousel: boolean = false) {
     if (HomeComponent.imageCache.has(imageName)) {
-      (this as any)[property] = HomeComponent.imageCache.get(imageName);
+      const url = HomeComponent.imageCache.get(imageName);
+      if (isCarousel) {
+        this.carouselImages[imageName] = url;
+      } else {
+        (this as any)[property] = url;
+      }
       return;
     }
 
@@ -125,9 +177,11 @@ export class HomeComponent {
       next: (response) => {
         const blob = new Blob([response], { type: response.type });
         const url = URL.createObjectURL(blob);
-        (this as any)[property] = url;
-
-        // Cache the URL
+        if (isCarousel) {
+          this.carouselImages[imageName] = url;
+        } else {
+          (this as any)[property] = url;
+        }
         HomeComponent.imageCache.set(imageName, url);
       },
       error: (err) => {
@@ -136,4 +190,15 @@ export class HomeComponent {
     });
   }
 
+  scrollCarousel(direction: 'left' | 'right') {
+    const container = document.querySelector('.carousel-track') as HTMLElement;
+    if (!container) return;
+
+    const scrollAmount = 350; // Approximated card width + gap
+    if (direction === 'left') {
+      container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    } else {
+      container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  }
 }

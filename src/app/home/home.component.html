@@ -114,89 +114,39 @@
 
 <div id="explore" class="top-rated-section py-5">
   <div class="container-fluid px-lg-5">
-    <div class="d-flex justify-content-between align-items-end mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-5">
       <div>
         <h2 class="section-title mb-0" style="color: tomato">{{ langService.translate('TOP_RATED') }} <span
             class="text-dark">{{ langService.translate('PACKAGES') }}</span></h2>
         <p class="text-muted mb-0">{{ langService.translate('HANDPICKED') }}</p>
       </div>
-      <div class="carousel-nav-buttons d-none d-md-flex">
-        <!-- Custom navigators if needed, but we'll use a grid/scroll for now -->
+      <div class="carousel-nav-buttons">
+        <button class="nav-btn left" (click)="scrollCarousel('left')">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class="nav-btn right" (click)="scrollCarousel('right')">
+          <i class="bi bi-chevron-right"></i>
+        </button>
       </div>
     </div>
 
-    <div class="top-rated-grid">
-      <!-- Chennai -->
-      <div class="top-rated-card-wrapper" routerLink="/district" [queryParams]="{location: 'chennai'}">
-        <div class="modern-top-card">
-          <div class="card-img-box">
-            <img *ngIf="beachImage" [src]="beachImage" alt="Beach">
-            <div class="rating-badge"><i class="bi bi-star-fill"></i> 4.9</div>
-          </div>
-          <div class="card-content">
-            <div class="category">COASTAL</div>
-            <h4>Marinabeach</h4>
-            <p>India's longest and world's second longest beach along the Bay of Bengal.</p>
-            <div class="card-footer-meta">
-              <span><i class="bi bi-geo-alt"></i> Chennai</span>
-              <span class="view-btn">Explore <i class="bi bi-arrow-right"></i></span>
+    <div class="carousel-container">
+      <div class="carousel-track">
+        <div *ngFor="let pkg of topRatedPackages" class="top-rated-card-wrapper" routerLink="/district"
+          [queryParams]="{location: pkg.district}">
+          <div class="modern-top-card">
+            <div class="card-img-box">
+              <img *ngIf="carouselImages[pkg.imageKey]" [src]="carouselImages[pkg.imageKey]" [alt]="pkg.name">
+              <div class="rating-badge"><i class="bi bi-star-fill"></i> {{ pkg.rating }}</div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Kanyakumari -->
-      <div class="top-rated-card-wrapper" routerLink="/district" [queryParams]="{location: 'kanyakumari'}">
-        <div class="modern-top-card">
-          <div class="card-img-box">
-            <img *ngIf="kanyakumariImage" [src]="kanyakumariImage" alt="Kanyakumari">
-            <div class="rating-badge"><i class="bi bi-star-fill"></i> 4.8</div>
-          </div>
-          <div class="card-content">
-            <div class="category">LANDS END</div>
-            <h4>Kanyakumari</h4>
-            <p>The only place in India where you can observe sunrise and sunset at the same beach.</p>
-            <div class="card-footer-meta">
-              <span><i class="bi bi-geo-alt"></i> Kanyakumari</span>
-              <span class="view-btn">Explore <i class="bi bi-arrow-right"></i></span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Kodaikanal -->
-      <div class="top-rated-card-wrapper" routerLink="/district" [queryParams]="{location: 'dindigul'}">
-        <div class="modern-top-card">
-          <div class="card-img-box">
-            <img *ngIf="kodaikanalImage" [src]="kodaikanalImage" alt="Kodaikanal">
-            <div class="rating-badge"><i class="bi bi-star-fill"></i> 4.7</div>
-          </div>
-          <div class="card-content">
-            <div class="category">HILL STATION</div>
-            <h4>Kodaikanal</h4>
-            <p>One of the very popular holiday destination hill resorts in South India.</p>
-            <div class="card-footer-meta">
-              <span><i class="bi bi-geo-alt"></i> Dindigul</span>
-              <span class="view-btn">Explore <i class="bi bi-arrow-right"></i></span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mahabalipuram -->
-      <div class="top-rated-card-wrapper" routerLink="/district" [queryParams]="{location: 'chengalpattu'}">
-        <div class="modern-top-card">
-          <div class="card-img-box">
-            <img *ngIf="mahapalipuramImage" [src]="mahapalipuramImage" alt="Mahabalipuram">
-            <div class="rating-badge"><i class="bi bi-star-fill"></i> 4.9</div>
-          </div>
-          <div class="card-content">
-            <div class="category">HERITAGE</div>
-            <h4>Mahapalipuram</h4>
-            <p>The World Heritage Site of 7th- and 8th-century Hindu Group of Monuments.</p>
-            <div class="card-footer-meta">
-              <span><i class="bi bi-geo-alt"></i> Chengalpattu</span>
-              <span class="view-btn">Explore <i class="bi bi-arrow-right"></i></span>
+            <div class="card-content">
+              <div class="category">{{ pkg.category }}</div>
+              <h4>{{ pkg.name }}</h4>
+              <p>{{ pkg.description }}</p>
+              <div class="card-footer-meta">
+                <span><i class="bi bi-geo-alt"></i> {{ pkg.location }}</span>
+                <span class="view-btn">Explore <i class="bi bi-arrow-right"></i></span>
+              </div>
             </div>
           </div>
         </div>
