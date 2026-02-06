@@ -2,37 +2,41 @@
   <div class="container py-5">
 
     <!-- NOT LOGGED IN STATE -->
-    <div *ngIf="!isLoggedIn" class="login-prompt-card animate__animated animate__fadeIn">
-      <div class="row align-items-center g-0">
-        <div class="col-lg-6 d-none d-lg-block">
-          <div class="promo-image">
-            <div class="overlay p-5 d-flex flex-column justify-content-end">
-              <h1 class="text-white display-4 fw-bold">Find Your <span class="text-warning">Journeys</span></h1>
-              <p class="text-white opacity-75 fs-5">Log in to view your past bookings, download receipts, and manage
-                your travel history in one place.</p>
-            </div>
+    <div *ngIf="!isLoggedIn" class="login-prompt-card animate__animated animate__fadeIn shadow-lg">
+      <div class="row g-0 align-items-stretch">
+        <!-- Left Side: Gradient with Text -->
+        <div class="col-lg-6 d-flex align-items-end gradient-side">
+          <div class="p-5 w-100">
+            <h1 class="text-white display-4 fw-bold mb-3">Find Your <span class="text-warning">Journeys</span></h1>
+            <p class="text-white opacity-75 fs-5 mb-0">
+              Log in to view your past bookings, download receipts, and manage your travel history in one place.
+            </p>
           </div>
         </div>
-        <div class="col-lg-6 p-5 text-center">
+
+        <!-- Right Side: Action Area -->
+        <div class="col-lg-6 p-5 text-center d-flex flex-column justify-content-center bg-white">
           <div class="mb-4">
-            <div class="icon-circle bg-light mb-3">
-              <i class="bi bi-person-badge fs-1 text-primary"></i>
+            <div class="welcome-icon mb-3">
+              <div class="icon-inner">
+                <i class="bi bi-person-vcard-fill text-primary"></i>
+              </div>
             </div>
-            <h2 class="fw-bold">Welcome Back</h2>
-            <p class="text-muted">Already booked with us? Sign in with Google to retrieve all your trip details
+            <h2 class="fw-bold mb-3">Welcome Back</h2>
+            <p class="text-muted px-lg-4">Already booked with us? Sign in with Google to retrieve all your trip details
               automatically.</p>
           </div>
 
-          <div class="d-grid gap-3 pt-2">
+          <div class="px-lg-4">
             <button
-              class="btn btn-google btn-lg py-3 rounded-pill shadow-sm animate__animated animate__pulse animate__infinite animate__slow"
+              class="btn btn-google-pill w-100 py-3 animate__animated animate__pulse animate__infinite animate__slow"
               (click)="googleLogin()" [disabled]="isLoading">
-              <span *ngIf="!isLoading">
+              <div class="d-flex align-items-center justify-content-center">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google"
-                  width="20" class="me-2">
-                Continue with Google
-              </span>
-              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+                  width="22" class="me-3">
+                <span class="fw-bold">Continue with Google</span>
+              </div>
+              <div *ngIf="isLoading" class="spinner-border spinner-border-sm ms-3 text-secondary"></div>
             </button>
           </div>
         </div>
@@ -46,7 +50,7 @@
           <h2 class="fw-bold mb-0">My Travel <span class="text-primary">Journal</span></h2>
           <p class="text-muted mb-0">Hello, {{ userService.getLoggedInUser() }}! Here are your scheduled trips.</p>
         </div>
-        <button class="btn btn-light rounded-pill px-4 fw-bold shadow-sm" routerLink="/post">
+        <button class="btn btn-primary-pill shadow-sm" routerLink="/post">
           <i class="bi bi-plus-lg me-2"></i> Plan New Trip
         </button>
       </div>
