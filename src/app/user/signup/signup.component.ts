@@ -131,7 +131,7 @@ export class SignupComponent implements OnInit {
       }).toPromise();
 
       if (response && response.authenticated) {
-        this.userService.setLoggedInUser(response.username, response.token);
+        this.userService.setLoggedInUser(response.username, response.token, response.email);
         this.toastService.show('Email verified! Logging in...', 'success');
 
         setTimeout(() => {

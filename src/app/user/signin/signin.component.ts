@@ -56,7 +56,7 @@ export class SigninComponent implements OnInit {
 
       if (response && response.authenticated) {
         // Update UserService (handles localStorage and subjects)
-        this.userService.setLoggedInUser(response.username, response.token);
+        this.userService.setLoggedInUser(response.username, response.token, response.email);
 
         this.toastService.show(`Welcome back, ${response.username}!`, 'success');
 
@@ -100,7 +100,7 @@ export class SigninComponent implements OnInit {
 
           if (mongoResult && mongoResult.authenticated) {
             // 4. Store token and update state
-            this.userService.setLoggedInUser(mongoResult.username, mongoResult.token);
+            this.userService.setLoggedInUser(mongoResult.username, mongoResult.token, mongoResult.email);
 
             this.toastService.show(`Welcome back, ${mongoResult.username}!`, 'success');
 

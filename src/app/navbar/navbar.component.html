@@ -45,6 +45,11 @@
                         }}</a></li>
                 <li class="nav-item"><a class="nav-link" routerLink="/about-us">{{ langService.translate('ABOUT') }}</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-primary" routerLink="/getall">
+                        <i class="bi bi-clock-history me-1"></i> My Trips
+                    </a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">{{ langService.translate('LANGUAGE')
                         }}</a>
@@ -189,15 +194,39 @@
                                 langService.translate('DIVYA_DESAM_TOURS') }}</a></li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-primary" routerLink="/getall">
+                        <i class="bi bi-clock-history me-1"></i> My Trips
+                    </a>
+                </li>
             </ul>
 
             <!-- Briefcase/Cart Section -->
-            <div class="auth-section ms-lg-4">
-                <div class="nav-item">
+            <div class="auth-section ms-lg-4 d-flex align-items-center">
+                <div class="nav-item me-3">
                     <a class="nav-link position-relative" routerLink="/booking-view">
-                        <i class="bi bi-briefcase fs-5"></i>
+                        <i class="bi bi-briefcase fs-5 text-dark"></i>
                         <span class="badge-count" *ngIf="selectedPlaceCount > 0">{{selectedPlaceCount}}</span>
                     </a>
+                </div>
+
+                <!-- Profile Section if Logged In -->
+                <div class="dropdown" *ngIf="userService.getLoggedInUser()">
+                    <a class="nav-link dropdown-toggle profile-link p-0" id="userDropdown" role="button"
+                        data-bs-toggle="dropdown">
+                        <div class="avatar-circle">
+                            {{ userService.getLoggedInUser()?.charAt(0)?.toUpperCase() }}
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="userDropdown">
+                        <div class="profile-dropdown-header px-3 py-2 border-bottom">
+                            <span class="user-name fw-bold d-block">{{ userService.getLoggedInUser() }}</span>
+                            <span class="user-email small text-muted">{{ userService.getLoggedEmail() }}</span>
+                        </div>
+                        <li><a class="dropdown-item py-2" (click)="userService.signOut()"><i
+                                    class="bi bi-box-arrow-right me-2 text-danger"></i> Sign Out</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

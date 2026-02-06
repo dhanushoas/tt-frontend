@@ -150,6 +150,25 @@
   transform: scale(1.1) rotate(5deg);
 }
 
+.profile-dropdown-header {
+  padding-bottom: 12px;
+  margin-bottom: 8px;
+}
+
+.user-name {
+  color: #2d3436;
+  font-size: 0.95rem;
+}
+
+.user-email {
+  font-size: 0.75rem;
+}
+
+.profile-link:focus,
+.profile-link:active {
+  box-shadow: none !important;
+}
+
 /* Dropdown Customization */
 .dropdown-menu {
   border: none;

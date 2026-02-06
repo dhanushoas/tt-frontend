@@ -17,6 +17,10 @@ export class BookService {
     return this.http.get<Book[]>(`${this.baseUrl}/book/getall/${username}`);
   }
 
+  getBookByEmail(email: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/book/getByEmail/${email}`);
+  }
+
   addBook(book: Book): Observable<Book> {
     return this.http.post<Book>(`${this.baseUrl}/book/add`, book);
   }

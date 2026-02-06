@@ -1,93 +1,122 @@
-<div class="dashboard-header text-center">
-  <div class="container-fluid px-lg-5">
-    <h2>My <span class="text-primary">Bookings</span></h2>
-    <p class="text-muted">Manage your travel plans and upcoming journeys</p>
-  </div>
-</div>
+<div class="dashboard-wrapper">
+  <div class="container py-5">
 
-<div class="container-fluid px-lg-5 pb-5">
-  <!-- Interactive Summary Dashboard -->
-  <app-summary-dashboard *ngIf="books.length > 0" [bookings]="books"></app-summary-dashboard>
-
-  <!-- Empty State -->
-  <div *ngIf="books.length === 0" class="empty-state">
-    <div class="empty-icon">
-      <i class="bi bi-calendar-x"></i>
-    </div>
-    <h3>No Bookings Yet</h3>
-    <p class="text-muted">You haven't made any travel bookings. Start your journey today!</p>
-    <button class="btn btn-primary btn-lg px-5 mt-3" routerLink="/home">Explore Destinations</button>
-  </div>
-
-  <!-- Bookings Grid -->
-  <div class="row g-4" *ngIf="books.length > 0">
-    <div *ngFor="let item of books; let i = index;" class="col-lg-4 col-md-6">
-      <div class="booking-card h-100">
-        <div class="card-header-accent d-flex justify-content-between align-items-center px-3">
-          <div class="id-badge">ID: {{ item.customId }}</div>
-          <button class="btn btn-pass-lite btn-sm" (click)="viewPass(item)">
-            <i class="bi bi-ticket-perforated"></i> View Pass
-          </button>
-        </div>
-
-        <div class="card-body">
-          <h5 class="visitor-name">{{ item.nameOfVisitor }}</h5>
-
-          <div class="info-grid">
-            <div class="info-item">
-              <span class="info-label">Travel Date</span>
-              <span class="info-value"><i class="bi bi-calendar3 me-2 text-primary"></i>{{ item.date }}</span>
+    <!-- NOT LOGGED IN STATE -->
+    <div *ngIf="!isLoggedIn" class="login-prompt-card animate__animated animate__fadeIn">
+      <div class="row align-items-center g-0">
+        <div class="col-lg-6 d-none d-lg-block">
+          <div class="promo-image">
+            <div class="overlay p-5 d-flex flex-column justify-content-end">
+              <h1 class="text-white display-4 fw-bold">Find Your <span class="text-warning">Journeys</span></h1>
+              <p class="text-white opacity-75 fs-5">Log in to view your past bookings, download receipts, and manage
+                your travel history in one place.</p>
             </div>
-            <div class="info-item">
-              <span class="info-label">Mobile</span>
-              <span class="info-value"><i class="bi bi-phone me-1 text-primary"></i>{{ item.mobileNumber }}</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Duration</span>
-              <span class="info-value"><i class="bi bi-clock me-2 text-primary"></i>{{ item.noOfDays }} Day(s)</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Members</span>
-              <span class="info-value"><i class="bi bi-people me-2 text-primary"></i>{{ item.noOfMembers }}
-                Person(s)</span>
-            </div>
-          </div>
-
-          <div class="places-box">
-            <span class="info-label d-block mb-1">Visiting Places</span>
-            <span class="info-value small text-dark">{{ item.visitingPlaces | stripExtension }}</span>
-          </div>
-
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="check-in-section">
-              <button class="btn btn-sm"
-                [ngClass]="isCheckInDisabled(item) ? 'btn-success disabled' : 'btn-outline-success'"
-                (click)="handleCheckIn(item)">
-                <i class="bi" [ngClass]="isCheckInDisabled(item) ? 'bi-check2-circle' : 'bi-geo-alt'"></i>
-                {{ isCheckInDisabled(item) ? 'Checked In' : 'I am Here' }}
-              </button>
-            </div>
-            <span class="cost-highlight text-primary">₹{{ item.totalCost }}</span>
           </div>
         </div>
+        <div class="col-lg-6 p-5 text-center">
+          <div class="mb-4">
+            <div class="icon-circle bg-light mb-3">
+              <i class="bi bi-person-badge fs-1 text-primary"></i>
+            </div>
+            <h2 class="fw-bold">Welcome Back</h2>
+            <p class="text-muted">Already booked with us? Sign in with Google to retrieve all your trip details
+              automatically.</p>
+          </div>
 
-        <div class="card-footer">
-          <div class="btn-group-modern">
-            <button *ngIf="item.customId" (click)="gotoGet(item.customId)" class="btn btn-success shadow-sm">
-              <i class="bi bi-credit-card"></i> Pay
+          <div class="d-grid gap-3">
+            <button class="btn btn-google btn-lg py-3 rounded-pill shadow-sm" (click)="googleLogin()"
+              [disabled]="isLoading">
+              <span *ngIf="!isLoading">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google"
+                  width="20" class="me-2">
+                Continue with Google
+              </span>
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
             </button>
-            <button *ngIf="item.customId" (click)="gotoUpdate(item.customId)" class="btn btn-outline-primary shadow-sm">
-              <i class="bi bi-pencil-square"></i> Edit
-            </button>
-            <button *ngIf="item.customId" (click)="gotoDelete(item.customId)" class="btn btn-outline-danger shadow-sm">
-              <i class="bi bi-trash"></i> Cancel
+            <div class="divider"><span>OR</span></div>
+            <button class="btn btn-outline-dark btn-lg py-3 rounded-pill fw-bold" routerLink="/signin">
+              Use Credentials
             </button>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- LOGGED IN STATE -->
+    <div *ngIf="isLoggedIn" class="dashboard-content">
+      <div class="d-flex justify-content-between align-items-center mb-5 animate__animated animate__fadeInDown">
+        <div>
+          <h2 class="fw-bold mb-0">My Travel <span class="text-primary">Journal</span></h2>
+          <p class="text-muted mb-0">Hello, {{ userService.getLoggedInUser() }}! Here are your scheduled trips.</p>
+        </div>
+        <button class="btn btn-light rounded-pill px-4 fw-bold shadow-sm" routerLink="/post">
+          <i class="bi bi-plus-lg me-2"></i> Plan New Trip
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-grow text-primary" role="status"></div>
+        <p class="mt-3 text-muted fw-medium">Loading your journey history...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="isLoggedIn && !isLoading && books.length === 0"
+        class="empty-state text-center py-5 animate__animated animate__zoomIn">
+        <img src="https://cdni.iconscout.com/illustration/premium/thumb/empty-state-2130362-1800926.png"
+          class="img-fluid mb-4" width="300">
+        <h3 class="fw-bold">No Bookings Found</h3>
+        <p class="text-muted mx-auto" style="max-width: 400px;">It looks like you haven't planned any trips yet. Start
+          exploring Tamil Nadu's beautiful destinations today!</p>
+        <button class="btn btn-primary btn-lg rounded-pill px-5 mt-3" routerLink="/home">Explore Destinations</button>
+      </div>
+
+      <!-- Bookings List -->
+      <div *ngIf="isLoggedIn && !isLoading && books.length > 0" class="row g-4">
+        <div class="col-md-6 col-lg-4 animate__animated animate__fadeInUp" *ngFor="let booking of books; let i = index"
+          [style.animation-delay]="i * 0.1 + 's'">
+          <div class="card booking-card h-100 border-0 shadow-sm overflow-hidden">
+            <div class="card-status-bar bg-success"></div>
+            <div class="card-body p-4">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <span class="badge rounded-pill bg-light text-primary border border-primary px-3 py-2">#{{
+                  booking.customId }}</span>
+                <span class="small text-muted fw-bold">{{ booking.date }}</span>
+              </div>
+
+              <h4 class="fw-bold text-dark mb-1">{{ booking.visitingPlaces }}</h4>
+              <p class="text-muted small mb-4"><i class="bi bi-geo-alt me-1 text-danger"></i> From {{ booking.city }}
+              </p>
+
+              <div class="row g-3 mb-4">
+                <div class="col-6">
+                  <div class="stat-box">
+                    <span class="d-block text-muted small uppercase ls-1">DURATION</span>
+                    <span class="fw-bold text-dark">{{ booking.noOfDays }} Day(s)</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="stat-box">
+                    <span class="d-block text-muted small uppercase ls-1">TRAVELLERS</span>
+                    <span class="fw-bold text-dark">{{ booking.noOfMembers }} Person(s)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                <div class="price-info">
+                  <span class="small text-muted d-block">Est. Cost</span>
+                  <span class="h5 mb-0 fw-bold text-primary">₹{{ booking.totalCost | number }}</span>
+                </div>
+                <button class="btn btn-dark rounded-pill px-3 shadow-sm btn-sm" (click)="gotoGet(booking.customId)">
+                  View Details <i class="bi bi-arrow-right ms-1"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
-
-<!-- Traveler Pass Modal -->
-<app-traveler-pass *ngIf="showPass" [booking]="selectedBooking" (close)="closePass()"></app-traveler-pass>

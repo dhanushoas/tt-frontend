@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Book, BookService } from '../book.service';
 import { UserService } from 'src/app/user/user.service';
+import { AuthService } from 'src/app/user/auth.service';
+import { ToastService } from 'src/app/toast.service';
 
 @Component({
   selector: 'app-getall',
@@ -10,58 +12,93 @@ import { UserService } from 'src/app/user/user.service';
 })
 export class GetallComponent implements OnInit {
   books: Book[] = [];
+  isLoading: boolean = false;
+  isLoggedIn: boolean = false;
 
-  constructor(private bookService: BookService, private userService: UserService, private router: Router) { }
+  constructor(
+    private bookService: BookService,
+    public userService: UserService,
+    private authService: AuthService,
+    private router: Router,
+    private toastService: ToastService
+  ) { }
 
   ngOnInit(): void {
-    this.getAllBooks();
+    this.userService.isAuthenticated$.subscribe(status => {
+      this.isLoggedIn = status;
+      if (status) {
+        this.getAllBooks();
+      }
+    });
   }
 
   getAllBooks(): void {
-    const signedInUsername = this.userService.getLoggedInUser();
-    if (signedInUsername) {
-      this.bookService.getAllBooks(signedInUsername).subscribe(
-        (response: any) => {
-          if (response.bookings) {
-            this.books = response.bookings;
-            console.log(this.books);
-          } else {
-            console.error('Invalid response format:', response);
-          }
+    const userEmail = this.userService.getLoggedEmail();
+    const username = this.userService.getLoggedInUser();
+
+    this.isLoading = true;
+
+    // Attempt to fetch by email first (ideal for Google users)
+    if (userEmail) {
+      this.bookService.getBookByEmail(userEmail).subscribe({
+        next: (response: any) => {
+          this.books = response.bookings || [];
+          this.isLoading = false;
         },
-        (error: any) => {
-          console.error('Error fetching books:', error);
+        error: (err) => {
+          console.error('Error fetching by email:', err);
+          // Fallback to username if email fails
+          if (username) this.fetchByUsername(username);
+          else this.isLoading = false;
         }
-      );
+      });
+    } else if (username) {
+      this.fetchByUsername(username);
     } else {
-      console.error('Error: No signed-in username available');
+      this.isLoading = false;
     }
   }
 
-  gotoUpdate(customId: string): void {
-    this.router.navigate(['update', customId]);
+  private fetchByUsername(username: string): void {
+    this.bookService.getAllBooks(username).subscribe({
+      next: (response: any) => {
+        this.books = response.bookings || [];
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching by username:', err);
+        this.isLoading = false;
+      }
+    });
   }
 
-  gotoDelete(customId: string): void {
-    this.bookService.removeBook(customId).subscribe(
-      () => {
-        console.log('Book Deleted Successfully');
-        this.getAllBooks(); // Refresh the list after deletion
-      },
-      (error: any) => {
-        console.error('Error deleting book:', error);
+  async googleLogin(): Promise<void> {
+    this.isLoading = true;
+    try {
+      const fbResult = await this.authService.signInWithGoogle();
+      if (fbResult) {
+        const idToken = await fbResult.getIdToken();
+        const mongoResult: any = await this.userService.googleLogin(idToken).toPromise();
+
+        if (mongoResult && mongoResult.authenticated) {
+          this.userService.setLoggedInUser(mongoResult.username, mongoResult.token, mongoResult.email);
+          this.toastService.show(`Welcome, ${mongoResult.username}! Retrieving your bookings...`, 'success');
+          // getAllBooks() will be triggered by the subscription in ngOnInit
+        }
       }
-    );
+    } catch (error: any) {
+      console.error('Google Login Error:', error);
+      this.toastService.show('Failed to sign in with Google', 'danger');
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   gotoGet(customId: string): void {
-    if (customId) {
-      this.router.navigate(['view', customId]);
-    } else {
-      console.error('Invalid customId:', customId);
-    }
+    this.router.navigate(['view', customId]);
   }
 
+  // Pass logic
   showPass: boolean = false;
   selectedBooking: any = null;
 
@@ -73,22 +110,5 @@ export class GetallComponent implements OnInit {
   closePass() {
     this.showPass = false;
     this.selectedBooking = null;
-  }
-
-  handleCheckIn(booking: any) {
-    // Mock check-in logic
-    booking.checkedIn = true;
-    localStorage.setItem(`checkin_${booking.customId}`, 'true');
-    // In a real app, this would call an API
-    alert(`Welcome to ${booking.visitingPlaces.split(',')[0]}! You have successfully checked in.`);
-  }
-
-  isCheckInDisabled(booking: any): boolean {
-    return !!localStorage.getItem(`checkin_${booking.customId}`);
-  }
-
-  gotoPayment(customId: string): void {
-    console.log(`Initiating payment for customId: ${customId}`);
-    this.router.navigate(['/payment']);
   }
 }

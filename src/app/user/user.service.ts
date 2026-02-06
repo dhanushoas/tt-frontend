@@ -49,10 +49,11 @@ export class UserService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(!!localStorage.getItem('token'));
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  setLoggedInUser(username: string | null, token?: string) {
+  setLoggedInUser(username: string | null, token?: string, email?: string) {
     if (username && token) {
       localStorage.setItem('loggedInUser', username);
       localStorage.setItem('token', token);
+      if (email) localStorage.setItem('userEmail', email);
       this.loggedInUserSubject.next(username);
       this.isAuthenticatedSubject.next(true);
     } else {
@@ -67,6 +68,10 @@ export class UserService {
 
   getLoggedInUser(): string | null {
     return localStorage.getItem('loggedInUser');
+  }
+
+  getLoggedEmail(): string | null {
+    return localStorage.getItem('userEmail');
   }
 
   getToken(): string | null {

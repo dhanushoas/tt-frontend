@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { Subject } from 'rxjs';
 import { LanguageService } from '../services/language.service';
+import { UserService } from '../user/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +18,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    public langService: LanguageService
+    public langService: LanguageService,
+    public userService: UserService
   ) { }
 
   ngOnInit(): void {
