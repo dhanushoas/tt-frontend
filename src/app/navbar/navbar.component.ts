@@ -6,6 +6,7 @@ import { switchMap, startWith, takeUntil } from 'rxjs/operators';
 import { UserService } from '../user/user.service';
 import { AdminService } from '../admin/admin.service';
 import { VisitService } from '../tamilnadu/visit.service';
+import { LanguageService } from '../services/language.service';
 
 @Component({
   selector: 'app-navbar',
@@ -25,7 +26,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private router: Router,
     private userService: UserService,
     private adminService: AdminService,
-    private visitService: VisitService
+    private visitService: VisitService,
+    public langService: LanguageService
   ) { }
 
   ngOnInit(): void {
@@ -65,12 +67,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.userSignOut();
       this.adminSignOut();
     }
-  }
 
+    // Set initial language from local storage if exists
+    const storedLang = localStorage.getItem('language');
+    if (storedLang) {
+      this.langService.setLanguage(storedLang);
+    }
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  setLanguage(lang: string) {
+    this.langService.setLanguage(lang);
   }
 
   toggleSignOutOptions() {
@@ -87,7 +98,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
           this.selectedPlaceCount = response.count;
         },
         (error: any) => {
-          // Silently handle error to avoid console spam
           this.selectedPlaceCount = 0;
         }
       );
@@ -98,21 +108,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   private startCounting(): void {
     const token = localStorage.getItem('token');
-
-    // Only start polling if user is authenticated
-    if (!token) {
-      return;
-    }
+    if (!token) return;
 
     interval(1000)
       .pipe(
         startWith(0),
         switchMap(() => {
-          // Check token on each poll
           const currentToken = localStorage.getItem('token');
-          if (!currentToken) {
-            throw new Error('No token available');
-          }
+          if (!currentToken) throw new Error('No token available');
           return this.visitService.getSelectedPlaceCount();
         }),
         takeUntil(this.destroy$)
@@ -122,7 +125,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
           this.selectedPlaceCount = response.count;
         },
         (error: any) => {
-          // Silently handle error - user might have logged out
           this.selectedPlaceCount = 0;
         }
       );
@@ -135,5 +137,4 @@ export class NavbarComponent implements OnInit, OnDestroy {
   adminSignOut() {
     this.adminService.signOut();
   }
-
 }

@@ -1,1 +1,29 @@
 @import '~bootstrap-icons/font/bootstrap-icons.css';
+@import url('https://fonts.googleapis.com/css2?family=Arima:wght@100..700&family=Outfit:wght@100..900&display=swap');
+
+body {
+    transition: font-family 0.3s ease;
+}
+
+/* Default font is Outfit */
+body {
+    font-family: 'Outfit', sans-serif;
+}
+
+/* When language is set to Tamil */
+body.tamil-font {
+    font-family: 'Arima', system-ui;
+}
+
+body.tamil-font h1,
+body.tamil-font h2,
+body.tamil-font h3,
+body.tamil-font h4,
+body.tamil-font h5,
+body.tamil-font h6,
+body.tamil-font .nav-link,
+body.tamil-font .dropdown-item,
+body.tamil-font .brand-text {
+    font-family: 'Arima', system-ui;
+    font-weight: 600;
+}

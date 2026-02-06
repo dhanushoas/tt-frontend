@@ -12,7 +12,7 @@
             <i class="bi bi-search"></i>
           </button>
 
-          <input type="text" class="search-input" placeholder="Search for districts in Tamil Nadu..."
+          <input type="text" class="search-input" [placeholder]="langService.translate('SEARCH_PLACEHOLDER')"
             [(ngModel)]="searchText" (input)="filterDistricts()" (keydown)="handleKeyDown($event)"
             (keyup.enter)="searchDistrict()">
 
@@ -39,19 +39,18 @@
   <div class="row justify-content-center mb-5">
     <div class="col-lg-10 text-center">
       <h1 class="mb-4">
-        <span style="color: crimson">TAMIL NADU TOUR</span> & HOLIDAY PACKAGES
+        <span style="color: crimson">{{ langService.translate('HERO_TITLE') }}</span> {{
+        langService.translate('HERO_SUBTITLE') }}
       </h1>
       <p class="intro-text">
-        A Kaleidoscope of traditions, culture, and vibrant geographies, Tamil Nadu speaks for itself as a soul-stirring
-        journey. From the snow-covered peaks to the coastline, natural greenery to depths of spirituality, and clusters
-        of cultural shades. Discover the different facets of this multicolored state as it shapes your vision at every
-        fold.
+        {{ langService.translate('HERO_DESC') }}
       </p>
     </div>
   </div>
 
   <!-- Popular Packages Grid -->
-  <h2 class="text-center mb-4" style="color: tomato; font-weight: 700;">POPULAR PACKAGES</h2>
+  <h2 class="text-center mb-4" style="color: tomato; font-weight: 700;">{{ langService.translate('POPULAR_PACKAGES') }}
+  </h2>
 
   <div class="row">
     <!-- Devotional -->
@@ -59,7 +58,7 @@
       <div class="package-card" routerLink="/packages" [queryParams]="{category: 'temple'}">
         <img *ngIf="templeImage" [src]="templeImage" class="package-img" alt="Temple">
         <div class="card-overlay">
-          <h3>Devotional Packages</h3>
+          <h3>{{ langService.translate('DEVOTIONAL') }}</h3>
           <span class="badge-btn">108 TOURS</span>
         </div>
       </div>
@@ -70,7 +69,7 @@
       <div class="package-card" routerLink="/packages" [queryParams]="{category: 'education'}">
         <img *ngIf="educationImage" [src]="educationImage" class="package-img" alt="Education">
         <div class="card-overlay">
-          <h3>Educational Packages</h3>
+          <h3>{{ langService.translate('EDUCATIONAL') }}</h3>
           <span class="badge-btn">12 TOURS</span>
         </div>
       </div>
@@ -83,7 +82,7 @@
       <div class="package-card" routerLink="/packages" [queryParams]="{category: 'honeymoon'}">
         <img *ngIf="honeymoonImage" [src]="honeymoonImage" class="package-img" alt="Honeymoon">
         <div class="card-overlay">
-          <h3>Honeymoon</h3>
+          <h3>{{ langService.translate('HONEYMOON') }}</h3>
           <span class="badge-btn">17 TOURS</span>
         </div>
       </div>
@@ -94,7 +93,7 @@
       <div class="package-card" routerLink="/packages" [queryParams]="{category: 'mountain'}">
         <img *ngIf="mountainImage" [src]="mountainImage" class="package-img" alt="Nature">
         <div class="card-overlay">
-          <h3>Nature</h3>
+          <h3>{{ langService.translate('NATURE') }}</h3>
           <span class="badge-btn">44 TOURS</span>
         </div>
       </div>
@@ -105,7 +104,7 @@
       <div class="package-card" routerLink="/packages" [queryParams]="{category: 'party'}">
         <img *ngIf="partyImage" [src]="partyImage" class="package-img" alt="Party">
         <div class="card-overlay">
-          <h3>DJ Packages</h3>
+          <h3>{{ langService.translate('PARTY') }}</h3>
           <span class="badge-btn">15 TOURS</span>
         </div>
       </div>
@@ -117,8 +116,9 @@
   <div class="container-fluid px-lg-5">
     <div class="d-flex justify-content-between align-items-end mb-4">
       <div>
-        <h2 class="section-title mb-0" style="color: tomato">TOP RATED <span class="text-dark">PACKAGES</span></h2>
-        <p class="text-muted mb-0">Handpicked destinations based on traveler ratings</p>
+        <h2 class="section-title mb-0" style="color: tomato">{{ langService.translate('TOP_RATED') }} <span
+            class="text-dark">{{ langService.translate('PACKAGES') }}</span></h2>
+        <p class="text-muted mb-0">{{ langService.translate('HANDPICKED') }}</p>
       </div>
       <div class="carousel-nav-buttons d-none d-md-flex">
         <!-- Custom navigators if needed, but we'll use a grid/scroll for now -->

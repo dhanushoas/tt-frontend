@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { VisitService } from '../tamilnadu/visit.service';
 import { ImageService } from '../admin/admin-dashboard/image-upload/image.service';
 import { ToastService } from '../toast.service';
+import { LanguageService } from '../services/language.service';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +26,8 @@ export class HomeComponent {
   constructor(private router: Router,
     private visitService: VisitService,
     private imageService: ImageService,
-    private toastService: ToastService) { }
+    private toastService: ToastService,
+    public langService: LanguageService) { }
 
   filterDistricts(): void {
     const query = this.searchText.toLowerCase();
