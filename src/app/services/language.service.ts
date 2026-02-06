@@ -15,10 +15,7 @@ export class LanguageService {
             'ABOUT': 'About',
             'LANGUAGE': 'Language',
             'PLACES_TO_VISIT': 'Places to Visit',
-            'HOLIDAYS': 'Holidays',
-            'EXPLORE': 'Explore',
-            'CAR_RENTAL': 'Car Rental',
-            'BLOG': 'Blog',
+            'EXPLORE_NAV': 'Explore',
             'SIGN_IN': 'Sign In',
             'SIGN_OUT': 'Sign Out',
             'BOOKINGS': 'Bookings',
@@ -49,7 +46,11 @@ export class LanguageService {
             'PARTY': 'DJ Packages',
             'TOP_RATED': 'TOP RATED',
             'PACKAGES': 'PACKAGES',
-            'HANDPICKED': 'Handpicked destinations based on traveler ratings'
+            'HANDPICKED': 'Handpicked destinations based on traveler ratings',
+            'PAYMENT_SECTION': 'Payment Portal',
+            'MAKE_PAYMENT': 'Secure Payment',
+            'BOOKING_DETAILS': 'Booking Details',
+            'PRINT_RECEIPT': 'Download Receipt'
         },
         'ta': {
             'HOME': 'முகப்பு',
@@ -57,10 +58,7 @@ export class LanguageService {
             'ABOUT': 'பற்றி',
             'LANGUAGE': 'மொழி',
             'PLACES_TO_VISIT': 'பார்க்க வேண்டிய இடங்கள்',
-            'HOLIDAYS': 'விடுமுறை நாட்கள்',
-            'EXPLORE': 'ஆராயுங்கள்',
-            'CAR_RENTAL': 'கார் வாடகை',
-            'BLOG': 'வலைப்பதிவு',
+            'EXPLORE_NAV': 'ஆராயுங்கள்',
             'SIGN_IN': 'உள்நுழைக',
             'SIGN_OUT': 'வெளியேறு',
             'BOOKINGS': 'பதிவு செய்தவை',
@@ -91,7 +89,11 @@ export class LanguageService {
             'PARTY': 'டிஜே தொகுப்புகள்',
             'TOP_RATED': 'சிறந்த மதிப்பீடு',
             'PACKAGES': 'தொகுப்புகள்',
-            'HANDPICKED': 'பயணிகளின் மதிப்பீடுகளின் அடிப்படையில் தேர்ந்தெடுக்கப்பட்ட இடங்கள்'
+            'HANDPICKED': 'பயணிகளின் மதிப்பீடுகளின் அடிப்படையில் தேர்ந்தெடுக்கப்பட்ட இடங்கள்',
+            'PAYMENT_SECTION': 'கட்டண இணையதளம்',
+            'MAKE_PAYMENT': 'பாதுகாப்பான கட்டணம்',
+            'BOOKING_DETAILS': 'பதிவு விவரங்கள்',
+            'PRINT_RECEIPT': 'ரசீது பதிவிறக்கம்'
         }
     };
 

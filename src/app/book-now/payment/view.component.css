@@ -1,45 +1,111 @@
-body {
-  background-color: #f0f0f0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  margin: 0;
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap');
+
+.payment-wrapper {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: calc(100vh - 80px);
+  font-family: 'Outfit', sans-serif;
 }
 
-h1 {
+.header-line {
+  width: 60px;
+  height: 4px;
+  background: #ffc107;
+  border-radius: 2px;
+}
+
+.payment-card {
+  border-radius: 30px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.bg-glass-dark {
+  background: linear-gradient(180deg, #1a1a1a 0%, #333333 100%);
+  position: relative;
+}
+
+.text-light-muted {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.ls-1 {
+  letter-spacing: 1.5px;
+}
+
+.total-price {
+  color: #0d6efd;
+  letter-spacing: -1px;
+}
+
+.fw-black {
+  font-weight: 900;
+}
+
+.btn-payment {
+  background: linear-gradient(90deg, #0d6efd 0%, #00d2ff 100%);
   color: white;
-  text-align: center;
-}
-
-.product-details {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  margin: 5px auto;
-  max-width: 1000px;
-}
-
-.product-details p {
-  margin: 10px 0;
-}
-
-.btn-primary {
-  background-color: #007bff;
-  color: #fff;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
 }
 
-pre {
-  margin-top: 20px;
-  font-size: large;
+.btn-payment:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(13, 110, 253, 0.3) !important;
+  color: white;
 }
 
-.btn-primary:hover {
-  background-color: #0056b3;
+.rounded-xl {
+  border-radius: 20px;
+}
+
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+/* Animations */
+.animate__animated {
+  animation-duration: 0.8s;
+}
+
+.payment-success-badge .alert {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.itinerary-box {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Scrollbar styling for itinerary */
+.itinerary-box::-webkit-scrollbar {
+  width: 4px;
+}
+
+.itinerary-box::-webkit-scrollbar-thumb {
+  background: #ffc107;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .payment-card {
+    border-radius: 20px;
+  }
+
+  .bg-glass-dark {
+    padding: 2.5rem !important;
+  }
+
+  .col-md-7 {
+    padding: 2rem !important;
+  }
+
+  .display-5 {
+    font-size: 2rem;
+  }
+
+  .total-price {
+    font-size: 1.8rem !important;
+  }
 }

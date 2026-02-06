@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Book, BookService } from '../book.service';
 import { PaymentService } from './payment.service';
 import { ToastService } from 'src/app/toast.service';
+import { LanguageService } from 'src/app/services/language.service';
 
 @Component({
   selector: 'app-view',
@@ -22,7 +23,8 @@ export class ViewComponent implements OnInit {
     private paymentService: PaymentService,
     private active: ActivatedRoute,
     private router: Router,
-    private toastService: ToastService
+    private toastService: ToastService,
+    public langService: LanguageService
   ) { }
 
   ngOnInit(): void {

@@ -65,8 +65,8 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">{{ langService.translate('HOLIDAYS')
-                        }}</a>
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">{{
+                        langService.translate('EXPLORE_NAV') }}</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" routerLink="/packages" [queryParams]="{category: 'culture'}">{{
                                 langService.translate('CULTURE_TOURS') }}</a></li>
@@ -164,11 +164,11 @@
                         </div>
                     </div>
                 </li>
-                <!-- 6. Holidays Dropdown -->
+                <!-- 6. Explore Dropdown (formerly Holidays) -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="holidaysDropdown" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                        {{ langService.translate('HOLIDAYS') }}
+                        {{ langService.translate('EXPLORE_NAV') }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="holidaysDropdown">
                         <li><a class="dropdown-item" routerLink="/packages" [queryParams]="{category: 'culture'}">{{

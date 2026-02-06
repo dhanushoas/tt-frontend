@@ -1,18 +1,118 @@
-<!-- view.component.html -->
-<h4 class="mt-5" style="color: black; text-align: center;">Payment Section</h4>
-<div #receipt class="product-details" class="product-details">
-  <pre>
-    <button type="button" class="btn btn-success d-block mx-auto" (click)="makePayment(book.customId)">Make Payment</button>
-    <b>BOOKING ID</b>      : {{ book.customId }}<br><br>
-    <b>NAME OF VISITOR</b> : {{ book.nameOfVisitor }}<br><br>
-    <b>MOBILE NUMBER</b>   : {{ book.mobileNumber }}<br><br>
-    <b>DATE OF TRAVEL</b>  : {{ book.date }}<br><br>
-    <b>VISITING PLACES</b> : {{ book.visitingPlaces }}<br><br>
-    <b>TOTAL DAYS</b>      : {{ book.noOfDays }}<br><br>
-    <b>TOTAL MEMBERS</b>   : {{ book.noOfMembers }}<br><br>
-    <b>TOTAL COST</b>      : {{ book.totalCost }}<br><br>
+<div class="container-fluid py-5 payment-wrapper">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
 
-    <!-- Display "Print Receipt" button only if payment was successful -->
-    <button *ngIf="paymentSuccess" type="button" class="btn btn-primary" routerLink="/home">Home</button>
-  </pre>
+      <!-- Premium Header -->
+      <div class="text-center mb-5 animate__animated animate__fadeInDown">
+        <h2 class="display-5 fw-bold text-dark mb-2">
+          {{ langService.translate('PAYMENT_SECTION') }}
+        </h2>
+        <p class="text-muted lead">
+          {{ langService.translate('BOOKING_DETAILS') }} - #{{ book.customId }}
+        </p>
+        <div class="header-line ms-auto me-auto mt-3"></div>
+      </div>
+
+      <!-- Main Payment Card -->
+      <div class="card payment-card border-0 shadow-lg animate__animated animate__zoomIn">
+        <div class="row g-0">
+
+          <!-- Booking Sidebar Info -->
+          <div class="col-md-5 bg-glass-dark text-white p-5 d-flex flex-column justify-content-between">
+            <div>
+              <h4 class="mb-4 text-warning fw-bold">{{ langService.translate('BOOKING_DETAILS') }}</h4>
+
+              <div class="info-block mb-4">
+                <label class="text-light-muted small text-uppercase fw-bold ls-1 d-block mb-1">Visitor</label>
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-person-circle fs-4 me-3 text-warning"></i>
+                  <p class="mb-0 fs-5 fw-semibold">{{ book.nameOfVisitor }}</p>
+                </div>
+              </div>
+
+              <div class="info-block mb-4">
+                <label class="text-light-muted small text-uppercase fw-bold ls-1 d-block mb-1">Contact</label>
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-phone fs-4 me-3 text-warning"></i>
+                  <p class="mb-0 fs-5 fw-semibold">{{ book.mobileNumber }}</p>
+                </div>
+              </div>
+
+              <div class="info-block">
+                <label class="text-light-muted small text-uppercase fw-bold ls-1 d-block mb-1">Travel Date</label>
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-calendar-event fs-4 me-3 text-warning"></i>
+                  <p class="mb-0 fs-5 fw-semibold">{{ book.date }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-5 border-top border-secondary pt-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-light-muted small fw-bold text-uppercase ls-1">Stay Duration</span>
+                <span class="fs-5 fw-bold">{{ book.noOfDays }} Day(s)</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="text-light-muted small fw-bold text-uppercase ls-1">Travellers</span>
+                <span class="fs-5 fw-bold">{{ book.noOfMembers }} Person(s)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Form Section -->
+          <div class="col-md-7 p-5 bg-white">
+            <div class="itinerary-box mb-5 p-3 rounded bg-light border-start border-4 border-warning">
+              <label class="small text-muted text-uppercase fw-bold ls-1 mb-2 d-block">Planned Itinerary</label>
+              <p class="mb-0 text-dark fw-medium lh-lg">{{ book.visitingPlaces }}</p>
+            </div>
+
+            <div class="pricing-summary mb-5">
+              <div class="d-flex justify-content-between align-items-center py-3 border-bottom border-light">
+                <span class="text-muted fs-5">Service Amount</span>
+                <span class="fw-bold fs-5 text-dark">₹{{ book.totalCost | number:'1.2-2' }}</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center py-4">
+                <span class="fw-bold text-dark fs-4">Total Amount</span>
+                <span class="total-price fs-2 fw-black text-primary animate__animated animate__pulse animate__infinite">
+                  ₹{{ book.totalCost | number:'1.2-2' }}
+                </span>
+              </div>
+            </div>
+
+            <div class="action-buttons d-grid gap-3">
+              <button *ngIf="!paymentSuccess" type="button"
+                class="btn btn-payment btn-lg py-3 rounded-pill fw-bold shadow-sm" (click)="makePayment(book.customId)">
+                <i class="bi bi-shield-lock me-2"></i> {{ langService.translate('MAKE_PAYMENT') }}
+              </button>
+
+              <div *ngIf="paymentSuccess" class="payment-success-badge mb-3">
+                <div class="alert alert-success border-0 shadow-sm d-flex align-items-center py-3 rounded-xl">
+                  <i class="bi bi-check-circle-fill fs-2 me-3"></i>
+                  <div class="fw-bold">
+                    Payment Successful! Your journey is confirmed.
+                  </div>
+                </div>
+
+                <div class="d-grid gap-3">
+                  <button type="button" class="btn btn-outline-primary btn-lg py-3 rounded-pill fw-bold"
+                    (click)="printReceipt()">
+                    <i class="bi bi-download me-2"></i> {{ langService.translate('PRINT_RECEIPT') }}
+                  </button>
+                  <button type="button" class="btn btn-dark btn-lg py-3 rounded-pill fw-bold" routerLink="/home">
+                    <i class="bi bi-house-door me-2"></i> Back to {{ langService.translate('HOME') }}
+                  </button>
+                </div>
+              </div>
+
+              <button *ngIf="!paymentSuccess" type="button" class="btn btn-link text-muted fw-bold text-decoration-none"
+                (click)="back()">
+                <i class="bi bi-arrow-left me-1"></i> Go Back
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
