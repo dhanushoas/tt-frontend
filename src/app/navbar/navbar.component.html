@@ -1,118 +1,224 @@
 <nav class="navbar navbar-expand-lg sticky-top">
-    <div class="container">
-        <a class="navbar-brand" routerLink="/home">
-            <span style="color: #667eea;">TN</span> Tourism
-        </a>
+    <div class="container-fluid">
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <!-- Mobile Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent"
+            aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-list fs-1 text-dark"></i>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <!-- Centered Brand -->
+        <a class="navbar-brand" routerLink="/home">
+            <span class="brand-text">TAMIL NADU</span>
+            <span class="brand-subtext">Tourism Travel</span>
+        </a>
 
-                <!-- HOME -->
+        <!-- Desktop Navigation: Left Side -->
+        <div class="collapse navbar-collapse d-lg-flex" id="navContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-none d-lg-flex">
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/home" routerLinkActive="active"
-                        [routerLinkActiveOptions]="{exact: true}">HOME</a>
+                    <a class="nav-link" routerLink="/contact-us" routerLinkActive="active">Contacts</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/about-us" routerLinkActive="active">About</a>
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Language
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">English</a></li>
+                            <li><a class="dropdown-item" href="#">Tamil</a></li>
+                            <li><a class="dropdown-item" href="#">Hindi</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
 
-                <!-- COMPANY -->
+            <!-- Mobile Only Menu -->
+            <ul class="navbar-nav d-lg-none">
+                <li class="nav-item"><a class="nav-link" routerLink="/contact-us">Contacts</a></li>
+                <li class="nav-item"><a class="nav-link" routerLink="/about-us">About</a></li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        COMPANY
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" routerLink="/about-us">About Us</a></li>
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Language</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item">English</a></li>
+                        <li><a class="dropdown-item">Tamil</a></li>
                     </ul>
                 </li>
-
-                <!-- TOURISM PLACES (Mega Dropdown) -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="districtsDropdown" role="button" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        TOURISM PLACES
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Places to Visit</a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">North Tamil Nadu</li>
+                        <li><a class="dropdown-item" href="/district?location=chengalpattu">Chengalpattu</a></li>
+                        <li><a class="dropdown-item" href="/district?location=chennai">Chennai</a></li>
+                        <li><a class="dropdown-item" href="/district?location=cuddalore">Cuddalore</a></li>
+                        <li><a class="dropdown-item" routerLink="/district">View All</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Holidays</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" routerLink="/packages" [queryParams]="{category: 'culture'}">Tamil
+                                Nadu Culture Tours</a></li>
+                        <li><a class="dropdown-item" routerLink="/packages" [queryParams]="{category: 'temple'}">Tamil
+                                Nadu Temple Tours</a></li>
+                        <li><a class="dropdown-item" routerLink="/packages"
+                                [queryParams]="{category: 'honeymoon'}">Tamil Nadu Honeymoon Tours</a></li>
+                        <li><a class="dropdown-item" routerLink="/packages" [queryParams]="{category: 'nature'}">Tamil
+                                Nadu Nature & Wildlife Tours</a></li>
+                        <li><a class="dropdown-item" routerLink="/packages"
+                                [queryParams]="{category: 'hillstation'}">Tamil Nadu Hillstation Tours</a></li>
+                        <li><a class="dropdown-item" routerLink="/packages" [queryParams]="{category: 'short'}">Tamil
+                                Nadu Short Tours</a></li>
+                        <li><a class="dropdown-item" routerLink="/packages" [queryParams]="{category: 'family'}">Tamil
+                                Nadu Family Tours</a></li>
+                        <li><a class="dropdown-item" routerLink="/packages"
+                                [queryParams]="{category: 'divyadesam'}">Tamil Nadu Divya Desam Tours</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" routerLink="/home" fragment="explore">Explore</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Car Rental</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+            </ul>
+
+            <!-- Desktop Navigation: Right Side -->
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-none d-lg-flex">
+                <!-- 5. Places to Visit (Mega Menu) -->
+                <li class="nav-item dropdown mega-dropdown">
+                    <a class="nav-link dropdown-toggle" id="placesDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Places to Visit
                     </a>
-                    <div class="dropdown-menu districts-dropdown" aria-labelledby="districtsDropdown">
+                    <div class="dropdown-menu mega-menu-content p-4" aria-labelledby="placesDropdown">
                         <div class="row">
-                            <!-- Column 1 -->
-                            <div class="col-md-4">
-                                <a class="dropdown-item" href="/district/?location=ariyalur">Ariyalur</a>
-                                <a class="dropdown-item" href="/district/?location=chennai">Chennai</a>
-                                <a class="dropdown-item" href="/district/?location=coimbatore">Coimbatore</a>
-                                <a class="dropdown-item" href="/district/?location=cuddalore">Cuddalore</a>
-                                <a class="dropdown-item" href="/district/?location=dharmapuri">Dharmapuri</a>
-                                <a class="dropdown-item" href="/district/?location=dindigul">Dindigul</a>
-                                <a class="dropdown-item" href="/district/?location=erode">Erode</a>
-                                <a class="dropdown-item" href="/district/?location=kallakurichi">Kallakurichi</a>
-                                <a class="dropdown-item" href="/district/?location=kanchipuram">Kanchipuram</a>
-                                <a class="dropdown-item" href="/district/?location=kanyakumari">Kanyakumari</a>
-                                <a class="dropdown-item" href="/district/?location=karur">Karur</a>
-                                <a class="dropdown-item" href="/district/?location=krishnagiri">Krishnagiri</a>
+                            <!-- North -->
+                            <div class="col-md-3">
+                                <h6 class="region-title">North Tamilnadu</h6>
+                                <ul class="list-unstyled">
+                                    <li><a href="/district?location=chengalpattu">Chengalpattu</a></li>
+                                    <li><a href="/district?location=chennai">Chennai</a></li>
+                                    <li><a href="/district?location=cuddalore">Cuddalore</a></li>
+                                    <li><a href="/district?location=kallakurichi">Kallakurichi</a></li>
+                                    <li><a href="/district?location=kanchipuram">Kanchipuram</a></li>
+                                    <li><a href="/district?location=mayiladuthurai">Mayiladuthurai</a></li>
+                                    <li><a href="/district?location=pondicherry">Pondicherry</a></li>
+                                    <li><a href="/district?location=ranipet">Ranipet</a></li>
+                                    <li><a href="/district?location=thirupattur">Thirupattur</a></li>
+                                    <li><a href="/district?location=thiruvallur">Thiruvallur</a></li>
+                                    <li><a href="/district?location=thiruvannamalai">Thiruvannamalai</a></li>
+                                    <li><a href="/district?location=vellore">Vellore</a></li>
+                                    <li><a href="/district?location=villupuram">Villupuram</a></li>
+                                </ul>
                             </div>
-                            <!-- Column 2 -->
-                            <div class="col-md-4">
-                                <a class="dropdown-item" href="/district/?location=madurai">Madurai</a>
-                                <a class="dropdown-item" href="/district/?location=nagapattinam">Nagapattinam</a>
-                                <a class="dropdown-item" href="/district/?location=namakkal">Namakkal</a>
-                                <a class="dropdown-item" href="/district/?location=perambalur">Perambalur</a>
-                                <a class="dropdown-item" href="/district/?location=pudukkottai">Pudukkottai</a>
-                                <a class="dropdown-item" href="/district/?location=ramanathapuram">Ramanathapuram</a>
-                                <a class="dropdown-item" href="/district/?location=ranipet">Ranipet</a>
-                                <a class="dropdown-item" href="/district/?location=salem">Salem</a>
-                                <a class="dropdown-item" href="/district/?location=sivagangai">Sivagangai</a>
-                                <a class="dropdown-item" href="/district/?location=tenkasi">Tenkasi</a>
-                                <a class="dropdown-item" href="/district/?location=thanjavur">Thanjavur</a>
-                                <a class="dropdown-item" href="/district/?location=theni">Theni</a>
+                            <!-- Central -->
+                            <div class="col-md-3">
+                                <h6 class="region-title">Central Tamilnadu</h6>
+                                <ul class="list-unstyled">
+                                    <li><a href="/district?location=ariyalur">Ariyalur</a></li>
+                                    <li><a href="/district?location=karur">Karur</a></li>
+                                    <li><a href="/district?location=nagapattinam">Nagapattinam</a></li>
+                                    <li><a href="/district?location=perambalur">Perambalur</a></li>
+                                    <li><a href="/district?location=pudukkottai">Pudukkottai</a></li>
+                                    <li><a href="/district?location=thanjavur">Thanjavur</a></li>
+                                    <li><a href="/district?location=thiruvarur">Thiruvarur</a></li>
+                                    <li><a href="/district?location=tiruchirappalli">Tiruchirappalli</a></li>
+                                </ul>
                             </div>
-                            <!-- Column 3 -->
-                            <div class="col-md-4">
-                                <a class="dropdown-item" href="/district/?location=thoothukudi">Thoothukudi</a>
-                                <a class="dropdown-item" href="/district/?location=tiruchirappalli">Tiruchirappalli</a>
-                                <a class="dropdown-item" href="/district/?location=tirunelveli">Tirunelveli</a>
-                                <a class="dropdown-item" href="/district/?location=tirupathur">Tirupathur</a>
-                                <a class="dropdown-item" href="/district/?location=tiruppur">Tiruppur</a>
-                                <a class="dropdown-item" href="/district/?location=tiruvallur">Tiruvallur</a>
-                                <a class="dropdown-item" href="/district/?location=tiruvannamalai">Tiruvannamalai</a>
-                                <a class="dropdown-item" href="/district/?location=tiruvarur">Tiruvarur</a>
-                                <a class="dropdown-item" href="/district/?location=vellore">Vellore</a>
-                                <a class="dropdown-item" href="/district/?location=viluppuram">Viluppuram</a>
-                                <a class="dropdown-item" href="/district/?location=virudhunagar">Virudhunagar</a>
+                            <!-- West -->
+                            <div class="col-md-3">
+                                <h6 class="region-title">West Tamilnadu</h6>
+                                <ul class="list-unstyled">
+                                    <li><a href="/district?location=coimbatore">Coimbatore</a></li>
+                                    <li><a href="/district?location=dharmapuri">Dharmapuri</a></li>
+                                    <li><a href="/district?location=erode">Erode</a></li>
+                                    <li><a href="/district?location=krishnagiri">Krishnagiri</a></li>
+                                    <li><a href="/district?location=namakkal">Namakkal</a></li>
+                                    <li><a href="/district?location=nilgiri">Nilgiri</a></li>
+                                    <li><a href="/district?location=salem">Salem</a></li>
+                                    <li><a href="/district?location=tiruppur">Tiruppur</a></li>
+                                </ul>
+                            </div>
+                            <!-- South -->
+                            <div class="col-md-3">
+                                <h6 class="region-title">South Tamilnadu</h6>
+                                <ul class="list-unstyled">
+                                    <li><a href="/district?location=dindigul">Dindigul</a></li>
+                                    <li><a href="/district?location=kanyakumari">Kanyakumari</a></li>
+                                    <li><a href="/district?location=madurai">Madurai</a></li>
+                                    <li><a href="/district?location=ramanathapuram">Ramanathapuram</a></li>
+                                    <li><a href="/district?location=sivagangai">Sivagangai</a></li>
+                                    <li><a href="/district?location=tenkasi">Tenkasi</a></li>
+                                    <li><a href="/district?location=theni">Theni</a></li>
+                                    <li><a href="/district?location=thoothukudi">Thoothukudi</a></li>
+                                    <li><a href="/district?location=tirunelveli">Tirunelveli</a></li>
+                                    <li><a href="/district?location=virudhunagar">Virudhunagar</a></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </li>
-
-                <!-- BOOK NOW -->
+                <!-- 6. Holidays Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="holidaysDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Holidays
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="holidaysDropdown">
+                        <li><a class="dropdown-item" routerLink="/packages" [queryParams]="{category: 'culture'}">Tamil
+                                Nadu Culture Tours</a></li>
+                        <li><a class="dropdown-item" routerLink="/packages" [queryParams]="{category: 'temple'}">Tamil
+                                Nadu Temple Tours</a></li>
+                        <li><a class="dropdown-item" routerLink="/packages"
+                                [queryParams]="{category: 'honeymoon'}">Tamil Nadu Honeymoon Tours</a></li>
+                        <li><a class="dropdown-item" routerLink="/packages" [queryParams]="{category: 'nature'}">Tamil
+                                Nadu Nature & Wildlife Tours</a></li>
+                        <li><a class="dropdown-item" routerLink="/packages"
+                                [queryParams]="{category: 'hillstation'}">Tamil Nadu Hillstation Tours</a></li>
+                        <li><a class="dropdown-item" routerLink="/packages" [queryParams]="{category: 'short'}">Tamil
+                                Nadu Short Tours</a></li>
+                        <li><a class="dropdown-item" routerLink="/packages" [queryParams]="{category: 'family'}">Tamil
+                                Nadu Family Tours</a></li>
+                        <li><a class="dropdown-item" routerLink="/packages"
+                                [queryParams]="{category: 'divyadesam'}">Tamil Nadu Divya Desam Tours</a></li>
+                    </ul>
+                </li>
+                <!-- 7. Explore -->
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/booking-view" routerLinkActive="active">
-                        BOOK NOW
+                    <a class="nav-link" routerLink="/home" fragment="explore">Explore</a>
+                </li>
+                <!-- 8. Car Rental -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Car Rental</a>
+                </li>
+                <!-- 9. Blog -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Blog</a>
+                </li>
+            </ul>
+
+            <!-- Auth/Profile Section -->
+            <div class="auth-section ms-lg-4">
+                <div class="nav-item" *ngIf="user">
+                    <a class="nav-link position-relative" routerLink="/booking-view">
+                        <i class="bi bi-briefcase fs-5"></i>
                         <span class="badge-count" *ngIf="selectedPlaceCount > 0">{{selectedPlaceCount}}</span>
                     </a>
-                </li>
+                </div>
 
-                <!-- CONTACT -->
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/contact-us" routerLinkActive="active">CONTACT</a>
-                </li>
-
-                <!-- PROFILE / SIGN IN -->
-                <li class="nav-item dropdown ms-lg-4" *ngIf="user">
-                    <a class="nav-link profile-link dropdown-toggle" id="userProfileDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="dropdown" *ngIf="user">
+                    <a class="nav-link dropdown-toggle profile-link" id="userDropdown" role="button"
+                        data-bs-toggle="dropdown">
                         <div class="avatar-circle">
                             {{ user.username.charAt(0).toUpperCase() }}
                         </div>
-                        <span>{{ user.username }}</span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <div class="profile-dropdown-header">
                             <span class="user-name">{{ user.username }}</span>
-                            <!-- You might display email here if available in user object -->
                         </div>
-                        <li><a class="dropdown-item" routerLink="/getall"><i class="bi bi-calendar-check me-2"></i> My
+                        <li><a class="dropdown-item" routerLink="/getall"><i class="bi bi-calendar-check me-2"></i>
                                 Bookings</a></li>
                         <li>
                             <hr class="dropdown-divider">
@@ -120,13 +226,10 @@
                         <li><a class="dropdown-item text-danger" (click)="userSignOut()"><i
                                     class="bi bi-box-arrow-right me-2"></i> Sign Out</a></li>
                     </ul>
-                </li>
+                </div>
 
-                <li class="nav-item ms-lg-4" *ngIf="!user">
-                    <a class="btn btn-primary px-4" routerLink="/signin">Sign In</a>
-                </li>
-
-            </ul>
+                <a *ngIf="!user" class="btn btn-signin" routerLink="/signin">Sign In</a>
+            </div>
         </div>
     </div>
 </nav>

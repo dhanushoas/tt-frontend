@@ -33,20 +33,29 @@ export class PostComponent implements OnInit {
     const generatedBookingId = Math.floor(100000 + Math.random() * 900000);
 
     this.bookForm = this.fb.group({
-      customId: [generatedBookingId, [Validators.required, Validators.pattern('[0-9]{6}')]],
+      customId: [generatedBookingId, [Validators.required]],
       nameOfVisitor: ['', Validators.required],
+      city: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       mobileNumber: ['', [Validators.required, Validators.pattern('[6-9]\\d{9}')]],
-      date: [this.getTodayDate(), Validators.required],
-      visitingPlaces: ['', Validators.required],
-      noOfDays: ['', Validators.required],
-      noOfMembers: ['', Validators.required],
-      totalCost: [this.baseCost, Validators.required],
+      monthOfVisit: ['', Validators.required],
+      budget: ['', Validators.required],
+      noOfMembers: [1, [Validators.required, Validators.min(1)]],
+      hotel: [''],
+      arrivalDepartureCity: [''],
+      requirement: [''],
+      // Hidden defaults for existing logic
+      date: [this.getTodayDate()],
+      visitingPlaces: [''],
+      noOfDays: [1],
+      totalCost: [0],
     });
   }
 
   ngOnInit(): void {
     this.fetchImage('booking', 'bookingImage');
-    // Fetch selected places and set the default visitor name
+
+    // Fetch selected places
     this.visitService.getAllSelectedPlaces().subscribe(
       (response: any) => {
         if (response.success) {
@@ -54,102 +63,64 @@ export class PostComponent implements OnInit {
           const selectedPlaceNames = Array.isArray(selectedPlacesArray)
             ? selectedPlacesArray.map((item: any) => {
               const name = typeof item === 'object' ? item.name : item;
-              // Remove last extension and trim
               return name.trim().replace(/\.[^/.]+$/, "") || name;
             })
             : [];
 
           this.bookForm.get('visitingPlaces')?.setValue(selectedPlaceNames.join(', '));
+          this.bookForm.get('noOfDays')?.setValue(Math.max(1, Math.ceil(selectedPlaceNames.length / 2)));
 
-          // Set default visitor name if signed in
-          const signedInUsername = this.userService.getLoggedInUser();
-          const defaultValue = signedInUsername ? signedInUsername : '';
-          this.bookForm.get('nameOfVisitor')?.setValue(defaultValue);
-        } else {
-          console.error('Error fetching selected places:', response.error);
+          this.updateTotalCost();
+
+          // Set default values if signed in
+          const storedUser = localStorage.getItem('loggedInUser');
+          if (storedUser) {
+            this.bookForm.get('nameOfVisitor')?.setValue(storedUser);
+          }
         }
-      },
-      (error: any) => {
-        console.error(error);
       }
     );
 
-    // Subscribe to form value changes to update total cost
-    this.bookForm.get('noOfDays')?.valueChanges.subscribe(() => {
-      this.updateTotalCost();
-    });
-
-    this.bookForm.get('noOfMembers')?.valueChanges.subscribe(() => {
-      this.updateTotalCost();
-    });
+    // Watchers for cost calculation if needed
+    this.bookForm.get('noOfMembers')?.valueChanges.subscribe(() => this.updateTotalCost());
   }
 
   updateTotalCost(): void {
-    // Calculate total cost based on form inputs
-    const noOfDays = this.bookForm.get('noOfDays')?.value || 0;
-    const noOfMembers = this.bookForm.get('noOfMembers')?.value || 0;
+    const noOfDays = this.bookForm.get('noOfDays')?.value || 1;
+    const noOfMembers = this.bookForm.get('noOfMembers')?.value || 1;
     const visitingPlaces = this.bookForm.get('visitingPlaces')?.value;
     const visitingPlacesCount = visitingPlaces ? visitingPlaces.split(',').length : 0;
 
-    let additionalCost = 0;
+    let total = (noOfMembers * this.additionalCostPerMember) +
+      (noOfDays * this.additionalCostPerDay) +
+      (visitingPlacesCount * this.additionalCostPerPlace);
 
-    // Calculate additional cost per member
-    if (noOfMembers > 0) {
-      additionalCost += this.additionalCostPerMember * noOfMembers;
-    }
-
-    // Calculate additional cost per day
-    if (noOfDays > 0) {
-      additionalCost += this.additionalCostPerDay * noOfDays;
-    }
-
-    // Calculate additional cost based on the number of visiting places
-    additionalCost += visitingPlacesCount * this.additionalCostPerPlace;
-
-    const totalCost = additionalCost;
-
-    this.bookForm.get('totalCost')?.setValue(totalCost);
+    this.bookForm.get('totalCost')?.setValue(total);
   }
 
   postBooks(): void {
-    // Check if user is signed in
     const signedInUsername = this.userService.getLoggedInUser();
     if (signedInUsername) {
       const bookToPost: Book = { ...this.bookForm.value, username: signedInUsername };
 
-      // Post the book
       this.bookService.addBook(bookToPost).subscribe(
         (response: any) => {
-          if (response && response.message === 'Book added successfully' && response.book) {
-            this.toastService.show('Form submitted successfully!', 'success');
-
-            // Remove selected places from MongoDB
-            this.visitService.deleteSelectedPlaces(signedInUsername).subscribe(
-              () => {
-                console.log('Selected places removed successfully from MongoDB');
-                // Navigate back to the booking view
-                this.router.navigate(['getall']);
-              },
-              (error: any) => {
-                console.error('Error removing selected places from MongoDB:', error);
-                // Navigate back to the booking view even if there's an error
-                this.router.navigate(['getall']);
-              }
-            );
-          } else {
-            console.error('Error posting book:', response && response.message);
+          if (response && response.message === 'Book added successfully') {
+            this.toastService.show('Trip Plan Submitted Successfully!', 'success');
+            this.visitService.deleteSelectedPlaces(signedInUsername).subscribe(() => {
+              this.router.navigate(['getall']);
+            });
           }
         },
         (error: any) => {
-          console.error('Error posting book:', error);
+          this.toastService.show('Error submitting form', 'danger');
         }
       );
     } else {
-      console.error('Error: No signed-in username available');
+      this.toastService.show('Please sign in to plan your trip', 'warning');
+      this.router.navigate(['signin']);
     }
   }
-
-
 
   onCancel(): void {
     this.router.navigate(['booking-view']);
@@ -157,10 +128,7 @@ export class PostComponent implements OnInit {
 
   private getTodayDate(): string {
     const today = new Date();
-    const year = today.getFullYear();
-    const month = (today.getMonth() + 1).toString().padStart(2, '0');
-    const day = today.getDate().toString().padStart(2, '0');
-    return year + '-' + month + '-' + day;
+    return today.toISOString().split('T')[0];
   }
 
   bookingImage: string = '';
@@ -171,19 +139,12 @@ export class PostComponent implements OnInit {
         const blob = new Blob([response], { type: response.type });
         (this as any)[property] = URL.createObjectURL(blob);
       },
-      error: (err) => {
-        console.error(`Error fetching ${imageName} image:`, err);
-      }
+      error: (err) => console.error(`Error fetching ${imageName} image:`, err)
     });
   }
 
-  // Helper to allow only numbers in input fields
   onlyNumbers(event: any): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-      return false;
-    }
-    return true;
+    return !(charCode > 31 && (charCode < 48 || charCode > 57));
   }
-
 }
