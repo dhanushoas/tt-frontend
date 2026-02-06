@@ -23,19 +23,16 @@
               automatically.</p>
           </div>
 
-          <div class="d-grid gap-3">
-            <button class="btn btn-google btn-lg py-3 rounded-pill shadow-sm" (click)="googleLogin()"
-              [disabled]="isLoading">
+          <div class="d-grid gap-3 pt-2">
+            <button
+              class="btn btn-google btn-lg py-3 rounded-pill shadow-sm animate__animated animate__pulse animate__infinite animate__slow"
+              (click)="googleLogin()" [disabled]="isLoading">
               <span *ngIf="!isLoading">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google"
                   width="20" class="me-2">
                 Continue with Google
               </span>
               <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
-            </button>
-            <div class="divider"><span>OR</span></div>
-            <button class="btn btn-outline-dark btn-lg py-3 rounded-pill fw-bold" routerLink="/signin">
-              Use Credentials
             </button>
           </div>
         </div>
