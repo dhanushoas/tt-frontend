@@ -1,17 +1,13 @@
 // booking-view.component.ts
 import { Component, OnInit } from '@angular/core';
-import { VisitService } from 'src/app/tamilnadu/visit.service';
 import { Router } from '@angular/router';
 import { ImageService } from 'src/app/admin/admin-dashboard/image-upload/image.service';
+import { ToastService } from 'src/app/toast.service';
 
-// Define the SelectedPlace type
 type SelectedPlace = {
-  length: number;
-  // Define the structure of SelectedPlace
-  // For example:
   name: string;
+  originalName: string;
   location: string;
-  // Add more properties as needed
 };
 
 @Component({
@@ -23,7 +19,11 @@ export class BookingViewComponent implements OnInit {
 
   selectedPlaces: SelectedPlace[] = [];
 
-  constructor(private visitService: VisitService, private router: Router, private imageService: ImageService) { }
+  constructor(
+    private router: Router,
+    private imageService: ImageService,
+    private toastService: ToastService
+  ) { }
 
   ngOnInit() {
     this.fetchImage('empty', 'emptyImage');
@@ -45,54 +45,37 @@ export class BookingViewComponent implements OnInit {
   }
 
   refreshSelectedPlaces(): void {
-    this.visitService.getAllSelectedPlaces().subscribe(
-      (response: any) => {
-        if (response.success) {
-          const places = response.selectedPlaces?.selectedPlaces || [];
-          this.selectedPlaces = places.map((place: any) => ({
-            name: place.name.trim().replace(/\.[^/.]+$/, "") || place.name,
-            originalName: place.name, // Keep original for removal
-            location: this.capitalizeFirstLetter(place.location)
-          }));
-          console.log('Fetched places by logged-in username:', this.selectedPlaces);
-        } else {
-          console.error('Error fetching selected places:', response.error);
-        }
-      },
-      (error) => {
-        console.error('Error fetching selected places', error);
-      }
-    );
+    const places = JSON.parse(localStorage.getItem('selectedPlaces') || '[]');
+    this.selectedPlaces = places.map((place: any) => ({
+      name: place.name,
+      originalName: place.originalName || place.name,
+      location: this.capitalizeFirstLetter(place.location)
+    }));
   }
 
-  // Method to capitalize the first letter of a string
   capitalizeFirstLetter(str: string): string {
+    if (!str) return '';
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
   removePlace(place: any): void {
-    // Call the service method to remove the place using the original name
-    const nameToRemove = place.originalName || place.name;
-    this.visitService.removeSelectedPlace(nameToRemove).subscribe(
-      () => {
-        console.log(`Place ${place.name} removed successfully.`);
-        // Refresh the places after removal
-        this.refreshSelectedPlaces();
-        /* // Reload the window
-        window.location.reload(); */
-      },
-      (error) => {
-        console.error(`Error removing place ${place.name}:`, error);
-      }
-    );
+    const places = JSON.parse(localStorage.getItem('selectedPlaces') || '[]');
+    const updatedPlaces = places.filter((p: any) => p.name !== place.name);
+    localStorage.setItem('selectedPlaces', JSON.stringify(updatedPlaces));
+
+    // Trigger cart count update in navbar
+    window.dispatchEvent(new Event('storage'));
+
+    this.refreshSelectedPlaces();
+    this.toastService.show('Destination removed from your list.', 'info');
   }
 
 
   confirmBooking(): void {
     if (this.selectedPlaces.length > 0) {
-      this.router.navigate(['/post']); // Navigate only if there are selected places
+      this.router.navigate(['/post']);
     } else {
-      this.router.navigate(['/empty']);
+      this.toastService.show('Please add some places to your trip first!', 'warning');
     }
   }
 }

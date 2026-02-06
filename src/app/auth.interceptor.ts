@@ -16,11 +16,10 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private router: Router) { }
 
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-        // Get the token from localStorage (prefer adminToken if present, else user token)
+        // Get the token from localStorage (prefer adminToken for admin routes)
         const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
 
         if (token) {
-            // Clone the request and add the Authorization header
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${token}`
@@ -30,23 +29,21 @@ export class AuthInterceptor implements HttpInterceptor {
 
         return next.handle(request).pipe(
             catchError((error: HttpErrorResponse) => {
+                // Only redirect if it's an admin-related route
                 if (error.status === 401 || error.status === 403) {
                     const currentUrl = this.router.url;
 
-                    if (localStorage.getItem('adminToken')) {
-                        // Admin logout
+                    if (currentUrl.startsWith('/admin') || localStorage.getItem('adminToken')) {
                         localStorage.removeItem('adminToken');
                         localStorage.removeItem('loggedInAdminname');
                         if (!currentUrl.includes('/admin-signin')) {
                             this.router.navigate(['/admin-signin']);
                         }
                     } else {
-                        // User logout
+                        // For regular users, we just clear the potentially expired token
+                        // but don't redirect because we've removed the signin requirement
                         localStorage.removeItem('token');
                         localStorage.removeItem('loggedInUser');
-                        if (!currentUrl.includes('/signin') && !currentUrl.includes('/signup')) {
-                            this.router.navigate(['/signin']);
-                        }
                     }
                 }
                 return throwError(error);

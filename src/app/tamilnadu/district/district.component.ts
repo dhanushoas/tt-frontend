@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { VisitService } from '../visit.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from 'src/app/user/user.service';
 import { ToastService } from '../../toast.service';
 
 @Component({
@@ -18,7 +17,6 @@ export class DistrictComponent implements OnInit {
 
   constructor(
     private visitService: VisitService,
-    private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
     private toastService: ToastService
@@ -27,10 +25,17 @@ export class DistrictComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       if (params['location']) {
-        this.location = params['location'].toLowerCase(); // Convert to lowercase
+        this.location = params['location'].toLowerCase();
         this.getImages();
       }
     });
+
+    // Load selected places from local storage
+    this.loadSelectedPlaces();
+  }
+
+  loadSelectedPlaces() {
+    this.selectedPlaces = JSON.parse(localStorage.getItem('selectedPlaces') || '[]');
   }
 
   getImages(): void {
@@ -39,23 +44,23 @@ export class DistrictComponent implements OnInit {
         if (data.length > 0) {
           this.images = data.map((image: { name: string }) => ({
             ...image,
-            fileName: image.name, // Original for URL
-            name: this.capitalizeFirstLetter(image.name.trim().replace(/\.[^/.]+$/, "") || image.name) // Stripped for UI
+            fileName: image.name,
+            name: this.capitalizeFirstLetter(image.name.trim().replace(/\.[^/.]+$/, "") || image.name)
           }));
         } else {
-          this.redirectToHome(); // If no images, redirect
+          this.redirectToHome();
         }
       },
       error: (error) => {
         console.error('Error loading images:', error);
-        this.redirectToHome(); // Handle API errors by redirecting
+        this.redirectToHome();
       }
     });
   }
 
   redirectToHome(): void {
     this.toastService.show(`No images found for "${this.location}". Redirecting to home.`, 'info');
-    this.router.navigate(['/']); // Redirect to home page (or another page)
+    this.router.navigate(['/']);
   }
 
   capitalizeFirstLetter(word: string): string {
@@ -63,31 +68,22 @@ export class DistrictComponent implements OnInit {
   }
 
   addtoCartAndStore(image: any): void {
-    const isLoggedIn = this.userService.getLoggedInUser() !== null;
+    if (!this.isSelected(image)) {
+      const place = {
+        name: image.name,
+        originalName: image.fileName || image.name,
+        location: this.location
+      };
 
-    if (isLoggedIn) {
-      if (!this.isSelected(image)) {
-        const username = this.userService.getLoggedInUser();
-        const location = this.location;
-        const place = { name: image.name, location, username };
+      this.selectedPlaces.push(place);
+      localStorage.setItem('selectedPlaces', JSON.stringify(this.selectedPlaces));
 
-        this.selectedPlaces.push(place);
+      // Trigger cart count update in navbar
+      window.dispatchEvent(new Event('storage'));
 
-        this.visitService.storeSelectedPlaces({ username, location, selectedPlaces: [place.name] }).subscribe({
-          next: (response) => {
-            console.log('Selected places stored successfully:', response);
-            this.toastService.show('Place added to your visit list!', 'success');
-          },
-          error: (error) => {
-            console.error('Error storing selected places:', error);
-            this.toastService.show('Error storing selected places.', 'danger');
-          }
-        });
-      } else {
-        this.toastService.show('This place has already been added to your visit.', 'warning');
-      }
+      this.toastService.show('Destination added to your brief!', 'success');
     } else {
-      this.router.navigate(['/signin']);
+      this.toastService.show('This place is already in your trip plan.', 'warning');
     }
   }
 
@@ -97,10 +93,6 @@ export class DistrictComponent implements OnInit {
 
   getSelectedPlaceCount(): number {
     return this.selectedPlaces.length;
-  }
-
-  getSelectedPlaceNames(): string[] {
-    return this.selectedPlaces.map(place => place.name);
   }
 
   getImageUrl(image: any): string {

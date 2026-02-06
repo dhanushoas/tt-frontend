@@ -1,149 +1,156 @@
-<div class="auth-container">
-  <div class="modern-card">
-    <!-- Image Side -->
-    <div class="image-side">
-      <img *ngIf="bookingImage" [src]="bookingImage" class="form-image" alt="Booking Destination">
-      <div class="image-overlay">
-        <h3>Let's Plan Your Trip</h3>
-        <p>Confirm your details to secure the best travel experience in Tamil Nadu.</p>
+<div class="booking-container py-5">
+  <div class="container animate__animated animate__fadeIn">
+    <div class="modern-booking-card shadow-lg border-0">
+      <div class="row g-0">
+
+        <!-- Decoration side -->
+        <div class="col-lg-5 d-none d-lg-block">
+          <div class="sidebar-image-container h-100">
+            <img *ngIf="bookingImage" [src]="bookingImage" class="sidebar-img h-100 w-100 object-fit-cover"
+              alt="Explore TN">
+            <div class="sidebar-overlay p-5 d-flex flex-column justify-content-end">
+              <h1 class="display-5 text-white fw-bold mb-3">PLAN YOUR DREAM <span class="text-warning">JOURNEY</span>
+              </h1>
+              <p class="text-white opacity-75 fs-5">Fill in the details and we'll handle the rest. Your confirmation
+                will be sent to your email instantly.</p>
+              <div class="decoration-dots mt-4">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form side -->
+        <div class="col-lg-7 p-4 p-md-5 bg-white">
+          <div class="form-header mb-4">
+            <h2 class="fw-bold text-dark">Confirm Your <span class="text-danger">Trip</span></h2>
+            <p class="text-muted">Enter your details for booking reference #{{ bookForm.get('customId')?.value }}</p>
+          </div>
+
+          <form [formGroup]="bookForm" (ngSubmit)="postBooks()">
+            <div class="row g-4">
+
+              <!-- Name -->
+              <div class="col-md-12">
+                <div class="form-floating mb-1">
+                  <input type="text" class="form-control" id="visitorName" placeholder="Name"
+                    formControlName="nameOfVisitor"
+                    [class.is-invalid]="bookForm.get('nameOfVisitor')?.invalid && bookForm.get('nameOfVisitor')?.touched">
+                  <label for="visitorName"><i class="bi bi-person me-2"></i>Full Name</label>
+                  <div class="invalid-feedback" *ngIf="bookForm.get('nameOfVisitor')?.errors?.['required']">Name is
+                    required</div>
+                  <div class="invalid-feedback" *ngIf="bookForm.get('nameOfVisitor')?.errors?.['minlength']">Minimum 3
+                    characters required</div>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="col-md-6">
+                <div class="form-floating mb-1">
+                  <input type="email" class="form-control" id="visitorEmail" placeholder="Email" formControlName="email"
+                    [class.is-invalid]="bookForm.get('email')?.invalid && bookForm.get('email')?.touched">
+                  <label for="visitorEmail"><i class="bi bi-envelope me-2"></i>Email Address</label>
+                  <div class="invalid-feedback">Please enter a valid email address.</div>
+                </div>
+              </div>
+
+              <!-- Mobile -->
+              <div class="col-md-6">
+                <div class="form-floating mb-1">
+                  <input type="tel" class="form-control" id="visitorMobile" placeholder="Phone"
+                    formControlName="mobileNumber" (keypress)="onlyNumbers($event)" maxlength="10"
+                    [class.is-invalid]="bookForm.get('mobileNumber')?.invalid && bookForm.get('mobileNumber')?.touched">
+                  <label for="visitorMobile"><i class="bi bi-telephone me-2"></i>10-Digit Mobile</label>
+                  <div class="invalid-feedback">Must be a valid 10-digit mobile number.</div>
+                </div>
+              </div>
+
+              <!-- City -->
+              <div class="col-md-6">
+                <div class="form-floating mb-1">
+                  <input type="text" class="form-control" id="visitorCity" placeholder="City" formControlName="city"
+                    [class.is-invalid]="bookForm.get('city')?.invalid && bookForm.get('city')?.touched">
+                  <label for="visitorCity"><i class="bi bi-geo-alt me-2"></i>Your City</label>
+                  <div class="invalid-feedback">City name is required.</div>
+                </div>
+              </div>
+
+              <!-- Month -->
+              <div class="col-md-6">
+                <div class="form-floating mb-1">
+                  <select class="form-select" id="monthVisit" formControlName="monthOfVisit"
+                    [class.is-invalid]="bookForm.get('monthOfVisit')?.invalid && bookForm.get('monthOfVisit')?.touched">
+                    <option value="" disabled>Select Month</option>
+                    <option
+                      *ngFor="let m of ['January','February','March','April','May','June','July','August','September','October','November','December']"
+                      [value]="m">{{m}}</option>
+                  </select>
+                  <label for="monthVisit"><i class="bi bi-calendar-check me-2"></i>Month of Visit</label>
+                  <div class="invalid-feedback">Please select a month.</div>
+                </div>
+              </div>
+
+              <!-- Travellers -->
+              <div class="col-md-6">
+                <div class="form-floating mb-1">
+                  <input type="number" class="form-control" id="travellers" placeholder="Members"
+                    formControlName="noOfMembers" min="1">
+                  <label for="travellers"><i class="bi bi-people me-2"></i>Number of Travellers</label>
+                </div>
+              </div>
+
+              <!-- Budget -->
+              <div class="col-md-6">
+                <div class="form-floating mb-1">
+                  <input type="text" class="form-control" id="budget" placeholder="Budget" formControlName="budget"
+                    [class.is-invalid]="bookForm.get('budget')?.invalid && bookForm.get('budget')?.touched">
+                  <label for="budget"><i class="bi bi-currency-rupee me-2"></i>Expected Budget</label>
+                  <div class="invalid-feedback">Budget estimation is required.</div>
+                </div>
+              </div>
+
+              <!-- Requirement -->
+              <div class="col-12">
+                <div class="form-floating mb-1">
+                  <textarea class="form-control" placeholder="Requirement" id="reqs" style="height: 100px"
+                    formControlName="requirement"></textarea>
+                  <label for="reqs"><i class="bi bi-chat-dots me-2"></i>Special Requirements / Custom Itinerary</label>
+                </div>
+              </div>
+
+              <!-- Price Summary -->
+              <div class="col-12">
+                <div class="p-3 rounded-4 bg-light border-start border-5 border-danger">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="mb-0 fw-bold">TOTAL ESTIMATED COST</h6>
+                      <small class="text-muted">Including guide, transport & planning fee</small>
+                    </div>
+                    <div class="h3 mb-0 fw-black text-danger">₹{{ bookForm.get('totalCost')?.value }}</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="col-12 mt-4">
+                <div class="d-grid gap-3">
+                  <button type="submit" class="btn btn-danger btn-lg py-3 fw-bold rounded-pill shadow-sm hover-up">
+                    <i class="bi bi-envelope-check me-2"></i> CONFIRM & SEND MAIL
+                  </button>
+                  <button type="button" (click)="onCancel()"
+                    class="btn btn-link link-secondary fw-bold text-decoration-none">
+                    <i class="bi bi-arrow-left me-2"></i> Back to Trip Builder
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+
       </div>
-    </div>
-
-    <!-- Form Side -->
-    <div class="form-side">
-      <h2>Let's Plan Your Trip</h2>
-      <p class="subtitle">Complete the fields below to get started.</p>
-
-      <form [formGroup]="bookForm" (ngSubmit)="postBooks()">
-        <div class="form-grid">
-
-          <!-- Full Name -->
-          <div class="form-group full-width">
-            <label for="nameOfVisitor">Full Name *</label>
-            <div class="input-wrapper">
-              <i class="bi bi-person input-icon"></i>
-              <input type="text" id="nameOfVisitor" class="form-control" formControlName="nameOfVisitor"
-                placeholder="Enter your full name">
-            </div>
-          </div>
-
-          <!-- City -->
-          <div class="form-group">
-            <label for="city">Your City Name *</label>
-            <div class="input-wrapper">
-              <i class="bi bi-building input-icon"></i>
-              <input type="text" id="city" class="form-control" formControlName="city" placeholder="e.g. Chennai">
-            </div>
-          </div>
-
-          <!-- Email -->
-          <div class="form-group">
-            <label for="email">Email Address *</label>
-            <div class="input-wrapper">
-              <i class="bi bi-envelope input-icon"></i>
-              <input type="email" id="email" class="form-control" formControlName="email"
-                placeholder="email@example.com">
-            </div>
-          </div>
-
-          <!-- Mobile -->
-          <div class="form-group">
-            <label for="mobileNumber">Mobile/Phone *</label>
-            <div class="input-wrapper">
-              <i class="bi bi-telephone input-icon"></i>
-              <input type="tel" id="mobileNumber" class="form-control" formControlName="mobileNumber"
-                placeholder="10-digit number" (keypress)="onlyNumbers($event)" maxlength="10">
-            </div>
-          </div>
-
-          <!-- Month of Visits -->
-          <div class="form-group">
-            <label for="monthOfVisit">Month of Visits *</label>
-            <div class="input-wrapper">
-              <i class="bi bi-calendar-event input-icon"></i>
-              <select id="monthOfVisit" class="form-control" formControlName="monthOfVisit">
-                <option value="">Select Month</option>
-                <option value="January">January</option>
-                <option value="February">February</option>
-                <option value="March">March</option>
-                <option value="April">April</option>
-                <option value="May">May</option>
-                <option value="June">June</option>
-                <option value="July">July</option>
-                <option value="August">August</option>
-                <option value="September">September</option>
-                <option value="October">October</option>
-                <option value="November">November</option>
-                <option value="December">December</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Budget -->
-          <div class="form-group">
-            <label for="budget">Budget *</label>
-            <div class="input-wrapper">
-              <i class="bi bi-currency-rupee input-icon"></i>
-              <input type="text" id="budget" class="form-control" formControlName="budget"
-                placeholder="e.g. 20,000 - 30,000">
-            </div>
-          </div>
-
-          <!-- No. of Travellers -->
-          <div class="form-group">
-            <label for="noOfMembers">No. of Travellers</label>
-            <div class="input-wrapper">
-              <i class="bi bi-people input-icon"></i>
-              <input type="number" id="noOfMembers" class="form-control" formControlName="noOfMembers"
-                placeholder="e.g. 2">
-            </div>
-          </div>
-
-          <!-- Hotel -->
-          <div class="form-group">
-            <label for="hotel">Hotel</label>
-            <div class="input-wrapper">
-              <i class="bi bi-house input-icon"></i>
-              <select id="hotel" class="form-control" formControlName="hotel">
-                <option value="">Select Category</option>
-                <option value="Budget">Budget</option>
-                <option value="Standard">Standard</option>
-                <option value="Deluxe">Deluxe</option>
-                <option value="Luxury">Luxury</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Arrival & Departure City -->
-          <div class="form-group">
-            <label for="arrivalDepartureCity">Arrival & Departure City</label>
-            <div class="input-wrapper">
-              <i class="bi bi-geo input-icon"></i>
-              <input type="text" id="arrivalDepartureCity" class="form-control" formControlName="arrivalDepartureCity"
-                placeholder="e.g. Chennai to Madurai">
-            </div>
-          </div>
-
-          <!-- Requirement -->
-          <div class="form-group full-width">
-            <label for="requirement">Your Requirement</label>
-            <div class="input-wrapper">
-              <i class="bi bi-card-text input-icon"></i>
-              <textarea id="requirement" class="form-control" formControlName="requirement" rows="3"
-                placeholder="Tell us more about your trip plan..."></textarea>
-            </div>
-          </div>
-
-
-        </div>
-
-        <!-- Actions -->
-        <div class="form-grid mt-4">
-          <button type="button" (click)="onCancel()" class="btn btn-secondary">Cancel</button>
-          <button type="submit" [disabled]="bookForm.invalid" class="btn btn-primary">Plan My Trip</button>
-        </div>
-
-      </form>
     </div>
   </div>
 </div>
