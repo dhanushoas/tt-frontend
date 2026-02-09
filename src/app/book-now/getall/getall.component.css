@@ -114,15 +114,60 @@
   height: 6px;
 }
 
+/* Stat Box Enhancements */
 .stat-box {
   background: #f8f9fa;
-  padding: 15px;
+  padding: 12px 15px;
   border-radius: 16px;
   border: 1px solid #f0f0f0;
+  transition: all 0.2s ease;
 }
 
-.ls-1 {
-  letter-spacing: 1px;
+.stat-box:hover {
+  background: #f0f7ff;
+  border-color: #cfe2ff;
+}
+
+.stat-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.small-text {
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+/* Loading Animation Customization */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  display: inline-block;
+  animation: spin 2s linear infinite;
+}
+
+/* Empty State Styling */
+.empty-icon-wrapper {
+  opacity: 0.3;
+}
+
+/* Icon Sizing Refinement */
+.fs-xs {
+  font-size: 0.75rem;
 }
 
 /* Responsive Adjustments */
@@ -134,9 +179,20 @@
   }
 
   .gradient-side {
-    min-height: 250px;
+    min-height: 200px;
     align-items: center !important;
     text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .btn-primary-pill {
+    width: 100%;
+    margin-top: 1rem;
   }
 }
 
@@ -147,6 +203,15 @@
   }
 
   .gradient-side .display-4 {
-    font-size: 2.2rem;
+    font-size: 2rem;
+  }
+
+  .stat-box {
+    padding: 10px;
+  }
+
+  .stat-icon {
+    display: none;
+    /* Hide icon on very small mobile if space is tight */
   }
 }
